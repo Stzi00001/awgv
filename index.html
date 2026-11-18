@@ -112,6 +112,9 @@ details.calc summary{color:#6b4fbb}
 .unlock{background:var(--disp-soft);border:1px solid #bfe0cc;border-radius:var(--r);padding:14px 16px;margin:22px 0}
 .unlock b.t{color:var(--ok);display:block;margin-bottom:4px}
 .unlock ul{margin:4px 0;padding-left:18px}
+details.why{border-color:#f0d9a8;background:#fffaf0}
+details.why summary{color:#9a6412}
+details.why h4{margin:10px 0 2px;font-size:16px}
 /* Exercises */
 .ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
 .ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
@@ -325,6 +328,11 @@ V: <kbd>30</kbd><kbd>÷</kbd><kbd>ALPHA</kbd><kbd>(−)</kbd><kbd>=</kbd> → 45
 M<sub>l</sub>: <kbd>2</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd><kbd>°'"</kbd><kbd>+</kbd><kbd>30</kbd><kbd>=</kbd> → 45<br>
 M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd><kbd>°'"</kbd><kbd>−</kbd><kbd>30</kbd><kbd>=</kbd> → 0 ✓</p>
 <p class="small">Im normalen Modus sind <kbd>(−)</kbd> und <kbd>°'"</kbd> nach STO bzw. ALPHA die Variablen A und B. So tippst du Zwischenergebnisse nie ab.</p>
+</div></details>
+<details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum ist P = +30 und nicht −30?</h4><p>s̊ beschreibt den Zustand mit festgehaltenem Knoten. Dafür müsste rechts eine Einspannung das Moment M̊<sub>r</sub> = −30 aufbringen (im Uhrzeigersinn). In Wirklichkeit gibt es dort keine Einspannung, also wird der Knoten „losgelassen“. Das entspricht dem Gegenmoment +30 als Last, daher das Minus in P = P̄ − aᵀ·s̊.</p>
+<h4>Warum kommt M<sub>r</sub> = 0 heraus?</h4><p>Das Endergebnis ist eine Überlagerung: festgehaltener Zustand (−30) plus Loslassen (+30, aus k·a·V). Die beiden heben sich am Gelenk genau auf. Genau das Gleiche machst du beim Drehwinkelverfahren.</p>
+<h4>Warum ist V positiv?</h4><p>Der Träger hängt durch und läuft am rechten Lager wieder nach oben. Die Tangente dreht dort gegen den Uhrzeigersinn, also ist V positiv ✓.</p>
 </div></details>
 <div class="box merk"><b class="t">Gegenprobe mit Bekanntem</b>Das Einspannmoment des einseitig eingespannten Trägers ist −qL²/8 = −45 kNm, die Auflagerkräfte sind 5qL/8 = 37,5 kN und 3qL/8 = 22,5 kN. Das AWGV liefert genau die Tabellenwerte (Hilfsblatt S. 23, Volleinspannmomente). So kannst du in der Klausur bei einfachen Teilsystemen immer gegenprüfen.</div>
 </section>
@@ -584,6 +592,12 @@ M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd
 <p>EA/L: <kbd>2</kbd><kbd>×10ˣ</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>5</kbd><kbd>=</kbd> → 400 000<br>
 4EI/L: <kbd>4</kbd><kbd>×</kbd><kbd>10000</kbd><kbd>÷</kbd><kbd>5</kbd><kbd>=</kbd> → 8 000<br>
 2EI/L: <kbd>Ans</kbd><kbd>÷</kbd><kbd>2</kbd><kbd>=</kbd> → 4 000</p></div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum EA/L?</h4><p>Ein Zugstab ist eine Feder. Aus dem Hookeschen Gesetz folgt Δu = N·L/(EA). Stellst du das nach N um, ergibt sich N = (EA/L)·Δu. Die Zahl vor Δu ist also die Federsteifigkeit. Ein doppelt so langer Stab ist doppelt so weich, deshalb steht L im Nenner.</p>
+<h4>Warum 4EI/L?</h4><p>Das ist das Moment, mit dem du ein Stabende um 1 rad verdrehst, während das andere Ende eingespannt ist. Ein höheres EI macht den Stab steifer (EI im Zähler). Ein längerer Stab lässt sich leichter verdrehen (L im Nenner). Die 4 kommt aus der Biegelinie, die Herleitung über die Flexibilität siehst du in Abschnitt 5.</p>
+<h4>Warum ist 2EI/L genau die Hälfte?</h4><p>Verdrehst du links, will sich das rechte Ende mitdrehen. Die Einspannung rechts verhindert das und muss dafür ein Moment aufbringen, nämlich genau die Hälfte. Das ist die Fortleitungszahl ½ aus dem Drehwinkelverfahren.</p>
+<h4>Einheitenkontrolle</h4><p>EI/L hat kNm²/m = kNm, also ein Moment pro rad. EA/L hat kN/m, also eine Kraft pro Meter. Stimmt die Einheit nicht, stimmt die Formel nicht.</p>
+    </div></details>
   </div>
 
   <div class="ex">
@@ -610,6 +624,14 @@ M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd
       <p>M<sub>r</sub> = 2000 · (2·0,001 + 4·(−0,002)) = 2000 · (−0,006) = <b>−12 kNm</b></p>
       <p>Momentenlinie: M(l) = −M<sub>l</sub> = 0, M(r) = +M<sub>r</sub> = −12 kNm → Zug oben am rechten Ende.</p>
     </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum ist M<sub>l</sub> genau 0?</h4><p>s = k·v ist linear. Jede Verformung liefert ihren eigenen Beitrag, das ist ihre Spalte von k, und am Ende wird alles addiert. Am linken Ende kommen zwei Beiträge an:</p>
+<ul><li>τ<sub>l</sub> = +0,001 direkt: 4·2000·0,001 = <b>+8 kNm</b></li><li>τ<sub>r</sub> = −0,002 über die Fortleitung: 2·2000·(−0,002) = <b>−8 kNm</b></li></ul>
+<p>Die beiden heben sich genau auf. Die Zahlen sind absichtlich so gewählt, damit du die Überlagerung siehst.</p>
+<h4>Warum ist M<sub>r</sub> negativ?</h4><p>Rechts dominiert τ<sub>r</sub> = −0,002. Diese Drehung ist im Uhrzeigersinn, also braucht es auch ein Moment im Uhrzeigersinn, und das ist in VZK II negativ.</p>
+<h4>Warum hängt N nicht von τ ab?</h4><p>In k stehen neben EA/L nur Nullen. Dehnung und Biegung sind entkoppelt: Ein Stab wird durch Verbiegen nicht länger (Theorie I. Ordnung).</p>
+<h4>Warum −12 in der Momentenlinie?</h4><p>Es gilt M(Stabende) = +M<sub>r</sub> = −12. Das Minus bedeutet Zug auf der Oberseite, also auf der Seite gegenüber der gestrichelten Faser.</p>
+    </div></details>
   </div>
 
   <div class="ex">
@@ -627,6 +649,12 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
       <p>K(1,1) = 4·12000/4 + 4·12000/6 = 12 000 + 8 000 = <b>20 000 kNm</b></p>
       <p>K(1,2) = K(2,1) = 2·12000/6 = <b>4 000 kNm</b> (nur Stab ② verbindet die beiden Knoten)</p>
       <p>K(2,2) = 4·12000/6 = <b>8 000 kNm</b> (nur Stab ② hängt am rechten Knoten)</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum ist K(1,1) eine Summe?</h4><p>Der Mittelknoten ist biegesteif mit beiden Stäben verbunden. Wer ihn verdreht, muss beide Stabenden mitverdrehen, und dafür braucht es beide Momente. Das ist wie bei zwei parallel geschalteten Federn: Die Steifigkeiten addieren sich.</p>
+<h4>Warum kommt K(1,2) nur von Stab ②?</h4><p>Nur Stab ② verbindet die beiden Knoten. Stab ① „weiß“ nichts vom rechten Lager. Deshalb ist K(i,j) = 0 für Freiheitsgrade, die durch keinen Stab verbunden sind. So entstehen die vielen Nullen in großen Matrizen.</p>
+<h4>Warum ist die linke Einspannung kein Freiheitsgrad?</h4><p>Sie bewegt sich nicht, es gibt dort also nichts Unbekanntes. Trotzdem steckt sie in der Rechnung: Bei V<sub>1</sub> = 1 ist Stab ① am anderen Ende fest. Deshalb gilt für ihn 4EI/L (Ende fest) und nicht 3EI/L (Ende gelenkig).</p>
+<h4>Kontrolle</h4><p>K(1,2) = K(2,1) muss gelten. Das ist der Satz von Maxwell/Betti, den du aus dem Kraftgrößenverfahren kennst (δ<sub>ik</sub> = δ<sub>ki</sub>).</p>
     </div></details>
   </div>
 
@@ -647,6 +675,13 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
       <p>det K = 20000·8000 − 4000² = 1,44·10⁸</p>
       <p>V<sub>1</sub> = 8000·60 / 1,44·10⁸ = 3,333·10⁻³ rad, V<sub>2</sub> = −4000·60 / 1,44·10⁸ = −1,667·10⁻³ rad</p>
       <p>Anschaulich: Der Mittelknoten dreht sich mit dem Moment, das rechte Ende dreht sich ein bisschen zurück. Morgen rechnen wir daraus die Momente.</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum ist V<sub>1</sub> positiv?</h4><p>Das Knotenmoment dreht gegen den Uhrzeigersinn, also dreht sich der Knoten auch gegen den Uhrzeigersinn. Vorzeichen von Last und Verformung passen zusammen.</p>
+<h4>Warum ist V<sub>2</sub> negativ und genau −½·V<sub>1</sub>?</h4><p>Am rechten Lager greift kein Moment an (P<sub>2</sub> = 0), es ist ein Gelenk. Also muss dort M<sub>r</sub><sup>2</sup> = 0 sein:</p>
+<div class="eq">M<sub>r</sub><sup>2</sup> = (EI/L)(2V<sub>1</sub> + 4V<sub>2</sub>) = 0 ⟹ V<sub>2</sub> = −V<sub>1</sub>/2</div>
+<p>Anschaulich: Belastest du einen Einfeldträger links mit einem Moment, dreht sich das rechte Ende <i>entgegengesetzt</i> und halb so stark. Das kennst du aus dem Arbeitssatz: L/(3EI) links und L/(6EI) rechts.</p>
+<h4>Kontrolle</h4><p>Setz V wieder ein: 20000·V<sub>1</sub> + 4000·V<sub>2</sub> = 66,67 − 6,67 = 60 ✓ und 4000·V<sub>1</sub> + 8000·V<sub>2</sub> = 13,33 − 13,33 = 0 ✓</p>
     </div></details>
   </div>
 
@@ -796,6 +831,12 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
     <details><summary>Begründungen</summary><div>
       <p>a) Freies Ende: u, w, φ → 3.<br>b) u am freien Ende ist durch EA = ∞ gesperrt → w, φ → 2.<br>c) Zwei Rahmenecken mit je u, w, φ = 6. w an beiden Ecken gesperrt (Stiele dehnstarr), u an beiden Ecken gleich (Riegel dehnstarr) → u, φ<sub>links</sub>, φ<sub>rechts</sub> = 3.<br>d) Starrer Riegel, dessen Enden nicht absacken können, dreht sich nicht → nur u = 1.<br>e) Vertikale Wege durch Lager gesperrt, horizontale durch EA = ∞ und Einspannung → nur die zwei Verdrehungen.</p>
     </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Die Denkregel</h4><p>Ein Freiheitsgrad ist alles, was ein Knoten <b>noch tun kann</b>, nachdem Lager, EA = ∞ und EI = ∞ ihre Bedingungen gestellt haben. Frag dich bei jedem Knoten nacheinander: Kann er nach rechts? Nach unten? Kann er sich drehen?</p>
+<h4>Warum sperrt EA = ∞ beim Kragarm u?</h4><p>Das freie Ende hängt über einen Stab, der nicht länger oder kürzer werden kann, an einer festen Einspannung. Eine horizontale Bewegung würde die Länge ändern, also ist sie unmöglich. Senkrecht zum Stab geht es noch, das ist Biegung.</p>
+<h4>Warum gibt es beim Rahmen in c) ein gemeinsames u?</h4><p>Der Riegel ist dehnstarr, also müssen sich seine beiden Enden horizontal gleich weit bewegen. Zwei u werden zu einem.</p>
+<h4>Warum dreht sich der starre Riegel in d) nicht?</h4><p>Würde er sich drehen, ginge eine Ecke hoch und die andere runter. Das verhindern die dehnstarren Stiele. Weil die Ecken biegesteif sind, ist die Knotendrehung gleich der Riegeldrehung, also 0.</p>
+    </div></details>
   </div>
 
   <div class="ex">
@@ -826,6 +867,12 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
       <p><b>V<sub>3</sub> = 1:</b> Rechte Ecke: τ<sub>r</sub>² (Ende Riegel) und τ<sub>r</sub>³ (Kopf von Stiel ③) → beide 1.</p>
       <div class="eq"><span class="mx"><span class="op">a =</span><span class="m" data-m='[["1/4","0","0"],["1/4","1","0"],["0","1","0"],["0","0","1"],["1/4","0","0"],["1/4","0","1"]]'></span></span></div>
     </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum ist τ beim Riegel 0, wenn V<sub>1</sub> = 1?</h4><p>Beide Riegelenden gehen gleich weit nach rechts, also in Stabrichtung. Quer zum Riegel bewegt sich nichts, also gibt es keinen Querversatz und keine Sehnendrehung: ψ = 0. Das ist eine reine Starrkörperverschiebung, sie erzeugt keine Verformung und keine Kräfte.</p>
+<h4>Warum ist +¼ bei den Stielen positiv?</h4><p>Die Stiele laufen von unten (l) nach oben (r). Geht der Kopf nach rechts, kippt die Sehne im Uhrzeigersinn. Damit ist ψ = +1/4 und τ = φ + ψ = 0 + ¼.</p>
+<h4>Warum steht bei V<sub>2</sub> eine 1 bei τ<sub>r</sub><sup>1</sup> UND bei τ<sub>l</sub><sup>2</sup>?</h4><p>Eine biegesteife Rahmenecke behält ihren Winkel, sie dreht sich als Ganzes. Beide Stabenden an der Ecke drehen sich also um genau dasselbe φ = 1. In VZK II ist das an beiden Enden positiv, egal ob es das l- oder das r-Ende ist.</p>
+<h4>Warum ist τ<sub>l</sub><sup>1</sup> = 0 bei V<sub>2</sub>?</h4><p>Der Stielfuß ist eingespannt und dreht sich nie. Nur die Ecke dreht sich, und die Biegelinie verbindet die beiden Enden.</p>
+    </div></details>
   </div>
 
   <div class="ex">
@@ -847,6 +894,11 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
       <p>K(1,1) = 0,6² · 2000 = 720 &nbsp;·&nbsp; K(1,2) = 0,6·0,8 · 2000 = 960 &nbsp;·&nbsp; K(2,2) = 0,8² · 2000 + 1² · 2500 = 1280 + 2500 = 3780</p>
       <p>Physikalisch: K(1,1) = Horizontalkraft, um K um 1 m nach rechts zu schieben, wenn w festgehalten wird. Nur Stab ① wehrt sich dagegen, Stab ② dreht nur mit (Pendelstab, quer weich).</p>
     </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum kommt K(1,1) nur von Stab ①?</h4><p>Schiebst du K horizontal, dreht sich der senkrechte Stab ② nur wie ein Pendel. Seine Länge ändert sich dabei nicht (Theorie I. Ordnung), also entsteht keine Kraft. Nur der schräge Stab ① wird länger und wehrt sich.</p>
+<h4>Warum ist K(1,2) nicht 0?</h4><p>Schiebst du K nur nach rechts (w = 0 festgehalten), wird Stab ① länger und zieht schräg an K, also auch nach oben. Die Festhaltung von w muss dagegenhalten, und diese Kraft ist K(2,1). Schräge Stäbe koppeln u und w.</p>
+<h4>Die Formel dahinter</h4><p>Für Fachwerkstäbe gilt K<sub>ij</sub> = Σ (EA/L)·e<sub>i</sub>·e<sub>j</sub>, wobei e<sub>i</sub> die Richtungsanteile sind (hier 0,6 und 0,8). Deshalb stehen hier 0,6², 0,6·0,8 und 0,8².</p>
+    </div></details>
   </div>
 
   <div class="ex">
@@ -866,6 +918,12 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
       <p>τ<sub>l</sub>² = V<sub>1</sub> = 3,333·10⁻³, τ<sub>r</sub>² = V<sub>2</sub> = −1,667·10⁻³, EI/L = 2000.</p>
       <p>M<sub>l</sub>² = 2000·(4·3,333 − 2·1,667)·10⁻³ = 2000·0,01 = <b>20 kNm</b>, M<sub>r</sub>² = 2000·(2·3,333 − 4·1,667)·10⁻³ = <b>0</b> ✓ (gelenkiges Ende → Moment null, gute Kontrolle!)</p>
       <p>Stab ①: τ<sub>r</sub>¹ = 3,333·10⁻³ → M<sub>r</sub>¹ = 3000·4·3,333·10⁻³ = 40 kNm. Knotengleichgewicht: 40 + 20 = 60 = P<sub>1</sub> ✓</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+<h4>Warum ist M<sub>r</sub><sup>2</sup> = 0?</h4><p>Das rechte Lager ist ein Gelenk und kann kein Moment halten. Im AWGV steckt das in P<sub>2</sub> = 0: Die Gleichgewichtszeile zu V<sub>2</sub> sagt „Summe der Stabendmomente am rechten Knoten = 0“, und dort hängt nur M<sub>r</sub><sup>2</sup>. Kommt hier nicht 0 heraus, ist vorher etwas schiefgegangen.</p>
+<h4>Warum teilt sich 60 in 40 und 20 auf?</h4><p>Das Knotenmoment verteilt sich nach den Steifigkeiten der Stäbe am Knoten, wie beim Cross-Verfahren:</p>
+<ul><li>Stab ①, Ende gegenüber eingespannt: 4EI/L<sub>1</sub> = 12 000</li><li>Stab ②, Ende gegenüber gelenkig: 3EI/L<sub>2</sub> = 6 000</li></ul>
+<p>Das Verhältnis ist 2 : 1, also 40 : 20 ✓. Das AWGV „weiß“ automatisch, dass das rechte Ende gelenkig ist, weil V<sub>2</sub> frei ist.</p>
     </div></details>
   </div>
 
