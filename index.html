@@ -146,6 +146,7 @@ details > div{padding:4px 14px 12px}
   <div class="brand">AWGV in 7 Tagen<small>Allgemeines Weggrößenverfahren · Baustatik · Klausur 8.12.</small></div>
   <nav class="tabs" id="tabs">
     <a href="#start">Plan</a>
+    <a href="#rezept">Kochrezept</a>
     <a href="#merkzettel">Merkzettel</a>
     <a href="#tag1">Tag 1</a>
     <a href="#tag2">Tag 2</a>
@@ -179,6 +180,97 @@ details > div{padding:4px 14px 12px}
     <tr><td><b>B</b></td><td>Eine Element&shy;steifigkeit herleiten (über Flexibilität mit Arbeitssatz, dann <i>k = f<sup>−1</sup></i>)</td><td>Dehnstab mit veränderlichem A, schubweicher Träger, geschwächter Biegestab 2026</td></tr>
     <tr><td><b>C</b></td><td>Verständnis: Bedeutung von <i>K(i,j)</i>, Anzahl Freiheitsgrade, Kondensation, Gleichgewichtskontrolle</td><td>K(2,4) &amp; K(1,6) 2021, fehlerhafter M-Verlauf, 3D-Träger</td></tr>
   </table>
+</section>
+
+
+<!-- ===================== KOCHREZEPT ===================== -->
+<section class="view" id="v-rezept">
+  <h1>Kochrezept AWGV</h1>
+  <p class="lead">So gehst du in der Klausur bei jeder Typ-A-Aufgabe vor. Jeder Schritt hat: was du tust, wo du nachschlägst, wie du dich kontrollierst. Unten ist alles einmal komplett durchgerechnet.</p>
+
+  <div class="box hb"><b class="t">Zeitplan für 30 Minuten</b>
+  Schritt 1–2: 8 min · Schritt 3: 5 min · Schritt 4–5: 5 min · Schritt 6: 4 min · Schritt 7 (Verläufe zeichnen): 8 min</div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schritt 1 · Diskretisieren</h3>
+    <p><b>Tun:</b> Knoten setzen (Lager, Ecken, Stabenden, Gelenke, Steifigkeitssprünge). Stäbe nummerieren und jedem eine Richtung l → r geben (Pfeil in die Skizze!). Freiheitsgrade V<sub>1</sub>, V<sub>2</sub>, … mit positiver Richtung einzeichnen.</p>
+    <p><b>Streichen:</b> was Lager festhalten · was EA = ∞ verbietet (keine Längenänderung) · was EI = ∞ verbietet (starrer Stab dreht nur als Ganzes).</p>
+    <p><b>Kontrolle:</b> Verlangt die Aufgabe „einen Freiheitsgrad“ und du hast mehr? Dann hast du eine EA-, EI- oder Gelenkbedingung übersehen.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schritt 2 · Matrix a aufstellen (v = a·V)</h3>
+    <p><b>Tun:</b> Für jeden Freiheitsgrad einzeln V<sub>j</sub> = 1 setzen, verformte Figur <b>skizzieren</b>, pro Stab ablesen: Δu (Verlängerung), ψ (Sehnendrehung, Uhrzeigersinn +), φ<sub>l</sub>, φ<sub>r</sub>. Dann τ<sub>l</sub> = φ<sub>l</sub> + ψ, τ<sub>r</sub> = φ<sub>r</sub> + ψ. Ergebnis in Spalte j.</p>
+    <p><b>Größe:</b> Zeilen = alle Δu, τ<sub>l</sub>, τ<sub>r</sub> (Δu weglassen bei EA = ∞, Stäbe mit EI = EA = ∞ ganz weglassen), Spalten = Anzahl Freiheitsgrade.</p>
+    <p><b>Kontrolle:</b> Knotendrehung → τ = 1 an allen Stabenden dieses Knotens. Querverschiebung → τ = 1/L. Wird der Stab länger → Δu positiv.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schritt 3 · Festhaltekräfte s̊ und Lastvektor P</h3>
+    <p><b>Tun:</b> Für jeden Stab <b>mit Last</b> (Streckenlast, Einzellast, Temperatur, Stützensenkung) die Festhaltekräfte s̊ = [N̊<sub>r</sub>, M̊<sub>l</sub>, M̊<sub>r</sub>] ablesen. Stäbe ohne Last: s̊ = 0. Lasten direkt auf Knoten in Richtung V<sub>j</sub> kommen in P̄.</p>
+    <div class="eq">P = P̄ − aᵀ · s̊</div>
+    <p><b>Hilfsblatt:</b> S. 19–20 (VZK II, beidseitig eingespannter Stab). Gleichlast: M̊<sub>l</sub> = +qL²/12, M̊<sub>r</sub> = −qL²/12. Stützensenkung: Fall 17.</p>
+    <p><b>Kontrolle:</b> Vorzeichen anschaulich prüfen: Die Einspannung hält gegen die Drehung, die die Last erzeugen will. Achtung: S. 19 gilt für die Stabrichtung l → r, die Last also immer aus Sicht deines Stabpfeils lesen.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schritt 4 · Gesamtsteifigkeit K = aᵀ · k · a</h3>
+    <p><b>Tun:</b> k für jeden Stab aufschreiben (EA/L; 4EI/L, 2EI/L), als Blockdiagonale zusammensetzen, Federn als eigene Einträge k = c. Mit dem Taschenrechner aᵀ·k·a.</p>
+    <p><b>Kontrolle:</b> K symmetrisch, Diagonale positiv. Einen Diagonaleintrag „physikalisch“ nachrechnen (z. B. Summe der 4EI/L aller Stäbe am Knoten, oder 12EI/h³ bzw. 3EI/h³ für Stiele).</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schritt 5 · Lösen V = K⁻¹ · P</h3>
+    <p><b>Tun:</b> Bei einem Freiheitsgrad einfach V = P/K. Sonst Rechner. Ergebnisse gern „in EI-fach“ lassen (z. B. V = 45/EI), das macht Schritt 6 einfacher.</p>
+    <p><b>Kontrolle:</b> Passt die Richtung zur Anschauung? Last nach rechts → Riegel geht nach rechts → V positiv.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schritt 6 · Stabendschnittgrößen s = k · a · V + s̊</h3>
+    <p><b>Tun:</b> Für jeden Stab: v<sup>p</sup> = (seine Zeilen von a) · V, dann s<sup>p</sup> = k<sup>p</sup> · v<sup>p</sup> + s̊<sup>p</sup>.</p>
+    <p><b>Kontrolle:</b> Gelenkiges Stabende → Moment muss 0 sein. Knotengleichgewicht: Summe der Stabendmomente am Knoten = äußeres Knotenmoment (meist 0). Mit P = aᵀ·s kannst du das für alle Freiheitsgrade auf einmal prüfen.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schritt 7 · Verläufe zeichnen</h3>
+    <p><b>Momente:</b> Pro Stab M(l) = −M<sub>l</sub> und M(r) = +M<sub>r</sub> (Zug auf der gestrichelten Faser positiv). Die beiden Werte geradlinig verbinden, bei Streckenlast die Parabel mit Stich qL²/8 einhängen.</p>
+    <p><b>Querkraft:</b> Q(l) = (M<sub>l</sub> + M<sub>r</sub>)/L + Anteil aus Stablast (Gleichlast: + qL/2 links, − qL/2 rechts).</p>
+    <p><b>Normalkraft:</b> N = N<sub>r</sub> aus s, bei EA = ∞ aus Knotengleichgewicht der Querkräfte.</p>
+    <p><b>Verformungsfigur:</b> Knotenwege aus V eintragen, Biegelinie passend zur Momentenlinie (Krümmung zur Zugseite).</p>
+  </div>
+
+  <h2>Einmal komplett durchgekocht</h2>
+  <p><b>Aufgabe:</b> Einfeldträger, links eingespannt, rechts gelenkig gelagert, L = 6 m, Gleichlast q = 10 kN/m, EI konstant, EA = ∞. Gesucht: Momentenverlauf nach AWGV.</p>
+  <svg viewBox="0 0 440 150" style="max-width:520px" role="img" aria-label="Einseitig eingespannter Träger unter Gleichlast">
+    <g stroke="#c0392b" stroke-width="1.6">
+      <line x1="60" y1="30" x2="360" y2="30"/>
+      <line x1="60" y1="30" x2="60" y2="62" marker-end="url(#arR)"/><line x1="120" y1="30" x2="120" y2="62" marker-end="url(#arR)"/><line x1="180" y1="30" x2="180" y2="62" marker-end="url(#arR)"/><line x1="240" y1="30" x2="240" y2="62" marker-end="url(#arR)"/><line x1="300" y1="30" x2="300" y2="62" marker-end="url(#arR)"/><line x1="360" y1="30" x2="360" y2="62" marker-end="url(#arR)"/>
+    </g>
+    <text x="210" y="20" text-anchor="middle" fill="#c0392b" font-family="Source Sans 3" font-size="15">q = 10 kN/m</text>
+    <line x1="60" y1="70" x2="360" y2="70" stroke="#1d2433" stroke-width="4"/>
+    <g stroke="#1d2433" stroke-width="1.5" fill="none"><line x1="60" y1="45" x2="60" y2="100"/>
+      <g stroke-width="1"><line x1="60" y1="50" x2="48" y2="62"/><line x1="60" y1="66" x2="48" y2="78"/><line x1="60" y1="82" x2="48" y2="94"/></g>
+      <path d="M360,74 l-10,16 h20 z"/><line x1="346" y1="96" x2="374" y2="96"/></g>
+    <path d="M372,52 A22,22 0 1,0 372,88" fill="none" stroke="#2e8b57" stroke-width="2.2" marker-end="url(#arG)"/>
+    <text x="388" y="80" fill="#2e8b57" font-family="Source Serif 4" font-style="italic" font-size="18">V₁</text>
+    <text x="210" y="125" text-anchor="middle" font-family="Source Sans 3" font-size="15">Stab ①: l links → r rechts, L = 6 m</text>
+  </svg>
+
+  <ol class="steps">
+    <li><b>Diskretisieren:</b> Links alles fest, rechts nur Drehung frei (EA = ∞, Lager hält w). → <b>1 Freiheitsgrad:</b> V<sub>1</sub> = Drehung am rechten Lager.</li>
+    <li><b>Matrix a:</b> V<sub>1</sub> = 1 dreht nur das rechte Stabende, ψ = 0 → τ<sub>l</sub> = 0, τ<sub>r</sub> = 1.
+      <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l"],["τ_r"]]'></span><span class="op">=</span><span class="m" data-m='[["0"],["1"]]'></span><span class="op">· V₁</span></span></div></li>
+    <li><b>Lasten:</b> Hilfsblatt S. 19, Fall 3: M̊<sub>l</sub> = qL²/12 = 30 kNm, M̊<sub>r</sub> = −30 kNm. Keine Knotenlast, P̄ = 0.
+      <div class="eq">P = 0 − [0 1] · [30; −30] = +30 kNm</div></li>
+    <li><b>Steifigkeit:</b> K = [0 1] · (EI/6)[4 2; 2 4] · [0; 1] = 4EI/6 = 0,667 EI <span class="small">(Kontrolle: 4EI/L am Knoten ✓)</span></li>
+    <li><b>Lösen:</b> V<sub>1</sub> = 30 / (0,667 EI) = <b>45/EI</b> <span class="small">(positiv = gegen den Uhrzeigersinn: Der Träger hängt durch und läuft am rechten Lager wieder nach oben – passt ✓)</span></li>
+    <li><b>Schnittgrößen:</b> v = a·V = [0; 45/EI]
+      <div class="eq">M<sub>l</sub> = (EI/6)(4·0 + 2·45/EI) + 30 = 15 + 30 = 45 kNm</div>
+      <div class="eq">M<sub>r</sub> = (EI/6)(2·0 + 4·45/EI) − 30 = 30 − 30 = 0 ✓</div>
+      <span class="small">M<sub>r</sub> = 0 am Gelenklager – Kontrolle bestanden.</span></li>
+    <li><b>Verläufe:</b> M(l) = −M<sub>l</sub> = <b>−45 kNm</b> (Einspannung, Zug oben), M(r) = 0. Gerade verbinden, Parabel mit qL²/8 = 45 einhängen. Querkraft: Q(l) = (45 + 0)/6 + 30 = <b>37,5 kN</b>, Q(r) = 7,5 − 30 = <b>−22,5 kN</b>.</li>
+  </ol>
+  <div class="box merk"><b class="t">Gegenprobe mit Bekanntem</b>Das Einspannmoment des einseitig eingespannten Trägers ist −qL²/8 = −45 kNm, die Auflagerkräfte sind 5qL/8 = 37,5 kN und 3qL/8 = 22,5 kN. Das AWGV liefert genau die Tabellenwerte (Hilfsblatt S. 23, Volleinspannmomente). So kannst du in der Klausur bei einfachen Teilsystemen immer gegenprüfen.</div>
 </section>
 
 <!-- ===================== MERKZETTEL ===================== -->
