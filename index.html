@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d2433">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="AWGV">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<title>AWGV in 7 Tagen – Baustatik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,wght@0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#1d2433; --muted:#5d6475; --line:#e2ded4;
+  --accent:#1f5f8b; --accent-soft:#e3eef6;
+  --force:#c0392b; --force-soft:#fbeae7;
+  --disp:#2e8b57; --disp-soft:#e6f4ec;
+  --warn:#b7791f; --warn-soft:#fdf3e1;
+  --ok:#2e8b57; --bad:#c0392b;
+  --r:12px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif}
+a{color:var(--accent)}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,244,239,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.topin{max-width:860px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right)) 10px calc(16px + env(safe-area-inset-left));display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:"Source Serif 4",serif;font-weight:600;font-size:19px;margin-right:auto}
+.brand small{display:block;font:400 13px "Source Sans 3";color:var(--muted)}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;max-width:100%;padding-bottom:2px}
+nav.tabs a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 11px;border-radius:999px;font-size:15px;border:1px solid var(--line);background:#fff}
+nav.tabs a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+main{max-width:860px;margin:0 auto;padding:18px calc(16px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left))}
+@media (min-width:900px){main,.topin{max-width:960px}body{font-size:18px}}
+section.view{display:none}
+section.view.on{display:block}
+h1{font-family:"Source Serif 4",serif;font-weight:600;font-size:30px;line-height:1.2;margin:8px 0 6px}
+h2{font-family:"Source Serif 4",serif;font-weight:600;font-size:23px;margin:34px 0 8px;padding-top:6px}
+h3{font-size:18px;margin:22px 0 6px}
+p{margin:8px 0}
+.lead{color:var(--muted);font-size:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:14px 0}
+.box{border-radius:var(--r);padding:14px 16px;margin:14px 0;border-left:5px solid}
+.merk{background:var(--accent-soft);border-color:var(--accent)}
+.merk b.t{display:block;color:var(--accent);margin-bottom:4px}
+.warn{background:var(--warn-soft);border-color:var(--warn)}
+.warn b.t{display:block;color:var(--warn);margin-bottom:4px}
+.hb{background:#f1eefc;border-color:#6b4fbb}
+.hb b.t{display:block;color:#6b4fbb;margin-bottom:4px}
+.f{color:var(--force);font-weight:600}
+.d{color:var(--disp);font-weight:600}
+.mono{font-family:"JetBrains Mono",monospace;font-size:.92em}
+.eq{font-family:"Source Serif 4",serif;font-style:italic;font-size:19px;text-align:center;margin:12px 0;overflow-x:auto}
+.eq .up{font-style:normal}
+sub,sup{font-size:.7em}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:16px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere;hyphens:auto}
+th{background:#faf8f3;font-weight:600}
+.scroll{overflow-x:auto}
+svg{max-width:100%;height:auto;display:block;margin:6px auto}
+.cap{font-size:14px;color:var(--muted);text-align:center;margin-top:2px}
+/* Matrix */
+.mx{display:inline-flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;vertical-align:middle;margin:4px 2px}
+.m{display:inline-grid;gap:2px 14px;padding:4px 9px;position:relative;font-family:"Source Serif 4",serif;font-style:italic;font-size:17px;text-align:center}
+.m::before,.m::after{content:"";position:absolute;top:0;bottom:0;width:7px;border:2px solid var(--ink)}
+.m::before{left:0;border-right:none}
+.m::after{right:0;border-left:none}
+.m span{white-space:nowrap}
+.op{font-family:"Source Serif 4",serif;font-size:20px}
+/* Steps */
+.steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+/* Exercises */
+.ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
+.ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
+.ex .tag{background:var(--ink);color:#fff;border-radius:6px;padding:1px 8px;font-size:13px;font-weight:700}
+.ex .ti{font-weight:700}
+.ans{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.ans label{min-width:110px}
+input.n{font:inherit;width:120px;padding:6px 8px;border:1.5px solid var(--line);border-radius:8px;background:#fdfcf9}
+input.n.ok{border-color:var(--ok);background:var(--disp-soft)}
+input.n.bad{border-color:var(--bad);background:var(--force-soft)}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;padding:7px 14px;font-weight:600}
+button.ghost{background:#fff;color:var(--ink)}
+.fb{font-size:15px;margin-left:4px}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+details{margin:10px 0;border:1px solid var(--line);border-radius:10px;background:#fbfaf6}
+details summary{cursor:pointer;padding:9px 13px;font-weight:600;color:var(--accent)}
+details > div{padding:4px 14px 12px}
+/* grid matrix input */
+.agrid{display:inline-grid;gap:4px;padding:6px 12px;position:relative;margin:6px 0}
+.agrid::before,.agrid::after{content:"";position:absolute;top:0;bottom:0;width:8px;border:2px solid var(--ink)}
+.agrid::before{left:0;border-right:none}.agrid::after{right:0;border-left:none}
+.agrid input{width:58px;height:33px;text-align:center;font:inherit;padding:5px 2px;border:1.5px solid var(--line);border-radius:6px;background:#fdfcf9}
+.agrid input.ok{border-color:var(--ok);background:var(--disp-soft)}
+.agrid input.bad{border-color:var(--bad);background:var(--force-soft)}
+.arow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rowlab{display:inline-grid;gap:4px;font-family:"Source Serif 4",serif;font-style:italic;font-size:15px;color:var(--disp)}
+.rowlab span{height:33px;display:flex;align-items:center;justify-content:flex-end}
+/* MC */
+.mc{margin:12px 0;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+.mc .q{font-weight:600;margin-bottom:8px}
+.mc button{display:block;width:100%;text-align:left;margin:6px 0;background:#fdfcf9;color:var(--ink);border:1.5px solid var(--line);font-weight:400}
+.mc button.ok{border-color:var(--ok);background:var(--disp-soft)}
+.mc button.bad{border-color:var(--bad);background:var(--force-soft)}
+.mc .why{display:none;font-size:15px;color:var(--muted);margin-top:4px}
+.mc.done .why{display:block}
+/* plan */
+.days{display:grid;gap:10px}
+.day{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.day .dt{font-weight:700;font-size:14px;color:var(--muted);text-align:center;line-height:1.2;min-width:52px}
+.day .dt b{display:block;font-size:20px;color:var(--ink)}
+.day .tt{font-weight:600}
+.day .ds{font-size:15px;color:var(--muted)}
+.day a.go{font-size:14px;text-decoration:none;border:1.5px solid var(--ink);border-radius:999px;padding:4px 11px;color:var(--ink);white-space:nowrap}
+.day.soon a.go{border-color:var(--line);color:var(--muted);pointer-events:none}
+.day.done{background:var(--disp-soft);border-color:#bfe0cc}
+.chk{width:22px;height:22px;accent-color:var(--ok)}
+.count{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.count div{background:var(--ink);color:#fff;border-radius:var(--r);padding:10px 16px}
+.count b{font-size:26px;display:block;line-height:1.1}
+.count span{font-size:14px;opacity:.8}
+/* Cards */
+.fc-wrap{perspective:1000px;margin:16px auto;max-width:520px}
+.fc{position:relative;height:260px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip{transform:rotateY(180deg)}
+.fc .side{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:center;text-align:center;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.fc .front{background:#fff;font-size:20px;font-weight:600}
+.fc .back{background:var(--ink);color:#fff;transform:rotateY(180deg);font-size:17px}
+.fc .back .m::before,.fc .back .m::after{border-color:#fff}
+.fc-nav{display:flex;justify-content:center;gap:10px;align-items:center}
+.small{font-size:14px;color:var(--muted)}
+.chat{background:var(--ink);color:#fff;border-radius:var(--r);padding:14px 18px;margin:22px 0}
+.chat b{color:#9fd3ff}
+.toc{columns:2;font-size:15px;padding-left:18px}
+@media (max-width:560px){.toc{columns:1}h1{font-size:26px}.eq{font-size:17px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="topin">
+  <div class="brand">AWGV in 7 Tagen<small>Allgemeines Weggrößenverfahren · Baustatik · Klausur 8.12.</small></div>
+  <nav class="tabs" id="tabs">
+    <a href="#start">Plan</a>
+    <a href="#merkzettel">Merkzettel</a>
+    <a href="#tag1">Tag 1</a>
+    <a href="#tag2">Tag 2</a>
+    <a href="#karten">Karteikarten</a>
+  </nav>
+</div></header>
+
+<main>
+
+<!-- ===================== START ===================== -->
+<section class="view" id="v-start">
+  <h1>Dein Matchplan</h1>
+  <p class="lead">Eine Woche zum Verstehen, danach knapp zwei Wochen zum Trainieren. Jeden Tag 2–3 Stunden. Hake die Tage ab, wenn du fertig bist.</p>
+  <div class="count" id="count"></div>
+
+  <div class="days" id="days"></div>
+
+  <h2>So läuft jeder Lerntag</h2>
+  <ol class="steps">
+    <li><b>Lesen &amp; skizzieren (≈ 45 min).</b> Die Lektion des Tages durcharbeiten. Jede Skizze selbst auf Papier nachzeichnen – in der Klausur musst du sie auch zeichnen.</li>
+    <li><b>Rechnen (≈ 60–90 min).</b> Die Übungen erst auf Papier lösen, dann hier eintippen und prüfen. Lösung erst aufklappen, wenn du wirklich festhängst.</li>
+    <li><b>Im Chat besprechen (≈ 20 min).</b> Schick mir deine Lösung oder ein Foto deiner Rechnung. Ich korrigiere und erkläre, wo es hakt.</li>
+    <li><b>Karteikarten (≈ 10 min).</b> Der Merkzettel muss am 8.12. ohne Nachschlagen sitzen – die Hilfsblätter enthalten ihn nicht.</li>
+  </ol>
+
+  <h2>Was in der Klausur drankommt</h2>
+  <p>Aus deinen 18 Altklausuren (2016–2026) ergeben sich drei Aufgabentypen:</p>
+  <table>
+    <tr><th>Typ</th><th>Was gefragt ist</th><th>Beispiele</th></tr>
+    <tr><td><b>A</b><br><span class="small">≈ die Hälfte</span></td><td>Kleines System mit 1 Freiheitsgrad komplett durchrechnen: <i>a → P → K → V → s → Verläufe</i></td><td>Rahmen 2016, Träger mit Feder 2017, Stützensenkung 2018, Fachwerk + Feder 2020</td></tr>
+    <tr><td><b>B</b></td><td>Eine Element&shy;steifigkeit herleiten (über Flexibilität mit Arbeitssatz, dann <i>k = f<sup>−1</sup></i>)</td><td>Dehnstab mit veränderlichem A, schubweicher Träger, geschwächter Biegestab 2026</td></tr>
+    <tr><td><b>C</b></td><td>Verständnis: Bedeutung von <i>K(i,j)</i>, Anzahl Freiheitsgrade, Kondensation, Gleichgewichtskontrolle</td><td>K(2,4) &amp; K(1,6) 2021, fehlerhafter M-Verlauf, 3D-Träger</td></tr>
+  </table>
+</section>
+
+<!-- ===================== MERKZETTEL ===================== -->
+<section class="view" id="v-merkzettel">
+  <h1>Merkzettel</h1>
+  <p class="lead">Das steht <b>nicht</b> in den Hilfsblättern – und du darfst nichts dazuschreiben. Diese fünf Punkte musst du am 8.12. auswendig können. Alles andere findest du in den Hilfsblättern.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">① Elementsteifigkeitsmatrix (VZK II)</h3>
+    <div class="eq">
+      <span class="mx"><span class="m f" data-m='[["N_r"],["M_l"],["M_r"]]'></span><span class="op">=</span>
+      <span class="m" data-m='[["EA/L","0","0"],["0","4EI/L","2EI/L"],["0","2EI/L","4EI/L"]]'></span><span class="op">·</span>
+      <span class="m d" data-m='[["Δu"],["τ_l"],["τ_r"]]'></span></span>
+    </div>
+    <p>Kurz: <span class="f">s</span> = k · <span class="d">v</span>. Ist EA = ∞, fällt die erste Zeile weg (Δu = 0). Eine Feder ist ein eigenes Element mit <i>k = c</i>.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">② Vorzeichenkonvention II</h3>
+    <p><span class="f">M<sub>l</sub>, M<sub>r</sub></span> und <span class="d">τ<sub>l</sub>, τ<sub>r</sub></span> sowie Knotenverdrehungen <span class="d">φ</span> sind alle <b>gegen den Uhrzeigersinn positiv</b> (x nach rechts, z nach unten). <span class="f">N<sub>r</sub></span> ist Zug positiv, <span class="d">Δu</span> ist Verlängerung positiv.</p>
+    <p>Umrechnen in die Momentenlinie (Zug auf der gestrichelten Faser positiv): <b>M(Stabanfang) = −M<sub>l</sub></b>, <b>M(Stabende) = +M<sub>r</sub></b>.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">③ Stabdrehwinkel und Tangentendrehwinkel</h3>
+    <div class="eq">ψ = (w<sub>r</sub> − w<sub>l</sub>) / L &nbsp;&nbsp;<span class="up small">(Sehnendrehung, im Uhrzeigersinn positiv)</span></div>
+    <div class="eq">τ<sub>l</sub> = φ<sub>l</sub> + ψ &nbsp;&nbsp;&nbsp; τ<sub>r</sub> = φ<sub>r</sub> + ψ</div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">④ Der 6-Schritte-Ablauf</h3>
+    <ol class="steps">
+      <li><b>Diskretisieren:</b> Knoten, Stäbe, Freiheitsgrade <i>V</i> festlegen</li>
+      <li><b>Kinematik:</b> <i>v = a · V</i> – Spalte j von a = Stabverformungen bei V<sub>j</sub> = 1</li>
+      <li><b>Lasten:</b> <i>P = P̄ − a<sup>T</sup> · s̊</i> &nbsp;(s̊ aus Hilfsblatt S. 19–20)</li>
+      <li><b>Steifigkeit:</b> <i>K = a<sup>T</sup> · k · a</i></li>
+      <li><b>Lösen:</b> <i>V = K<sup>−1</sup> · P</i></li>
+      <li><b>Schnittgrößen:</b> <i>s = k · a · V + s̊</i> → Verläufe zeichnen</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">⑤ Bedeutung eines Eintrags K(i,j)</h3>
+    <p><b>K(i,j) ist die Kraft (bzw. das Moment) am Freiheitsgrad i, wenn man den Freiheitsgrad j um 1 verschiebt bzw. verdreht und alle anderen Freiheitsgrade festhält.</b> Genauso bei k: Spalte j = Stabendkräfte bei Einheitsverformung j.</p>
+  </div>
+
+  <div class="box hb"><b class="t">Was du in den Hilfsblättern nachschlägst</b>
+    S. 19–20: Festhaltekräfte s̊ (VZK II) · S. 21–22: τ-Tabellen · S. 23–24: Volleinspannmomente · S. 7–10: Arbeitssatz &amp; Koppeltafeln (für Typ-B-Aufgaben)
+  </div>
+</section>
+
+<!-- ===================== TAG 1 ===================== -->
+<section class="view" id="v-tag1">
+  <p class="small">Tag 1 · Do 19.11. · ≈ 2–3 h</p>
+  <h1>Die Grundidee: Wege statt Kräfte</h1>
+  <p class="lead">Heute geht es darum, wie das Verfahren denkt. Am Ende kannst du die Elementsteifigkeitsmatrix aufschreiben, jede Zahl darin physikalisch erklären und den ersten Eintrag einer Gesamtsteifigkeitsmatrix ausrechnen.</p>
+
+  <ul class="toc">
+    <li><a href="#t1-1">1. Die Idee in einer Feder</a></li>
+    <li><a href="#t1-2">2. Die vier Zustandsgrößen</a></li>
+    <li><a href="#t1-3">3. Vorzeichenkonvention II</a></li>
+    <li><a href="#t1-4">4. Die Elementsteifigkeit k</a></li>
+    <li><a href="#t1-5">5. Woher kommen 4 und 2?</a></li>
+    <li><a href="#t1-6">6. Was bedeutet K(i,j)?</a></li>
+    <li><a href="#t1-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t1-1">1. Die Idee in einer Feder</h2>
+  <p>Du kennst die Feder: <b>F = c · u</b>. Wenn du weißt, wie steif sie ist (c), und welche Kraft angreift (F), rechnest du die Verschiebung aus: u = F / c.</p>
+  <p><b>Das AWGV macht genau das – nur für ein ganzes Tragwerk auf einmal.</b> Statt einer Zahl c gibt es eine Matrix <b>K</b>, statt einer Kraft einen Vektor <b>P</b>, statt einer Verschiebung einen Vektor <b>V</b>:</p>
+  <div class="eq" style="font-size:24px">P = K · V &nbsp;&nbsp;⟹&nbsp;&nbsp; V = K<sup>−1</sup> · P</div>
+  <p>Die ganze Arbeit besteht darin, <b>K</b> und <b>P</b> aufzustellen. Hast du die, drückt dein Taschenrechner einmal auf „Inverse“ – fertig.</p>
+
+  <div class="box merk"><b class="t">Der Unterschied zum Kraftgrößenverfahren</b>
+  Beim KGV machst du das System statisch bestimmt und suchst die überzähligen <span class="f">Kräfte</span> X<sub>i</sub>. Beim AWGV hältst du alle Knoten fest und suchst die unbekannten <span class="d">Verschiebungen und Verdrehungen</span> V<sub>i</sub> der Knoten. Danach folgen aus den Verformungen alle Schnittgrößen. Vorteil: Das Verfahren ist immer gleich – egal wie oft das System statisch unbestimmt ist. Genau so rechnen auch RSTAB, SOFiSTiK &amp; Co.</div>
+
+  <table>
+    <tr><th></th><th>Kraftgrößen&shy;verfahren</th><th>Weggrößen&shy;verfahren</th></tr>
+    <tr><td>Unbekannt</td><td class="f">Kräfte X<sub>i</sub></td><td class="d">Knotenwege V<sub>i</sub></td></tr>
+    <tr><td>Grundsystem</td><td>statisch bestimmt (Bindungen lösen)</td><td>kinematisch bestimmt (alle Knoten festhalten)</td></tr>
+    <tr><td>Bedingung</td><td>Verträglichkeit (δ = 0)</td><td>Gleichgewicht am Knoten</td></tr>
+    <tr><td>Anzahl Gleichungen</td><td>Grad der stat. Unbestimmtheit n</td><td>Anzahl Freiheitsgrade m</td></tr>
+  </table>
+
+  <h2 id="t1-2">2. Die vier Zustandsgrößen</h2>
+  <p>Im ganzen Verfahren gibt es nur vier Vektoren. Wie im Skript: <span class="f">rot = Kraftgrößen</span>, <span class="d">grün = Weggrößen</span>.</p>
+  <table>
+    <tr><th>Symbol</th><th>Name</th><th>Was ist das?</th></tr>
+    <tr><td class="d">V</td><td>äußere Weggrößen</td><td>Die gesuchten <b>Knoten</b>verschiebungen und -verdrehungen (Freiheitsgrade). Das ist die Unbekannte.</td></tr>
+    <tr><td class="f">P</td><td>äußere Kraftgrößen</td><td>Knotenlasten, jeweils <b>in Richtung</b> der Freiheitsgrade V.</td></tr>
+    <tr><td class="d">v</td><td>innere Weggrößen</td><td>Pro <b>Stab</b> drei Zahlen: Verlängerung Δu und Endtangentendrehwinkel τ<sub>l</sub>, τ<sub>r</sub>.</td></tr>
+    <tr><td class="f">s</td><td>innere Kraftgrößen</td><td>Pro <b>Stab</b> drei Zahlen: N<sub>r</sub>, M<sub>l</sub>, M<sub>r</sub> (unabhängige Stabendschnittgrößen).</td></tr>
+  </table>
+
+  <p>Die vier hängen über genau drei Beziehungen zusammen – das ist der rote Faden, den du dir merken musst:</p>
+  <svg viewBox="0 0 640 210" role="img" aria-label="Kreislauf der Zustandsgrößen">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d2433"/></marker></defs>
+    <g font-family="Source Serif 4, serif" font-size="30" font-style="italic" text-anchor="middle">
+      <rect x="20" y="40" width="80" height="60" rx="10" fill="#e6f4ec" stroke="#2e8b57" stroke-width="2"/><text x="60" y="81" fill="#2e8b57">V</text>
+      <rect x="200" y="40" width="80" height="60" rx="10" fill="#e6f4ec" stroke="#2e8b57" stroke-width="2"/><text x="240" y="81" fill="#2e8b57">v</text>
+      <rect x="380" y="40" width="80" height="60" rx="10" fill="#fbeae7" stroke="#c0392b" stroke-width="2"/><text x="420" y="81" fill="#c0392b">s</text>
+      <rect x="540" y="40" width="80" height="60" rx="10" fill="#fbeae7" stroke="#c0392b" stroke-width="2"/><text x="580" y="81" fill="#c0392b">P</text>
+    </g>
+    <g stroke="#1d2433" stroke-width="2" fill="none">
+      <line x1="102" y1="70" x2="196" y2="70" marker-end="url(#ar)"/>
+      <line x1="282" y1="70" x2="376" y2="70" marker-end="url(#ar)"/>
+      <line x1="462" y1="70" x2="536" y2="70" marker-end="url(#ar)"/>
+    </g>
+    <g font-family="Source Sans 3, sans-serif" font-size="19" text-anchor="middle" fill="#1d2433">
+      <text x="150" y="58" font-weight="700">v = a·V</text><text x="150" y="124">Kinematik</text><text x="150" y="146" fill="#5d6475" font-size="16">Knoten → Stäbe</text>
+      <text x="330" y="58" font-weight="700">s = k·v</text><text x="330" y="124">Werkstoff</text><text x="330" y="146" fill="#5d6475" font-size="16">Verformung → Kraft</text>
+      <text x="499" y="58" font-weight="700">P = aᵀ·s</text><text x="499" y="124">Gleichgewicht</text><text x="499" y="146" fill="#5d6475" font-size="16">Stäbe → Knoten</text>
+    </g>
+    <text x="320" y="190" text-anchor="middle" font-family="Source Serif 4, serif" font-size="26" font-style="italic" fill="#1d2433">P = aᵀ · k · a · V = K · V</text>
+  </svg>
+  <p class="cap">Setzt du die drei Beziehungen ineinander ein, entsteht K = aᵀ·k·a.</p>
+
+  <div class="box merk"><b class="t">Warum nur drei Größen pro Stab?</b>
+  Ein Stabende hat eigentlich N, V und M – also sechs Endkräfte. Davon sind aber nur drei unabhängig, die anderen folgen aus dem Gleichgewicht am Stab: N<sub>l</sub> = N<sub>r</sub>, und die Querkraft ergibt sich aus den Endmomenten. Ohne Stablast gilt <b>Q = (M<sub>l</sub> + M<sub>r</sub>) / L</b>. Genauso reichen bei den Wegen Δu, τ<sub>l</sub>, τ<sub>r</sub> – Starrkörperbewegungen erzeugen keine Kräfte.</div>
+
+  <h2 id="t1-3">3. Vorzeichenkonvention II (VZK II)</h2>
+  <p>Dein Skript und die Hilfsblätter (S. 19–24) rechnen in <b>VZK II</b>. Die Regel ist zum Glück einfach:</p>
+  <svg viewBox="0 0 420 175" role="img" aria-label="Positive Richtungen in VZK II">
+    <defs>
+      <marker id="arR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+      <marker id="arG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+      <marker id="arK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2433"/></marker>
+    </defs>
+    <line x1="80" y1="70" x2="320" y2="70" stroke="#1d2433" stroke-width="4"/>
+    <line x1="80" y1="76" x2="320" y2="76" stroke="#1d2433" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <circle cx="80" cy="70" r="4" fill="#1d2433"/><circle cx="320" cy="70" r="4" fill="#1d2433"/>
+    <!-- M_l ccw -->
+    <path d="M94,44 A30,30 0 1,0 94,96" fill="none" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arR)"/>
+    <text x="34" y="40" fill="#c0392b" font-family="Source Serif 4,serif" font-style="italic" font-size="20">M<tspan font-size="13" dy="4">l</tspan></text>
+    <!-- M_r ccw -->
+    <path d="M334,44 A30,30 0 1,0 334,96" fill="none" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arR)"/>
+    <text x="350" y="40" fill="#c0392b" font-family="Source Serif 4,serif" font-style="italic" font-size="20">M<tspan font-size="13" dy="4">r</tspan></text>
+    <!-- N_r -->
+    <line x1="326" y1="70" x2="392" y2="70" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arR)"/>
+    <text x="376" y="94" fill="#c0392b" font-family="Source Serif 4,serif" font-style="italic" font-size="20">N<tspan font-size="13" dy="4">r</tspan></text>
+    <!-- tau inner arcs -->
+    <path d="M88,58 A14,14 0 1,0 88,82" fill="none" stroke="#2e8b57" stroke-width="2" marker-end="url(#arG)"/>
+    <path d="M328,58 A14,14 0 1,0 328,82" fill="none" stroke="#2e8b57" stroke-width="2" marker-end="url(#arG)"/>
+    <text x="108" y="104" fill="#2e8b57" font-family="Source Serif 4,serif" font-style="italic" font-size="17">τ<tspan font-size="12" dy="4">l</tspan></text>
+    <text x="282" y="104" fill="#2e8b57" font-family="Source Serif 4,serif" font-style="italic" font-size="17">τ<tspan font-size="12" dy="4">r</tspan></text>
+    <text x="200" y="60" text-anchor="middle" font-family="Source Sans 3" font-size="14" fill="#5d6475">Stab p: von l nach r</text>
+    <!-- axes -->
+    <g transform="translate(170,125)">
+      <line x1="0" y1="0" x2="40" y2="0" stroke="#1d2433" stroke-width="1.5" marker-end="url(#arK)"/>
+      <line x1="0" y1="0" x2="0" y2="38" stroke="#1d2433" stroke-width="1.5" marker-end="url(#arK)"/>
+      <text x="46" y="5" font-size="14" font-family="Source Serif 4" font-style="italic">x</text>
+      <text x="-5" y="52" font-size="14" font-family="Source Serif 4" font-style="italic">z</text>
+    </g>
+  </svg>
+  <p class="cap">Alle Momente und alle Drehwinkel drehen positiv <b>gegen den Uhrzeigersinn</b> – an beiden Stabenden gleich.</p>
+
+  <div class="box merk"><b class="t">Die VZK-II-Regel in einem Satz</b>
+  Momente M<sub>l</sub>, M<sub>r</sub>, Tangentendrehwinkel τ<sub>l</sub>, τ<sub>r</sub> und Knotenverdrehungen φ sind <b>gegen den Uhrzeigersinn positiv</b>, egal an welchem Stabende. Normalkraft N<sub>r</sub> ist Zug positiv, Verlängerung Δu ist positiv.</div>
+
+  <p><b>Check mit dem Hilfsblatt S. 19, Fall 3 (Gleichlast):</b> Dort steht M̊<sub>l</sub> = +qL²/12 und M̊<sub>r</sub> = −qL²/12. Passt das? Unter Last will sich das linke Ende im Uhrzeigersinn verdrehen, also muss die Einspannung <i>gegen</i> den Uhrzeigersinn halten → positiv. Rechts genau umgekehrt → negativ. ✓</p>
+
+  <h3>Zurück in die Momentenlinie (VZK I)</h3>
+  <p>Für die Zeichnung brauchst du wieder die normale Momentenlinie (Zug auf der gestrichelten Faser positiv). Die Umrechnung:</p>
+  <div class="eq">M(Stabanfang l) = −M<sub>l</sub> &nbsp;&nbsp;&nbsp;&nbsp; M(Stabende r) = +M<sub>r</sub></div>
+  <p>Beispiel Gleichlast: M(l) = −qL²/12 und M(r) = −qL²/12, also Zug oben an beiden Einspannungen. Genau das kennst du. ✓</p>
+
+  <h2 id="t1-4">4. Die Elementsteifigkeit k – das Herzstück</h2>
+  <p>Für jeden Stab gilt <span class="f">s</span> = k · <span class="d">v</span>, ausgeschrieben:</p>
+  <div class="eq">
+    <span class="mx"><span class="m f" data-m='[["N_r"],["M_l"],["M_r"]]'></span><span class="op">=</span>
+    <span class="m" data-m='[["EA/L","0","0"],["0","4EI/L","2EI/L"],["0","2EI/L","4EI/L"]]'></span><span class="op">·</span>
+    <span class="m d" data-m='[["Δu"],["τ_l"],["τ_r"]]'></span></span>
+  </div>
+  <p><b>Wie liest man das?</b> Jede Spalte ist ein „Einheitsversuch“: Du zwingst dem Stab genau eine Verformung = 1 auf, die anderen bleiben 0, und schaust, welche Kräfte dafür an den Enden nötig sind.</p>
+
+  <svg viewBox="0 0 640 330" role="img" aria-label="Die drei Einheitszustände des Stabes">
+    <g font-family="Source Sans 3" font-size="20">
+      <!-- 1 Δu -->
+      <text x="10" y="30" font-weight="700">Spalte 1: Δu = 1</text>
+      <line x1="40" y1="70" x2="260" y2="70" stroke="#bbb" stroke-width="3"/>
+      <line x1="40" y1="70" x2="290" y2="70" stroke="#2e8b57" stroke-width="3" stroke-dasharray="0"/>
+      <path d="M40,74 l-8,14 h16 z" fill="none" stroke="#1d2433" stroke-width="1.5"/>
+      <path d="M290,74 l-8,14 h16 z" fill="none" stroke="#1d2433" stroke-width="1.5"/><circle cx="282" cy="92" r="3" fill="none" stroke="#1d2433"/><circle cx="298" cy="92" r="3" fill="none" stroke="#1d2433"/>
+      <text x="262" y="62" fill="#2e8b57">Δu=1</text>
+      <line x1="296" y1="70" x2="340" y2="70" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arR)"/>
+      <text x="370" y="60" fill="#c0392b" font-family="Source Serif 4" font-style="italic" font-size="24">N<tspan font-size="16" dy="5">r</tspan><tspan dy="-5"> = EA/L</tspan></text>
+      <text x="370" y="84" fill="#5d6475">M<tspan font-size="11" dy="3">l</tspan><tspan dy="-3"> = M</tspan><tspan font-size="11" dy="3">r</tspan><tspan dy="-3"> = 0</tspan></text>
+
+      <!-- 2 τ_l -->
+      <text x="10" y="135" font-weight="700">Spalte 2: τ<tspan font-size="11" dy="3">l</tspan><tspan dy="-3"> = 1</tspan></text>
+      <line x1="40" y1="175" x2="290" y2="175" stroke="#bbb" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M40,175 C100,120 210,175 290,175" fill="none" stroke="#2e8b57" stroke-width="3"/>
+      <path d="M58,152 A28,28 0 1,0 58,198" fill="none" stroke="#c0392b" stroke-width="2.3" marker-end="url(#arR)"/>
+      <path d="M308,152 A28,28 0 1,0 308,198" fill="none" stroke="#c0392b" stroke-width="2.3" marker-end="url(#arR)"/>
+      <text x="370" y="168" fill="#c0392b" font-family="Source Serif 4" font-style="italic" font-size="24">M<tspan font-size="16" dy="5">l</tspan><tspan dy="-5"> = 4EI/L</tspan></text>
+      <text x="370" y="194" fill="#c0392b" font-family="Source Serif 4" font-style="italic" font-size="24">M<tspan font-size="16" dy="5">r</tspan><tspan dy="-5"> = 2EI/L</tspan></text>
+
+      <!-- 3 τ_r -->
+      <text x="10" y="245" font-weight="700">Spalte 3: τ<tspan font-size="11" dy="3">r</tspan><tspan dy="-3"> = 1</tspan></text>
+      <line x1="40" y1="285" x2="290" y2="285" stroke="#bbb" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M40,285 C120,285 230,340 290,285" fill="none" stroke="#2e8b57" stroke-width="3"/>
+      <path d="M58,262 A28,28 0 1,0 58,308" fill="none" stroke="#c0392b" stroke-width="2.3" marker-end="url(#arR)"/>
+      <path d="M308,262 A28,28 0 1,0 308,308" fill="none" stroke="#c0392b" stroke-width="2.3" marker-end="url(#arR)"/>
+      <text x="370" y="278" fill="#c0392b" font-family="Source Serif 4" font-style="italic" font-size="24">M<tspan font-size="16" dy="5">l</tspan><tspan dy="-5"> = 2EI/L</tspan></text>
+      <text x="370" y="304" fill="#c0392b" font-family="Source Serif 4" font-style="italic" font-size="24">M<tspan font-size="16" dy="5">r</tspan><tspan dy="-5"> = 4EI/L</tspan></text>
+    </g>
+  </svg>
+  <p class="cap">Grün: verformter Stab (Sehne bleibt liegen). Rot: die Endmomente, die man dafür braucht – beide positiv, also gegen den Uhrzeigersinn.</p>
+
+  <div class="box merk"><b class="t">Die Zahlen 4 und 2 verstehen statt pauken</b>
+  Verdrehst du ein Ende um 1, brauchst du dort das Moment <b>4EI/L</b> („Drehsteifigkeit“). Die Hälfte davon, <b>2EI/L</b>, kommt am anderen, festgehaltenen Ende an („Fortleitungszahl ½“ – kennst du vom Drehwinkelverfahren/Cross). Und Δu = 1 braucht die Kraft <b>EA/L</b> – das ist einfach die Federsteifigkeit eines Zugstabs.</div>
+
+  <h2 id="t1-5">5. Woher kommen 4 und 2? (Ausblick auf Typ B)</h2>
+  <p>Den umgekehrten Weg kennst du schon aus dem Arbeitssatz: Belastest du einen Einfeldträger mit M<sub>l</sub> = 1, verdreht er sich links um L/(3EI) und rechts um L/(6EI) – entgegengesetzt, also in VZK II mit Minus. Das ist die <b>Flexibilitätsmatrix f</b> (Verformung infolge Kraft = 1):</p>
+  <div class="eq"><span class="mx"><span class="op">f =</span><span class="m" data-m='[["L/3EI","−L/6EI"],["−L/6EI","L/3EI"]]'></span>
+    <span class="op">⟹ k = f<sup>−1</sup> =</span><span class="m" data-m='[["4EI/L","2EI/L"],["2EI/L","4EI/L"]]'></span></span></div>
+  <p>Probier es mit der 2×2-Inversen nach: Determinante = (L/3EI)² − (L/6EI)² = L²/(12 EI²). Genau so laufen die Typ-B-Klausuraufgaben (Dehnstab mit veränderlichem Querschnitt, geschwächter Stab 2026): <b>f mit dem Arbeitssatz ausrechnen, dann invertieren.</b> Das machen wir an Tag 5.</p>
+
+  <h2 id="t1-6">6. Was bedeutet ein Eintrag K(i,j)?</h2>
+  <p>Diese Frage kommt in der Klausur direkt (2021: „Erläutern Sie die physikalische Bedeutung von K(2,4)“). Die Antwort ist immer derselbe Satz:</p>
+  <div class="box merk"><b class="t">Merksatz</b><b>K(i,j)</b> ist die Kraft bzw. das Moment, das am Freiheitsgrad <b>i</b> nötig ist, wenn man den Freiheitsgrad <b>j</b> um 1 verschiebt/verdreht und <b>alle anderen Freiheitsgrade festhält</b>.</div>
+
+  <p><b>Beispiel:</b> Zweifeldträger, links eingespannt, Mittelstütze und rechtes Lager gelenkig. L<sub>1</sub> = 4 m, L<sub>2</sub> = 6 m, EI konstant, EA = ∞. Unbekannt sind nur die beiden Knotenverdrehungen V<sub>1</sub> (Mitte) und V<sub>2</sub> (rechts).</p>
+  <svg viewBox="0 0 460 150" role="img" aria-label="Zweifeldträger mit zwei Drehfreiheitsgraden">
+    <g stroke="#1d2433" stroke-width="1.5" fill="none">
+      <line x1="40" y1="30" x2="40" y2="100"/>
+      <g stroke-width="1"><line x1="40" y1="36" x2="28" y2="48"/><line x1="40" y1="52" x2="28" y2="64"/><line x1="40" y1="68" x2="28" y2="80"/><line x1="40" y1="84" x2="28" y2="96"/></g>
+      <path d="M184,68 l-10,16 h20 z"/><line x1="170" y1="90" x2="198" y2="90"/>
+      <path d="M400,68 l-10,16 h20 z"/><line x1="386" y1="90" x2="414" y2="90"/>
+    </g>
+    <line x1="40" y1="65" x2="400" y2="65" stroke="#1d2433" stroke-width="4"/>
+    <path d="M196,44 A26,26 0 1,0 196,86" fill="none" stroke="#2e8b57" stroke-width="2.3" marker-end="url(#arG)"/>
+    <path d="M412,44 A26,26 0 1,0 412,86" fill="none" stroke="#2e8b57" stroke-width="2.3" marker-end="url(#arG)"/>
+    <g font-family="Source Serif 4" font-style="italic" font-size="18" fill="#2e8b57"><text x="196" y="30">V<tspan font-size="12" dy="4">1</tspan></text><text x="412" y="30">V<tspan font-size="12" dy="4">2</tspan></text></g>
+    <g font-family="Source Sans 3" font-size="14" fill="#1d2433" text-anchor="middle">
+      <text x="112" y="56">Stab ①</text><text x="292" y="56">Stab ②</text>
+      <text x="112" y="125">L₁ = 4 m</text><text x="292" y="125">L₂ = 6 m</text>
+    </g>
+  </svg>
+  <p><b>K(1,1):</b> Verdrehe den Mittelknoten um V<sub>1</sub> = 1, halte V<sub>2</sub> fest. Am Mittelknoten hängen zwei Stäbe: Stab ① wird an seinem rechten Ende verdreht (braucht 4EI/L<sub>1</sub>), Stab ② an seinem linken Ende (braucht 4EI/L<sub>2</sub>). Der Knoten muss beides liefern:</p>
+  <div class="eq">K(1,1) = 4EI/L<sub>1</sub> + 4EI/L<sub>2</sub> = EI + 0,667 EI = 1,667 EI</div>
+  <p><b>K(2,1):</b> Gleicher Versuch (V<sub>1</sub> = 1), aber jetzt fragst du nach dem Moment am <i>rechten</i> Knoten. Dort kommt am festgehaltenen Ende von Stab ② die Hälfte an:</p>
+  <div class="eq">K(2,1) = 2EI/L<sub>2</sub> = 0,333 EI &nbsp;&nbsp;&nbsp; K(2,2) = 4EI/L<sub>2</sub> = 0,667 EI</div>
+  <p>Ganz ohne Matrizenmultiplikation hast du damit die Gesamtsteifigkeitsmatrix: <span class="mx"><span class="op">K = EI ·</span><span class="m" data-m='[["1,667","0,333"],["0,333","0,667"]]'></span></span>. Morgen kommt dasselbe Ergebnis über K = aᵀ·k·a heraus – das ist die Kontrolle, dass du a richtig aufgestellt hast.</p>
+
+  <div class="box warn"><b class="t">Typischer Fehler</b>Bei K(i,i) die Beiträge <b>aller</b> Stäbe am Knoten addieren, nicht nur einen. Und: K ist immer symmetrisch, K(1,2) = K(2,1). Ist deine Matrix nicht symmetrisch, steckt ein Fehler drin.</div>
+
+  <!-- ÜBUNGEN TAG 1 -->
+  <h2 id="t1-ue">Übungen Tag 1</h2>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.1</span><span class="ti">Elementsteifigkeit mit Zahlen</span></div>
+    <p>Ein Stab hat L = 5 m, EI = 10 000 kNm², EA = 2 000 000 kN. Berechne die Einträge von k.</p>
+    <div class="ans"><label>EA/L [kN/m] =</label><input class="n" data-ans="400000"><span class="fb"></span></div>
+    <div class="ans"><label>4EI/L [kNm] =</label><input class="n" data-ans="8000"><span class="fb"></span></div>
+    <div class="ans"><label>2EI/L [kNm] =</label><input class="n" data-ans="4000"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.2</span><span class="ti">Von Verformungen zu Schnittgrößen</span></div>
+    <p>Stab mit L = 4 m, EI = 8 000 kNm², EA = 200 000 kN. Bekannt sind die Stabverformungen Δu = 0,0005 m, τ<sub>l</sub> = 0,001 rad, τ<sub>r</sub> = −0,002 rad. Berechne <span class="f">s</span> = k·<span class="d">v</span>.</p>
+    <div class="ans"><label>N<sub>r</sub> [kN] =</label><input class="n" data-ans="25"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>l</sub> [kNm] =</label><input class="n" data-ans="0" data-abs="0.05"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>r</sub> [kNm] =</label><input class="n" data-ans="-12"><span class="fb"></span></div>
+    <div class="ans"><label>M(Stabende) in der Momentenlinie [kNm] =</label><input class="n" data-ans="-12"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>EI/L = 8000/4 = 2000 kNm, EA/L = 50 000 kN/m.</p>
+      <p>N<sub>r</sub> = 50 000 · 0,0005 = <b>25 kN</b> (Zug)</p>
+      <p>M<sub>l</sub> = 2000 · (4·0,001 + 2·(−0,002)) = 2000 · 0 = <b>0</b></p>
+      <p>M<sub>r</sub> = 2000 · (2·0,001 + 4·(−0,002)) = 2000 · (−0,006) = <b>−12 kNm</b></p>
+      <p>Momentenlinie: M(l) = −M<sub>l</sub> = 0, M(r) = +M<sub>r</sub> = −12 kNm → Zug oben am rechten Ende.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.3</span><span class="ti">K-Einträge physikalisch</span></div>
+    <p>Wie im Beispiel oben: Zweifeldträger, links eingespannt, aber jetzt mit EI = 12 000 kNm², L<sub>1</sub> = 4 m, L<sub>2</sub> = 6 m. V<sub>1</sub> = Verdrehung Mittelknoten, V<sub>2</sub> = Verdrehung rechtes Lager.</p>
+    <div class="ans"><label>K(1,1) [kNm] =</label><input class="n" data-ans="20000"><span class="fb"></span></div>
+    <div class="ans"><label>K(1,2) [kNm] =</label><input class="n" data-ans="4000"><span class="fb"></span></div>
+    <div class="ans"><label>K(2,2) [kNm] =</label><input class="n" data-ans="8000"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>K(1,1) = 4·12000/4 + 4·12000/6 = 12 000 + 8 000 = <b>20 000 kNm</b></p>
+      <p>K(1,2) = K(2,1) = 2·12000/6 = <b>4 000 kNm</b> (nur Stab ② verbindet die beiden Knoten)</p>
+      <p>K(2,2) = 4·12000/6 = <b>8 000 kNm</b> (nur Stab ② hängt am rechten Knoten)</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.4</span><span class="ti">Bonus: Lösen</span></div>
+    <p>Am System aus Ü 1.3 greift am Mittelknoten ein Knotenmoment P<sub>1</sub> = 60 kNm (gegen den Uhrzeigersinn) an, P<sub>2</sub> = 0. Löse <b>K·V = P</b> mit deinem Taschenrechner.</p>
+    <div class="ans"><label>V<sub>1</sub> [10⁻³ rad] =</label><input class="n" data-ans="3.333"><span class="fb"></span></div>
+    <div class="ans"><label>V<sub>2</sub> [10⁻³ rad] =</label><input class="n" data-ans="-1.667"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>det K = 20000·8000 − 4000² = 1,44·10⁸</p>
+      <p>V<sub>1</sub> = 8000·60 / 1,44·10⁸ = 3,333·10⁻³ rad, V<sub>2</sub> = −4000·60 / 1,44·10⁸ = −1,667·10⁻³ rad</p>
+      <p>Anschaulich: Der Mittelknoten dreht sich mit dem Moment, das rechte Ende dreht sich ein bisschen zurück. Morgen rechnen wir daraus die Momente.</p>
+    </div></details>
+  </div>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc1"></div>
+
+  <div class="chat"><b>Heute im Chat:</b> Erkläre mir in deinen eigenen Worten (2–3 Sätze), was K(1,2) im Zweifeldträger physikalisch bedeutet – so wie du es in der Klausur hinschreiben würdest. Ich sage dir, ob das die volle Punktzahl bekommt.</div>
+</section>
+
+<!-- ===================== TAG 2 ===================== -->
+<section class="view" id="v-tag2">
+  <p class="small">Tag 2 · Fr 20.11. · ≈ 2–3 h</p>
+  <h1>Diskretisieren und die Matrix a</h1>
+  <p class="lead">Heute kommt die eigentliche Hürde des Verfahrens: die kinematische Transformationsmatrix a. Wenn du die sicher aufstellen kannst, ist der Rest Taschenrechner-Arbeit.</p>
+
+  <ul class="toc">
+    <li><a href="#t2-1">1. Freiheitsgrade finden</a></li>
+    <li><a href="#t2-2">2. Stabdrehwinkel ψ und τ</a></li>
+    <li><a href="#t2-3">3. Das Rezept für a</a></li>
+    <li><a href="#t2-4">4. Beispiel: Zweifeldträger</a></li>
+    <li><a href="#t2-5">5. Beispiel: Rahmen mit starrem Riegel</a></li>
+    <li><a href="#t2-6">6. Beispiel: Schräge Stäbe (Δu)</a></li>
+    <li><a href="#t2-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t2-1">1. Freiheitsgrade finden (Diskretisieren)</h2>
+  <p>Ein Freiheitsgrad ist eine Knotenbewegung, die das Tragwerk machen <i>kann</i> und die wir nicht kennen. In der Ebene hat jeder Knoten erst einmal drei: <b>u</b> (horizontal), <b>w</b> (vertikal) und <b>φ</b> (Verdrehung).</p>
+  <ol class="steps">
+    <li><b>Knoten setzen</b> an Lagern, Stabecken, Stabenden und Steifigkeitssprüngen. Stäbe nummerieren und jedem eine Richtung l → r geben.</li>
+    <li><b>Pro freiem Knoten u, w, φ</b> aufschreiben.</li>
+    <li><b>Streichen, was ein Lager festhält.</b> Einspannung hält alle drei, festes Gelenklager u und w, Rollenlager nur eine Richtung.</li>
+    <li><b>Streichen, was EA = ∞ verbietet.</b> Ein dehnstarrer Stab kann nicht länger werden → die Verschiebung in Stabrichtung ist an beiden Enden gleich. Liegt ein Ende fest, ist sie null.</li>
+    <li><b>Streichen, was EI = ∞ verbietet.</b> Ein biegestarrer Stab (z. B. starrer Riegel) verdreht sich nur als Ganzes. Können seine Enden nicht vertikal ausweichen, kann er sich gar nicht drehen.</li>
+  </ol>
+  <div class="box merk"><b class="t">Klausur-Hinweis</b>„Diskretisieren Sie das System mit einem einzigen Freiheitsgrad“ heißt: Die Aufgabe ist so gebaut, dass nach Schritt 3–5 genau ein Freiheitsgrad übrig bleibt. Bleiben bei dir mehr übrig, hast du eine Bedingung (EA = ∞, EI = ∞, Gelenk) übersehen.</div>
+
+  <h2 id="t2-2">2. Stabdrehwinkel ψ und Tangentendrehwinkel τ</h2>
+  <p>Die Matrix a übersetzt Knotenbewegungen (V) in Stabverformungen (Δu, τ<sub>l</sub>, τ<sub>r</sub>). Dafür brauchst du zwei Bausteine.</p>
+  <h3>Δu – die Verlängerung</h3>
+  <p>Δu = Verschiebung des Endes r <i>in Stabrichtung</i> minus Verschiebung des Endes l in Stabrichtung. Bei einem horizontalen Stab einfach u<sub>r</sub> − u<sub>l</sub>.</p>
+  <h3>ψ – um wie viel kippt die Sehne?</h3>
+  <svg viewBox="0 0 440 160" role="img" aria-label="Stabdrehwinkel psi">
+    <line x1="50" y1="40" x2="370" y2="40" stroke="#bbb" stroke-width="3"/>
+    <line x1="50" y1="55" x2="370" y2="115" stroke="#2e8b57" stroke-width="2" stroke-dasharray="6 5"/>
+    <path d="M50,55 C120,40 280,120 370,115" fill="none" stroke="#2e8b57" stroke-width="3"/>
+    <g stroke="#1d2433" stroke-width="1.3"><line x1="50" y1="40" x2="50" y2="55" marker-end="url(#arK)"/><line x1="370" y1="40" x2="370" y2="115" marker-end="url(#arK)"/></g>
+    <path d="M150,55 A100,100 0 0,1 148,74" fill="none" stroke="#1d2433" stroke-width="1.5" marker-end="url(#arK)"/>
+    <line x1="50" y1="55" x2="170" y2="55" stroke="#1d2433" stroke-width="1" stroke-dasharray="2 3"/>
+    <g font-family="Source Serif 4" font-style="italic" font-size="17" fill="#1d2433">
+      <text x="20" y="54">w<tspan font-size="12" dy="4">l</tspan></text><text x="380" y="82">w<tspan font-size="12" dy="4">r</tspan></text><text x="160" y="72">ψ</text>
+      <text x="44" y="30" font-size="14">l</text><text x="366" y="30" font-size="14">r</text>
+    </g>
+    <text x="210" y="150" text-anchor="middle" font-family="Source Sans 3" font-size="14" fill="#5d6475">gestrichelt: Sehne · durchgezogen: Biegelinie</text>
+  </svg>
+  <div class="eq">ψ = (w<sub>r</sub> − w<sub>l</sub>) / L &nbsp;&nbsp;<span class="up small">positiv, wenn die Sehne im Uhrzeigersinn kippt</span></div>
+  <p>w ist dabei die Verschiebung <b>quer</b> zum Stab. Bei Stützen ist das die horizontale Verschiebung. Statt Formel kannst du ψ auch einfach in der Skizze ablesen: Querversatz der Enden durch Länge, Vorzeichen nach Kipprichtung.</p>
+
+  <h3>τ – Tangente gegenüber Sehne</h3>
+  <p>τ ist der Winkel zwischen Biegelinie und Sehne am Stabende. Er setzt sich zusammen aus der Knotenverdrehung φ und der Sehnendrehung ψ:</p>
+  <div class="eq" style="font-size:22px">τ<sub>l</sub> = φ<sub>l</sub> + ψ &nbsp;&nbsp;&nbsp;&nbsp; τ<sub>r</sub> = φ<sub>r</sub> + ψ</div>
+  <div class="box merk"><b class="t">Warum „+ψ“?</b>τ und φ sind gegen den Uhrzeigersinn positiv, ψ im Uhrzeigersinn. Kippt die Sehne im Uhrzeigersinn, während der Knoten sich nicht dreht, steht die Tangente gegenüber der Sehne gegen den Uhrzeigersinn verdreht – also positives τ. Genau das sagt die Formel.</div>
+  <div class="box warn"><b class="t">Die zwei Klassiker, die du sofort erkennen musst</b>
+  <b>Knoten dreht sich um 1, sonst nichts:</b> An jedem Stabende an diesem Knoten ist τ = 1, alles andere null.<br>
+  <b>Stab wird quer verschoben um 1 (ohne Knotendrehung):</b> ψ = 1/L, also τ<sub>l</sub> = τ<sub>r</sub> = 1/L an diesem Stab.</div>
+
+  <h2 id="t2-3">3. Das Rezept für die Matrix a</h2>
+  <p>Die Matrix a hat <b>eine Zeile pro Stabverformung</b> (Δu<sup>1</sup>, τ<sub>l</sub><sup>1</sup>, τ<sub>r</sub><sup>1</sup>, Δu<sup>2</sup>, …) und <b>eine Spalte pro Freiheitsgrad</b>. Bei EA = ∞ lässt du die Δu-Zeilen weg.</p>
+  <ol class="steps">
+    <li>Nimm Freiheitsgrad V<sub>j</sub> = 1, alle anderen = 0.</li>
+    <li><b>Skizziere</b> die verformte Figur (nur die Knoten bewegen sich, die Stäbe dazwischen sind Sehnen).</li>
+    <li>Lies für jeden Stab ab: Δu, ψ, φ<sub>l</sub>, φ<sub>r</sub>.</li>
+    <li>Rechne τ<sub>l</sub> = φ<sub>l</sub> + ψ, τ<sub>r</sub> = φ<sub>r</sub> + ψ.</li>
+    <li>Trage alles in <b>Spalte j</b> ein. Weiter mit dem nächsten Freiheitsgrad.</li>
+  </ol>
+  <div class="box merk"><b class="t">Merksatz aus deinem Skript</b>Die j-te Spalte von a enthält die Stabverformungen Δu, τ<sub>l</sub>, τ<sub>r</sub> aller Stäbe infolge des Einheitsverschiebungszustands V<sub>j</sub> = 1.</div>
+
+  <h2 id="t2-4">4. Beispiel: Zweifeldträger von gestern</h2>
+  <p>Zwei Stäbe, EA = ∞ → Zeilen τ<sub>l</sub><sup>1</sup>, τ<sub>r</sub><sup>1</sup>, τ<sub>l</sub><sup>2</sup>, τ<sub>r</sub><sup>2</sup>. Freiheitsgrade: V<sub>1</sub> = Drehung Mitte, V<sub>2</sub> = Drehung rechts. Kein Knoten verschiebt sich, also ist ψ überall 0.</p>
+  <p><b>V<sub>1</sub> = 1:</b> Am Mittelknoten hängen das rechte Ende von Stab ① und das linke Ende von Stab ② → τ<sub>r</sub><sup>1</sup> = 1, τ<sub>l</sub><sup>2</sup> = 1.<br>
+  <b>V<sub>2</sub> = 1:</b> Am rechten Knoten hängt nur das rechte Ende von Stab ② → τ<sub>r</sub><sup>2</sup> = 1.</p>
+  <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l¹"],["τ_r¹"],["τ_l²"],["τ_r²"]]'></span><span class="op">=</span><span class="m" data-m='[["0","0"],["1","0"],["1","0"],["0","1"]]'></span><span class="op">·</span><span class="m d" data-m='[["V_1"],["V_2"]]'></span></span></div>
+  <p><b>Kontrolle mit K = aᵀ·k·a.</b> Die Elementsteifigkeiten ohne Δu-Zeile: k<sup>1</sup> = EI/4 · [4 2; 2 4], k<sup>2</sup> = EI/6 · [4 2; 2 4]. Ausmultipliziert:</p>
+  <div class="eq"><span class="mx"><span class="op">K = EI ·</span><span class="m" data-m='[["4/4 + 4/6","2/6"],["2/6","4/6"]]'></span><span class="op">= EI ·</span><span class="m" data-m='[["1,667","0,333"],["0,333","0,667"]]'></span></span></div>
+  <p>Genau das, was du gestern „physikalisch“ ausgerechnet hast. ✓ So prüfst du in der Klausur, ob dein a stimmt.</p>
+  <div class="box hb"><b class="t">Taschenrechner-Tipp</b>k für alle Stäbe als eine große Blockdiagonalmatrix eingeben (hier 4×4), a als 4×2. Dann <span class="mono">trn(a)·k·a</span>. Bei mehr als zwei Stäben ist das schneller und sicherer als Stab für Stab.</div>
+
+  <h2 id="t2-5">5. Beispiel: Rahmen mit starrem Riegel</h2>
+  <p>Das ist eine leichte Variante der Klausur 2016: Zwei Stiele, links h = 4 m, rechts h = 2 m, <b>beide unten eingespannt</b>, Riegel EI = ∞, alle EA = ∞.</p>
+  <svg viewBox="0 0 400 240" role="img" aria-label="Rahmen mit starrem Riegel, Verschiebungsfreiheitsgrad u">
+    <g stroke="#bbb" stroke-width="3"><line x1="60" y1="200" x2="60" y2="40"/><line x1="300" y1="120" x2="300" y2="40"/></g>
+    <line x1="60" y1="40" x2="300" y2="40" stroke="#bbb" stroke-width="7"/>
+    <g fill="none" stroke="#2e8b57" stroke-width="3"><path d="M60,200 C60,120 90,120 90,40"/><path d="M300,120 C300,80 330,80 330,40"/></g>
+    <line x1="90" y1="40" x2="330" y2="40" stroke="#2e8b57" stroke-width="7" opacity=".85"/>
+    <g stroke="#1d2433" stroke-width="1.5"><line x1="40" y1="200" x2="80" y2="200"/><line x1="280" y1="120" x2="320" y2="120"/>
+      <g stroke-width="1"><line x1="44" y1="200" x2="36" y2="210"/><line x1="56" y1="200" x2="48" y2="210"/><line x1="68" y1="200" x2="60" y2="210"/><line x1="80" y1="200" x2="72" y2="210"/>
+      <line x1="284" y1="120" x2="276" y2="130"/><line x1="296" y1="120" x2="288" y2="130"/><line x1="308" y1="120" x2="300" y2="130"/><line x1="320" y1="120" x2="312" y2="130"/></g></g>
+    <line x1="160" y1="22" x2="210" y2="22" stroke="#2e8b57" stroke-width="2.5" marker-end="url(#arG)"/>
+    <g font-family="Source Serif 4" font-style="italic" font-size="18" fill="#2e8b57"><text x="214" y="27">V₁ = u = 1</text></g>
+    <g font-family="Source Sans 3" font-size="14" fill="#1d2433"><text x="18" y="125">①</text><text x="345" y="85">②</text><text x="170" y="60">EI = ∞</text>
+      <text x="100" y="135">h₁ = 4</text><text x="340" y="105">h₂ = 2</text></g>
+  </svg>
+  <p class="cap">Grün: Einheitszustand V<sub>1</sub> = 1. Der Riegel verschiebt sich als Ganzes, ohne sich zu drehen.</p>
+  <p><b>Diskretisieren:</b> Die Stielköpfe können wegen EA = ∞ nicht nach unten. Der Riegel ist starr und seine Enden gehen nicht nach unten → er kann sich nicht drehen, also φ = 0 an beiden Köpfen. Übrig bleibt nur die horizontale Verschiebung u. <b>Ein Freiheitsgrad.</b></p>
+  <p><b>Matrix a:</b> Stiele von unten (l) nach oben (r) gerichtet. Bei u = 1 kippt jede Stielsehne im Uhrzeigersinn um ψ = 1/h, Knotendrehungen sind 0:</p>
+  <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l¹"],["τ_r¹"],["τ_l²"],["τ_r²"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/4"],["1/2"],["1/2"]]'></span><span class="op">· u</span></span></div>
+  <p>Der Riegel hat EI = ∞ und taucht deshalb nicht in a auf – er ist kein verformbares Element.</p>
+  <p><b>K = aᵀ·k·a</b> für Stiel ①: (EI/4) · [¼ ¼] · [4 2; 2 4] · [¼; ¼] = (EI/4) · 12/16 = <b>0,1875 EI</b>. Für Stiel ②: (EI/2) · [½ ½] · [4 2; 2 4] · [½; ½] = <b>1,5 EI</b>.</p>
+  <div class="eq">K = 0,1875 EI + 1,5 EI = 1,6875 EI</div>
+  <div class="box merk"><b class="t">Wiedererkennen!</b>0,1875 = 12/4³ und 1,5 = 12/2³. Das ist die bekannte Quersteifigkeit eines beidseitig eingespannten Stiels, <b>12EI/h³</b>. Der kurze Stiel ist 8-mal steifer und zieht fast die ganze Horizontallast. In der Originalklausur 2016 ist der linke Stiel unten <i>gelenkig</i> – dann kommt dort 3EI/h³ heraus, und K = 1,546875 EI steht genau so in der Musterlösung. Das rechnen wir an Tag 4 komplett.</div>
+
+  <h2 id="t2-6">6. Beispiel: Schräge Stäbe (Δu)</h2>
+  <p>Bei Fachwerken oder Pendelstützen ist nur Δu interessant. Der Trick: <b>Verschiebung des Knotens auf die Stabachse projizieren</b>.</p>
+  <svg viewBox="0 0 360 230" role="img" aria-label="Zweistabsystem mit Knotenverschiebungen">
+    <g stroke="#1d2433" stroke-width="1.5" fill="none">
+      <line x1="100" y1="40" x2="220" y2="40"/><line x1="200" y1="40" x2="200" y2="40"/>
+      <g stroke-width="1"><line x1="110" y1="40" x2="120" y2="30"/><line x1="125" y1="40" x2="135" y2="30"/><line x1="200" y1="40" x2="210" y2="30"/><line x1="215" y1="40" x2="225" y2="30"/></g>
+    </g>
+    <line x1="130" y1="40" x2="220" y2="160" stroke="#1d2433" stroke-width="3.5"/>
+    <line x1="220" y1="40" x2="220" y2="160" stroke="#1d2433" stroke-width="3.5"/>
+    <circle cx="130" cy="40" r="4" fill="#fff" stroke="#1d2433" stroke-width="2"/><circle cx="220" cy="40" r="4" fill="#fff" stroke="#1d2433" stroke-width="2"/><circle cx="220" cy="160" r="5" fill="#fff" stroke="#1d2433" stroke-width="2"/>
+    <line x1="228" y1="160" x2="285" y2="160" stroke="#2e8b57" stroke-width="2.5" marker-end="url(#arG)"/>
+    <line x1="220" y1="168" x2="220" y2="215" stroke="#2e8b57" stroke-width="2.5" marker-end="url(#arG)"/>
+    <g font-family="Source Serif 4" font-style="italic" font-size="17" fill="#2e8b57"><text x="290" y="165">V₁ (u)</text><text x="228" y="214">V₂ (w)</text></g>
+    <g font-family="Source Sans 3" font-size="14" fill="#1d2433"><text x="112" y="112">① L = 5</text><text x="228" y="105">② L = 4</text><text x="100" y="28">A</text><text x="232" y="28">B</text><text x="200" y="182">K</text>
+    <text x="150" y="58" fill="#5d6475">3 m</text></g>
+  </svg>
+  <p>Stab ① läuft von A nach K: 3 m nach rechts, 4 m nach unten, L = 5 m. Richtungsvektor e = (0,6; 0,8). Stab ② läuft von B senkrecht nach unten zu K: e = (0; 1). Da A und B fest sind:</p>
+  <div class="eq">Δu<sup>1</sup> = 0,6·V<sub>1</sub> + 0,8·V<sub>2</sub> &nbsp;&nbsp;&nbsp; Δu<sup>2</sup> = 0·V<sub>1</sub> + 1·V<sub>2</sub></div>
+  <div class="eq"><span class="mx"><span class="op">a =</span><span class="m" data-m='[["0,6","0,8"],["0","1"]]'></span></span></div>
+  <div class="box warn"><b class="t">Vorzeichen-Check</b>Zieht der Knoten den Stab länger, muss Δu positiv werden. K geht hier nach rechts unten weg von A → Stab ① wird länger ✓. Diese Frage („wird der Stab länger oder kürzer?“) ist dein schnellster Plausibilitätstest.</div>
+
+  <!-- ÜBUNGEN TAG 2 -->
+  <h2 id="t2-ue">Übungen Tag 2</h2>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.1</span><span class="ti">Freiheitsgrade zählen</span></div>
+    <p>Wie viele unbekannte Freiheitsgrade hat das System? (ebene Systeme)</p>
+    <div class="ans"><label>a) Kragarm, links eingespannt, EA und EI endlich</label><input class="n" data-ans="3" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>b) derselbe Kragarm, aber EA = ∞</label><input class="n" data-ans="2" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>c) Rahmen, beide Stielfüße eingespannt, alle EA = ∞, alle EI endlich</label><input class="n" data-ans="3" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>d) wie c), aber Riegel EI = ∞</label><input class="n" data-ans="1" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>e) Zweifeldträger: links eingespannt, Mitte und rechts Rollenlager, EA = ∞</label><input class="n" data-ans="2" style="width:70px"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Begründungen</summary><div>
+      <p>a) Freies Ende: u, w, φ → 3.<br>b) u am freien Ende ist durch EA = ∞ gesperrt → w, φ → 2.<br>c) Zwei Rahmenecken mit je u, w, φ = 6. w an beiden Ecken gesperrt (Stiele dehnstarr), u an beiden Ecken gleich (Riegel dehnstarr) → u, φ<sub>links</sub>, φ<sub>rechts</sub> = 3.<br>d) Starrer Riegel, dessen Enden nicht absacken können, dreht sich nicht → nur u = 1.<br>e) Vertikale Wege durch Lager gesperrt, horizontale durch EA = ∞ und Einspannung → nur die zwei Verdrehungen.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.2</span><span class="ti">Matrix a für einen Rahmen mit 3 Freiheitsgraden</span></div>
+    <p>System c) aus Ü 2.1: Stiele h = 4 m (von unten l nach oben r), Riegel L = 6 m (von links l nach rechts r), alle EA = ∞. V<sub>1</sub> = Horizontalverschiebung des Riegels (nach rechts), V<sub>2</sub> = Drehung linke Ecke, V<sub>3</sub> = Drehung rechte Ecke (beide gegen den Uhrzeigersinn).</p>
+    <svg viewBox="0 0 320 210" role="img" aria-label="Rahmen mit drei Freiheitsgraden">
+      <g stroke="#1d2433" stroke-width="3.5"><line x1="70" y1="170" x2="70" y2="50"/><line x1="250" y1="170" x2="250" y2="50"/><line x1="70" y1="50" x2="250" y2="50"/></g>
+      <g stroke="#1d2433" stroke-width="1.5"><line x1="50" y1="170" x2="90" y2="170"/><line x1="230" y1="170" x2="270" y2="170"/>
+      <g stroke-width="1"><line x1="54" y1="170" x2="46" y2="180"/><line x1="66" y1="170" x2="58" y2="180"/><line x1="78" y1="170" x2="70" y2="180"/><line x1="90" y1="170" x2="82" y2="180"/><line x1="234" y1="170" x2="226" y2="180"/><line x1="246" y1="170" x2="238" y2="180"/><line x1="258" y1="170" x2="250" y2="180"/><line x1="270" y1="170" x2="262" y2="180"/></g></g>
+      <line x1="135" y1="30" x2="185" y2="30" stroke="#2e8b57" stroke-width="2.5" marker-end="url(#arG)"/>
+      <path d="M82,28 A24,24 0 1,0 82,72" fill="none" stroke="#2e8b57" stroke-width="2.2" marker-end="url(#arG)"/>
+      <path d="M262,28 A24,24 0 1,0 262,72" fill="none" stroke="#2e8b57" stroke-width="2.2" marker-end="url(#arG)"/>
+      <g font-family="Source Serif 4" font-style="italic" font-size="16" fill="#2e8b57"><text x="190" y="35">V₁</text><text x="30" y="30">V₂</text><text x="272" y="30">V₃</text></g>
+      <g font-family="Source Sans 3" font-size="14"><text x="80" y="120">①</text><text x="153" y="70">②</text><text x="228" y="120">③</text><text x="140" y="200" fill="#5d6475">6 m · Stiele 4 m</text></g>
+    </svg>
+    <p>Fülle a aus (Brüche wie <span class="mono">1/4</span> sind erlaubt):</p>
+    <div class="arow">
+      <div class="rowlab"><span>τ<sub>l</sub>¹</span><span>τ<sub>r</sub>¹</span><span>τ<sub>l</sub>²</span><span>τ<sub>r</sub>²</span><span>τ<sub>l</sub>³</span><span>τ<sub>r</sub>³</span></div>
+      <span class="op">=</span>
+      <div class="agrid" style="grid-template-columns:repeat(3,58px)" data-ans='[["1/4","0","0"],["1/4","1","0"],["0","1","0"],["0","0","1"],["1/4","0","0"],["1/4","0","1"]]'></div>
+      <span class="op">·</span>
+      <div class="rowlab" style="color:var(--disp)"><span>V₁</span><span>V₂</span><span>V₃</span></div>
+    </div>
+    <button class="chk-btn-grid">Prüfen</button> <span class="fb"></span>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>V<sub>1</sub> = 1:</b> Beide Stiele kippen im Uhrzeigersinn, ψ = 1/4, keine Knotendrehung → τ<sub>l</sub> = τ<sub>r</sub> = 1/4 an ① und ③. Der Riegel verschiebt sich nur parallel → ψ = 0, τ = 0.</p>
+      <p><b>V<sub>2</sub> = 1:</b> Linke Ecke dreht sich. Dort hängen τ<sub>r</sub>¹ (Kopf von Stiel ①) und τ<sub>l</sub>² (Anfang Riegel) → beide 1.</p>
+      <p><b>V<sub>3</sub> = 1:</b> Rechte Ecke: τ<sub>r</sub>² (Ende Riegel) und τ<sub>r</sub>³ (Kopf von Stiel ③) → beide 1.</p>
+      <div class="eq"><span class="mx"><span class="op">a =</span><span class="m" data-m='[["1/4","0","0"],["1/4","1","0"],["0","1","0"],["0","0","1"],["1/4","0","0"],["1/4","0","1"]]'></span></span></div>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.3</span><span class="ti">K für das Zweistabsystem</span></div>
+    <p>Für das Zweistabsystem aus Abschnitt 6 gilt EA = 10 000 kN für beide Stäbe. Berechne K = aᵀ·k·a mit k = diag(EA/L<sub>1</sub>, EA/L<sub>2</sub>).</p>
+    <div class="ans"><label>K(1,1) [kN/m] =</label><input class="n" data-ans="720"><span class="fb"></span></div>
+    <div class="ans"><label>K(1,2) [kN/m] =</label><input class="n" data-ans="960"><span class="fb"></span></div>
+    <div class="ans"><label>K(2,2) [kN/m] =</label><input class="n" data-ans="3780"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>k = diag(10000/5; 10000/4) = diag(2000; 2500)</p>
+      <p>K(1,1) = 0,6² · 2000 = 720 &nbsp;·&nbsp; K(1,2) = 0,6·0,8 · 2000 = 960 &nbsp;·&nbsp; K(2,2) = 0,8² · 2000 + 1² · 2500 = 1280 + 2500 = 3780</p>
+      <p>Physikalisch: K(1,1) = Horizontalkraft, um K um 1 m nach rechts zu schieben, wenn w festgehalten wird. Nur Stab ① wehrt sich dagegen, Stab ② dreht nur mit (Pendelstab, quer weich).</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.4</span><span class="ti">Bonus: Ü 1.4 zu Ende rechnen</span></div>
+    <p>Aus Ü 1.4 kennst du V<sub>1</sub> = 3,333·10⁻³ und V<sub>2</sub> = −1,667·10⁻³ (EI = 12 000). Berechne mit v = a·V und s = k·v die Endmomente von Stab ② (L = 6 m).</p>
+    <div class="ans"><label>M<sub>l</sub>² [kNm] =</label><input class="n" data-ans="20"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>r</sub>² [kNm] =</label><input class="n" data-ans="0" data-abs="0.05"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>τ<sub>l</sub>² = V<sub>1</sub> = 3,333·10⁻³, τ<sub>r</sub>² = V<sub>2</sub> = −1,667·10⁻³, EI/L = 2000.</p>
+      <p>M<sub>l</sub>² = 2000·(4·3,333 − 2·1,667)·10⁻³ = 2000·0,01 = <b>20 kNm</b>, M<sub>r</sub>² = 2000·(2·3,333 − 4·1,667)·10⁻³ = <b>0</b> ✓ (gelenkiges Ende → Moment null, gute Kontrolle!)</p>
+      <p>Stab ①: τ<sub>r</sub>¹ = 3,333·10⁻³ → M<sub>r</sub>¹ = 3000·4·3,333·10⁻³ = 40 kNm. Knotengleichgewicht: 40 + 20 = 60 = P<sub>1</sub> ✓</p>
+    </div></details>
+  </div>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc2"></div>
+
+  <div class="chat"><b>Heute im Chat:</b> Schick mir ein Foto deiner Skizzen der drei Einheitszustände aus Ü 2.2 (V<sub>1</sub> = 1, V<sub>2</sub> = 1, V<sub>3</sub> = 1). Das Skizzieren ist der Schritt, an dem in der Klausur die meisten Punkte verloren gehen.</div>
+</section>
+
+<!-- ===================== KARTEIKARTEN ===================== -->
+<section class="view" id="v-karten">
+  <h1>Karteikarten</h1>
+  <p class="lead">Tippe auf die Karte zum Umdrehen. Täglich einmal durch – bis zum 8.12. muss jede sitzen.</p>
+  <div class="fc-wrap"><div class="fc" id="fc"><div class="side front" id="fcF"></div><div class="side back" id="fcB"></div></div></div>
+  <div class="fc-nav"><button class="ghost" id="fcPrev">←</button><span class="small" id="fcN"></span><button class="ghost" id="fcNext">→</button><button class="ghost" id="fcShuf">Mischen</button></div>
+</section>
+
+</main>
+
+<script>
+/* ---------- Matrix renderer ---------- */
+function fmt(t){
+  // a_b -> a<sub>b</sub>
+  return t.replace(/([A-Za-zτφψΔ]+)_([A-Za-z0-9]+)/g,'$1<sub>$2</sub>');
+}
+document.querySelectorAll('.m[data-m]').forEach(el=>{
+  const rows=JSON.parse(el.dataset.m);
+  el.style.gridTemplateColumns='repeat('+rows[0].length+',auto)';
+  el.innerHTML=rows.flat().map(c=>'<span>'+fmt(c)+'</span>').join('');
+});
+
+/* ---------- Number parsing & checks ---------- */
+function parseNum(s){
+  s=String(s).trim().replace(/\s/g,'').replace(',', '.').replace('−','-');
+  if(s==='')return NaN;
+  if(/^[-+]?\d*\.?\d+\/[-+]?\d*\.?\d+$/.test(s)){const [a,b]=s.split('/');return parseFloat(a)/parseFloat(b);}
+  return Number(s);
+}
+function close(v,ans,abs){
+  if(isNaN(v))return false;
+  if(abs!==undefined)return Math.abs(v-ans)<=abs;
+  if(ans===0)return Math.abs(v)<1e-6;
+  return Math.abs(v-ans)<=Math.abs(ans)*0.01+1e-9;
+}
+document.querySelectorAll('.chk-btn').forEach(b=>b.addEventListener('click',()=>{
+  b.closest('.ex').querySelectorAll('input.n').forEach(inp=>{
+    const v=parseNum(inp.value),a=parseNum(inp.dataset.ans);
+    const ok=close(v,a,inp.dataset.abs!==undefined?parseFloat(inp.dataset.abs):undefined);
+    inp.classList.toggle('ok',ok);inp.classList.toggle('bad',!ok);
+    const fb=inp.parentElement.querySelector('.fb');
+    if(fb){fb.textContent=ok?'✓':(isNaN(v)?'?':'✗');fb.className='fb '+(ok?'ok':'bad');}
+  });
+}));
+/* grid matrices */
+document.querySelectorAll('.agrid').forEach(g=>{
+  const ans=JSON.parse(g.dataset.ans);
+  ans.flat().forEach(()=>{const i=document.createElement('input');i.inputMode='text';g.appendChild(i);});
+});
+document.querySelectorAll('.chk-btn-grid').forEach(b=>b.addEventListener('click',()=>{
+  const ex=b.closest('.ex'),g=ex.querySelector('.agrid'),ans=JSON.parse(g.dataset.ans).flat();
+  let right=0;
+  g.querySelectorAll('input').forEach((inp,i)=>{
+    const v=parseNum(inp.value===''?'0':inp.value),a=parseNum(ans[i]);
+    const ok=close(v,a,1e-3);right+=ok;
+    inp.classList.toggle('ok',ok);inp.classList.toggle('bad',!ok);
+  });
+  const fb=b.nextElementSibling;fb.textContent=right+' von '+ans.length+' richtig'+(right===ans.length?' ✓':'');
+  fb.className='fb '+(right===ans.length?'ok':'bad');
+}));
+
+/* ---------- Multiple choice ---------- */
+const MC={
+ mc1:[
+  {q:'Was ist beim Weggrößenverfahren die Unbekannte?',o:['Die überzähligen Kräfte X<sub>i</sub>','Die Knotenverschiebungen und -verdrehungen V','Die Auflagerkräfte','Die Stabendmomente direkt'],c:1,w:'Gesucht sind die Freiheitsgrade V. Kräfte und Momente folgen danach aus s = k·v.'},
+  {q:'Welche drei Größen stehen für einen Stab im Vektor s?',o:['N<sub>l</sub>, V<sub>l</sub>, M<sub>l</sub>','N<sub>r</sub>, M<sub>l</sub>, M<sub>r</sub>','N, Q, M in Feldmitte','Δu, τ<sub>l</sub>, τ<sub>r</sub>'],c:1,w:'Die unabhängigen Stabendschnittgrößen. Δu, τ<sub>l</sub>, τ<sub>r</sub> sind die zugehörigen Weggrößen v.'},
+  {q:'Was beschreibt die zweite Spalte der Elementsteifigkeitsmatrix k?',o:['Die Verformungen infolge M<sub>l</sub> = 1','Die Stabendkräfte, die nötig sind für τ<sub>l</sub> = 1 bei Δu = τ<sub>r</sub> = 0','Die Biegesteifigkeit in Stabmitte','Die Auflagerreaktionen'],c:1,w:'Spalte j = Kräfte bei Einheitsverformung j, alles andere festgehalten. „Verformung infolge Kraft = 1“ wäre die Flexibilitätsmatrix f.'},
+  {q:'In VZK II steht für die Gleichlast M̊<sub>l</sub> = +qL²/12. Was zeigt die Momentenlinie am linken Ende?',o:['+qL²/12, Zug unten','−qL²/12, Zug oben','0','+qL²/24'],c:1,w:'M(l) = −M<sub>l</sub> = −qL²/12. Einspannmoment, Zug oben – wie gewohnt.'},
+  {q:'Warum steht 2EI/L (und nicht 4EI/L) neben der Diagonale von k?',o:['Weil die Hälfte des Moments ans festgehaltene andere Ende weitergeleitet wird','Weil der Stab nur halb so lang ist','Weil EA = ∞ ist','Das ist ein Rundungswert'],c:0,w:'Fortleitungszahl ½: Verdrehst du ein Ende um 1 (4EI/L), kommt am festgehaltenen anderen Ende die Hälfte an.'}
+ ],
+ mc2:[
+  {q:'Wie viele Spalten hat die Matrix a?',o:['So viele wie Stäbe','So viele wie Freiheitsgrade','Immer 3','So viele wie Knoten'],c:1,w:'Eine Spalte pro Freiheitsgrad V<sub>j</sub>, eine Zeile pro Stabverformung.'},
+  {q:'Ein Knoten dreht sich um V<sub>j</sub> = 1, sonst bewegt sich nichts. Was steht in Spalte j?',o:['1/L bei allen Stäben','1 bei jedem τ eines Stabendes an diesem Knoten, sonst 0','−1 links und +1 rechts','Nur Nullen'],c:1,w:'τ = φ + ψ mit ψ = 0, also τ = 1 an allen anschließenden Stabenden.'},
+  {q:'Ein Stab (Länge L) wird quer um 1 verschoben, seine Knoten drehen sich nicht. Welche τ entstehen?',o:['τ<sub>l</sub> = τ<sub>r</sub> = 1','τ<sub>l</sub> = τ<sub>r</sub> = 1/L','τ<sub>l</sub> = 1/L, τ<sub>r</sub> = −1/L','keine'],c:1,w:'ψ = 1/L, φ = 0 → τ<sub>l</sub> = τ<sub>r</sub> = 1/L (mit Vorzeichen nach Kipprichtung).'},
+  {q:'Was passiert in a mit einem Stab, der EI = ∞ und EA = ∞ hat?',o:['Er bekommt Zeilen mit Unendlich','Er taucht nicht als Element auf, er koppelt nur Freiheitsgrade','Er bekommt nur Nullen in k','Man muss ihn in zwei Stäbe teilen'],c:1,w:'Ein starrer Stab verformt sich nicht, erzeugt also keine v und keine s. Er sorgt nur dafür, dass Freiheitsgrade wegfallen oder gleich sind.'},
+  {q:'Wie prüfst du in der Klausur schnell, ob dein a stimmt?',o:['a muss symmetrisch sein','K = aᵀ·k·a muss symmetrisch sein und die Diagonaleinträge müssen zur physikalischen Vorstellung passen','a muss quadratisch sein','det(a) = 1'],c:1,w:'a ist meist nicht quadratisch. K dagegen ist immer symmetrisch mit positiver Diagonale. Ein Diagonaleintrag lässt sich außerdem „von Hand“ kontrollieren (z. B. 12EI/h³).'}
+ ]
+};
+Object.entries(MC).forEach(([id,qs])=>{
+  const host=document.getElementById(id);
+  qs.forEach(q=>{
+    const d=document.createElement('div');d.className='mc';
+    d.innerHTML='<div class="q">'+q.q+'</div>'+q.o.map((o,i)=>'<button data-i="'+i+'">'+o+'</button>').join('')+'<div class="why">'+q.w+'</div>';
+    d.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const i=+b.dataset.i;b.classList.add(i===q.c?'ok':'bad');
+      if(i!==q.c)d.querySelectorAll('button')[q.c].classList.add('ok');
+      d.classList.add('done');
+    }));
+    host.appendChild(d);
+  });
+});
+
+/* ---------- Flashcards ---------- */
+let cards=[
+ ['Elementsteifigkeitsmatrix k (VZK II)','<span class="m" data-mm=\'[["EA/L","0","0"],["0","4EI/L","2EI/L"],["0","2EI/L","4EI/L"]]\'></span><br><small>s = [N<sub>r</sub>, M<sub>l</sub>, M<sub>r</sub>] · v = [Δu, τ<sub>l</sub>, τ<sub>r</sub>]</small>'],
+ ['Positive Richtung von M<sub>l</sub>, M<sub>r</sub>, τ, φ in VZK II?','Alle <b>gegen den Uhrzeigersinn</b>, an beiden Stabenden gleich.<br>N<sub>r</sub> Zug positiv, Δu Verlängerung positiv.'],
+ ['VZK II → Momentenlinie','M(Stabanfang) = −M<sub>l</sub><br>M(Stabende) = +M<sub>r</sub>'],
+ ['Stabdrehwinkel ψ','ψ = (w<sub>r</sub> − w<sub>l</sub>)/L<br>Sehnendrehung, im Uhrzeigersinn positiv'],
+ ['Tangentendrehwinkel τ<sub>l</sub>, τ<sub>r</sub>','τ<sub>l</sub> = φ<sub>l</sub> + ψ<br>τ<sub>r</sub> = φ<sub>r</sub> + ψ'],
+ ['Die drei Grundbeziehungen','Kinematik: v = a·V<br>Werkstoff: s = k·v<br>Gleichgewicht: P = aᵀ·s'],
+ ['Gesamtsteifigkeitsmatrix K','K = aᵀ · k · a<br><small>quadratisch, symmetrisch</small>'],
+ ['Lastvektor mit Stablasten','P = P̄ − aᵀ · s̊<br><small>s̊ = Festhaltekräfte aus Hilfsblatt S. 19–20</small>'],
+ ['Schnittgrößen am Ende','s = k · a · V + s̊'],
+ ['Physikalische Bedeutung von K(i,j)','Kraft/Moment am Freiheitsgrad i, wenn Freiheitsgrad j um 1 verschoben/verdreht wird und alle anderen festgehalten sind.'],
+ ['Was steht in Spalte j von a?','Die Stabverformungen Δu, τ<sub>l</sub>, τ<sub>r</sub> aller Stäbe infolge V<sub>j</sub> = 1 (alle anderen V = 0).'],
+ ['Größe von a?','Zeilen: Anzahl Stabverformungen (3 je Stab, ohne Δu bei EA = ∞)<br>Spalten: Anzahl Freiheitsgrade'],
+ ['Flexibilitätsmatrix f eines Biegestabs (VZK II)','f = [L/3EI, −L/6EI; −L/6EI, L/3EI]<br>k = f<sup>−1</sup>'],
+ ['Querkraft aus Endmomenten (ohne Stablast)','Q = (M<sub>l</sub> + M<sub>r</sub>) / L'],
+ ['Quersteifigkeit Stiel: beidseitig eingespannt / unten gelenkig','12EI/h³ &nbsp;/&nbsp; 3EI/h³'],
+ ['Federelement im AWGV','Eigenes Element mit k = c<br>v = Federlängung, s = Federkraft']
+];
+let ci=0;
+const fc=document.getElementById('fc');
+function showCard(){
+  fc.classList.remove('flip');
+  document.getElementById('fcF').innerHTML=cards[ci][0];
+  const b=document.getElementById('fcB');b.innerHTML=cards[ci][1];
+  b.querySelectorAll('.m[data-mm]').forEach(el=>{const r=JSON.parse(el.dataset.mm);el.style.gridTemplateColumns='repeat('+r[0].length+',auto)';el.innerHTML=r.flat().map(c=>'<span>'+fmt(c)+'</span>').join('');});
+  document.getElementById('fcN').textContent=(ci+1)+' / '+cards.length;
+}
+fc.addEventListener('click',()=>fc.classList.toggle('flip'));
+document.getElementById('fcNext').onclick=()=>{ci=(ci+1)%cards.length;showCard();};
+document.getElementById('fcPrev').onclick=()=>{ci=(ci-1+cards.length)%cards.length;showCard();};
+document.getElementById('fcShuf').onclick=()=>{for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}ci=0;showCard();};
+showCard();
+
+/* ---------- Plan ---------- */
+const DAYS=[
+ ['19.11.','Do','Tag 1 · Die Grundidee','Zustandsgrößen, VZK II, Elementsteifigkeit k, Bedeutung von K(i,j)','tag1'],
+ ['20.11.','Fr','Tag 2 · Diskretisieren & Matrix a','Freiheitsgrade, ψ und τ, kinematische Transformationsmatrix','tag2'],
+ ['21.11.','Sa','Tag 3 · Lasten, Lösen, Schnittgrößen','s̊ aus dem Hilfsblatt, P = P̄ − aᵀs̊, Federn, erste Klausuraufgabe komplett',null],
+ ['22.11.','So','Tag 4 · Typ A gegen die Uhr','Rahmen 2016, Stützensenkung 2018, Fachwerk + Feder 2020',null],
+ ['23.11.','Mo','Tag 5 · Typ B: k herleiten','Flexibilität mit Arbeitssatz, Dehnstab mit ln, schubweich, Klausur 2026',null],
+ ['24.11.','Di','Tag 6 · Typ C & größere Systeme','K-Einträge deuten, Kondensation, Fehler im M-Verlauf finden, Rahmen 2025, 3D',null],
+ ['25.11.','Mi','Tag 7 · Probeklausur','Neue Aufgaben, Hilfsblätter + Rechner, Zeitlimit, Fehleranalyse',null],
+ ['26.11.–7.12.','','Training','Jeden Tag eine Altklausur auf Zeit, Karteikarten',null]
+];
+let prog={};try{prog=JSON.parse(localStorage.getItem('awgv-prog')||'{}');}catch(e){}
+function renderDays(){
+  const h=document.getElementById('days');h.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const el=document.createElement('div');el.className='day'+(prog[i]?' done':'')+(d[4]?'':' soon');
+    el.innerHTML='<div class="dt">'+(d[1]?'<b>'+d[1]+'</b>':'')+d[0]+'</div><div><div class="tt">'+d[2]+'</div><div class="ds">'+d[3]+'</div></div>'+
+      '<div style="display:flex;gap:8px;align-items:center">'+(d[4]?'<a class="go" href="#'+d[4]+'">Öffnen</a>':'<a class="go">folgt</a>')+'<input type="checkbox" class="chk" '+(prog[i]?'checked':'')+' aria-label="erledigt"></div>';
+    el.querySelector('input').addEventListener('change',e=>{prog[i]=e.target.checked;try{localStorage.setItem('awgv-prog',JSON.stringify(prog));}catch(_){}renderDays();});
+    h.appendChild(el);
+  });
+}
+renderDays();
+(function(){
+  const now=new Date(),ex=new Date('2026-12-08T08:00:00');
+  const days=Math.max(0,Math.ceil((ex-now)/864e5));
+  const done=Object.values(prog).filter(Boolean).length;
+  document.getElementById('count').innerHTML='<div><b>'+days+'</b><span>Tage bis zur Klausur</span></div><div style="background:#2e8b57"><b>'+done+' / 8</b><span>Etappen erledigt</span></div>';
+})();
+
+/* ---------- Routing ---------- */
+function route(){
+  let h=(location.hash||'#start').slice(1);
+  let view=h, anchor=null;
+  if(h.startsWith('t1-')){view='tag1';anchor=h;}
+  if(h.startsWith('t2-')){view='tag2';anchor=h;}
+  if(!document.getElementById('v-'+view)){view='start';}
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+view));
+  if(anchor){const el=document.getElementById(anchor);if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth'}),30);}
+  else window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);route();
+if('serviceWorker' in navigator && location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+</script>
+</body>
+</html>
