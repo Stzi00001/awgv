@@ -87,6 +87,31 @@ details.calc summary{color:#6b4fbb}
 .keys{line-height:2.1}
 .keys ol{padding-left:20px;margin:6px 0}
 .keys li{margin:4px 0}
+.qz-days{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.qz-days label{display:flex;gap:6px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:15px}
+.qz-bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0}
+.qz-bar div{height:100%;background:var(--ok);transition:width .3s}
+.qz-card{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:18px}
+.qz-meta{font-size:13px;color:var(--muted);margin-bottom:6px}
+.qz-q{font-weight:600;font-size:18px;margin-bottom:10px}
+.qz-opt{display:block;width:100%;text-align:left;margin:7px 0;background:#fdfcf9;color:var(--ink);border:1.5px solid var(--line);font-weight:400}
+.qz-opt.ok{border-color:var(--ok);background:var(--disp-soft)}
+.qz-opt.bad{border-color:var(--bad);background:var(--force-soft)}
+.qz-why{margin-top:10px;padding:10px 12px;background:#faf8f3;border-radius:8px;font-size:15px}
+.qz-big{font-size:42px;font-weight:700;font-family:"Source Serif 4",serif}
+.ex-list{display:grid;gap:10px}
+.exi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.exi .t{font-weight:700}
+.exi .d{font-size:14px;color:var(--muted)}
+.exi ul{margin:6px 0 0;padding-left:18px;font-size:15px}
+.badge{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:middle}
+.b-ok{background:var(--disp-soft);color:var(--ok)}
+.b-part{background:var(--warn-soft);color:var(--warn)}
+.b-no{background:#eee;color:#777}
+.li-ok{color:var(--ok)} .li-no{color:#888}
+.unlock{background:var(--disp-soft);border:1px solid #bfe0cc;border-radius:var(--r);padding:14px 16px;margin:22px 0}
+.unlock b.t{color:var(--ok);display:block;margin-bottom:4px}
+.unlock ul{margin:4px 0;padding-left:18px}
 /* Exercises */
 .ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
 .ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
@@ -170,6 +195,8 @@ details > div{padding:4px 14px 12px}
     <a href="#merkzettel">Merkzettel</a>
     <a href="#tag1">Tag 1</a>
     <a href="#tag2">Tag 2</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#klausuren">Klausuren</a>
     <a href="#rechner">Rechner</a>
     <a href="#karten">Karteikarten</a>
   </nav>
@@ -626,6 +653,8 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <h3>Verständnisfragen</h3>
   <div id="mc1"></div>
 
+  <div class="unlock" data-day="1"></div>
+
   <div class="chat"><b>Heute im Chat:</b> Erkläre mir in deinen eigenen Worten (2–3 Sätze), was K(1,2) im Zweifeldträger physikalisch bedeutet – so wie du es in der Klausur hinschreiben würdest. Ich sage dir, ob das die volle Punktzahl bekommt.</div>
 </section>
 
@@ -843,9 +872,42 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <h3>Verständnisfragen</h3>
   <div id="mc2"></div>
 
+  <div class="unlock" data-day="2"></div>
+
   <div class="chat"><b>Heute im Chat:</b> Schick mir ein Foto deiner Skizzen der drei Einheitszustände aus Ü 2.2 (V<sub>1</sub> = 1, V<sub>2</sub> = 1, V<sub>3</sub> = 1). Das Skizzieren ist der Schritt, an dem in der Klausur die meisten Punkte verloren gehen.</div>
 </section>
 
+
+
+<!-- ===================== QUIZ ===================== -->
+<section class="view" id="v-quiz">
+  <h1>Quiz</h1>
+  <p class="lead">Gemischte Fragen aus den Tagen, die du abgehakt hast. Rechenfragen auf Papier lösen und eintippen.</p>
+  <div id="qz-setup">
+    <div class="small">Welche Tage sollen drankommen?</div>
+    <div class="qz-days" id="qz-days"></div>
+    <div class="ans"><label>Anzahl Fragen</label>
+      <select id="qz-n" style="font:inherit;padding:6px 10px;border-radius:8px;border:1.5px solid var(--line)"><option>10</option><option>15</option><option value="999">alle</option></select></div>
+    <button id="qz-start">Quiz starten</button>
+    <p class="small" id="qz-info"></p>
+  </div>
+  <div id="qz-run" style="display:none">
+    <div class="qz-bar"><div id="qz-prog"></div></div>
+    <div class="qz-card" id="qz-card"></div>
+  </div>
+  <div id="qz-end" style="display:none"></div>
+</section>
+
+<!-- ===================== KLAUSUREN ===================== -->
+<section class="view" id="v-klausuren">
+  <h1>Welche Klausuraufgabe kann ich schon?</h1>
+  <p class="lead">Alle 19 AWGV-Aufgaben aus deinem PDF, den Lerntagen zugeordnet. Hake im Plan einen Tag ab, dann wird hier grün, was du jetzt lösen kannst.</p>
+  <div class="count" id="ex-count"></div>
+  <h2>Nach Tagen</h2>
+  <div id="ex-byday"></div>
+  <h2>Alle Aufgaben</h2>
+  <div class="ex-list" id="ex-all"></div>
+</section>
 
 <!-- ===================== RECHNER ===================== -->
 <section class="view" id="v-rechner">
@@ -1088,11 +1150,140 @@ document.getElementById('fcPrev').onclick=()=>{ci=(ci-1+cards.length)%cards.leng
 document.getElementById('fcShuf').onclick=()=>{for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}ci=0;showCard();};
 showCard();
 
+
+/* ---------- Klausur-Zuordnung ---------- */
+const EXAMS=[
+ {t:'SS 2016 · Rahmen mit starrem Riegel',d:'Musterklausur, 30 min',p:[['1–2) Diskretisieren, Matrix a',2],['3–6) s̊, K, V, Schnittgrößen, Verläufe (Gelenkfuß → 3EI/h³)',3]]},
+ {t:'WS 2016/17 · Träger mit Wegfeder',d:'25 min, 1 Freiheitsgrad',p:[['1–2) Diskretisieren, Matrix a',2],['3–7) Lastvektor, K mit Feder, Lösen, Verläufe',3]]},
+ {t:'SS 2017 · Überdachung, 3 Freiheitsgrade',d:'30 min, dehnweiche Stäbe',p:[['1) Matrix a',2],['2) Lastvektor P',3],['3) M-Verlauf bei EA = ∞ (nur V₃)',3]]},
+ {t:'WS 2017/18 · Stützensenkung, beidseitig eingespannt',d:'30 min',p:[['1) schubstarr (Hilfsblatt Fall 17)',3],['2) schubweich mit Flexibilitätsmatrix',5]]},
+ {t:'SS 2018 · Dehnstab mit veränderlichem Querschnitt',d:'20 min, k herleiten (ln-Integral)',p:[['Gleichgewicht, Kinematik, Werkstoff → k',5]]},
+ {t:'WS 2019/20 · Fachwerk mit 3 Stäben und Feder',d:'30 min',p:[['1) Verformungsfigur skizzieren',2],['2–3) Verschiebung, Normalkräfte, Federkraft',3]]},
+ {t:'SS 2020 · Balken mit Mittelfeder',d:'30 min, Ersatzsteifigkeit',p:[['1) c_B über Prinzip der virtuellen Kräfte',5],['2–3) Gesamtsteifigkeit, Federkraft, Moment',5],['4) Grenzfälle diskutieren',5]]},
+ {t:'WS 2020/21 · System mit 8 Freiheitsgraden',d:'30 min',p:[['1–2) K(2,4) und K(1,6) erläutern und berechnen',2],['3) Kragarm-Freiheitsgrade kondensieren',6]]},
+ {t:'SS 2021 · Fachwerk, n = 4',d:'20 min',p:[['1) Grad der statischen Unbestimmtheit',1],['2) alle Stabkräfte',6]]},
+ {t:'WS 2021/22 · Fachwerk, n = 4',d:'20 min',p:[['1) Grad der statischen Unbestimmtheit',1],['2) alle Stabkräfte',6]]},
+ {t:'SS 2022 · Rahmen, n = 14',d:'Auflagerkraft A_h',p:[['1) Grad der statischen Unbestimmtheit',1],['2) Auflagerkraft infolge H',6]]},
+ {t:'WS 2022/23 · Stützensenkung (wie 2017/18)',d:'schubstarr und schubweich',p:[['1) schubstarr',3],['2) schubweich mit Flexibilitätsmatrix',5]]},
+ {t:'SS 2023 · Stockwerkrahmen mit starren Riegeln',d:'20 min',p:[['3) kinematische Transformationsmatrix',2],['1–2) Flexibilität aufstellen, invertieren',5]]},
+ {t:'WS 2023/24 · Dehnstab mit veränderlichem Querschnitt',d:'Wiederholung von SS 2018',p:[['k herleiten',5]]},
+ {t:'SS 2024 · Fehlerhafter Momentenverlauf',d:'n = 15, Gleichgewichtskontrolle',p:[['1) Grad der statischen Unbestimmtheit',1],['2) Horizontalgleichgewicht prüfen',1],['3) Prinzip der virtuellen Verschiebungen',6]]},
+ {t:'WS 2024/25 · Großes Rahmensystem',d:'n = 13',p:[['1) Grad der statischen Unbestimmtheit',1],['2) Anzahl Freiheitsgrade m',2],['3) Eintrag K₁₃ berechnen und erläutern',2]]},
+ {t:'SS 2025 · Rahmen, M, Q, N komplett',d:'40 min',p:[['1–2) Momenten-, Querkraft-, Normalkraftverlauf',4]]},
+ {t:'WS 2025/26 · Eingespannter Träger mit Konsole (3D)',d:'4 Freiheitsgrade, Torsion',p:[['1–3) Steifigkeitsmatrix, Freiheitsgrade, Verläufe',6]]},
+ {t:'SS 2026 · Geschwächter Biegestab',d:'30 min, k mit EA und EI herleiten',p:[['Elementsteifigkeitsmatrix aufstellen',5]]}
+];
+function maxDay(){let m=0;for(let i=0;i<7;i++){if(prog[i])m=i+1;}return m;}
+function exState(e,m){const ok=e.p.filter(x=>x[1]<=m).length;return ok===e.p.length?'ok':ok>0?'part':'no';}
+function renderExams(){
+  const m=maxDay();
+  const all=document.getElementById('ex-all');if(!all)return;
+  let nOk=0,nPart=0;
+  all.innerHTML=EXAMS.map(e=>{const st=exState(e,m);if(st==='ok')nOk++;if(st==='part')nPart++;
+    const first=Math.min(...e.p.map(x=>x[1])),last=Math.max(...e.p.map(x=>x[1]));
+    const b=st==='ok'?'<span class="badge b-ok">lösbar</span>':st==='part'?'<span class="badge b-part">teilweise</span>':'<span class="badge b-no">ab Tag '+first+'</span>';
+    return '<div class="exi"><div class="t">'+e.t+b+'</div><div class="d">'+e.d+' · komplett nach Tag '+last+'</div><ul>'+
+      e.p.map(x=>'<li class="'+(x[1]<=m?'li-ok':'li-no')+'">'+(x[1]<=m?'✓ ':'')+x[0]+' <span class="small">(Tag '+x[1]+')</span></li>').join('')+'</ul></div>';}).join('');
+  document.getElementById('ex-count').innerHTML='<div style="background:#2e8b57"><b>'+nOk+'</b><span>komplett lösbar</span></div><div style="background:#b7791f"><b>'+nPart+'</b><span>teilweise</span></div><div><b>'+(EXAMS.length-nOk-nPart)+'</b><span>noch offen</span></div>';
+  let h='';
+  for(let d=1;d<=6;d++){
+    const items=[];EXAMS.forEach(e=>e.p.forEach(x=>{if(x[1]===d)items.push(e.t.split(' · ')[0]+' – '+x[0]);}));
+    if(!items.length)continue;
+    h+='<div class="exi"><div class="t">Nach Tag '+d+(d===1?' <span class="small">(inkl. Vorwissen: Grad der stat. Unbestimmtheit)</span>':'')+(d<=m?' <span class="badge b-ok">erledigt</span>':'')+'</div><ul>'+items.map(i=>'<li>'+i+'</li>').join('')+'</ul></div>';
+  }
+  document.getElementById('ex-byday').innerHTML='<div class="ex-list">'+h+'</div>';
+  document.querySelectorAll('.unlock[data-day]').forEach(u=>{
+    const d=+u.dataset.day;const items=[];EXAMS.forEach(e=>e.p.forEach(x=>{if(x[1]<=d)items.push([e.t.split(' · ')[0],x[0],x[1]]);}));
+    u.innerHTML='<b class="t">Damit kannst du nach Tag '+d+' lösen</b><ul>'+items.map(i=>'<li>'+i[0]+': '+i[1]+(i[2]<d?' <span class="small">(seit Tag '+i[2]+')</span>':'')+'</li>').join('')+'</ul><a href="#klausuren">Alle Aufgaben im Überblick →</a>';
+  });
+}
+
+/* ---------- Quiz ---------- */
+const QZ=[
+ // Tag 1
+ {d:1,q:'Was ist beim AWGV die Unbekannte?',o:['Überzählige Kräfte X<sub>i</sub>','Knotenverschiebungen und -verdrehungen V','Auflagerkräfte','Stabendmomente'],c:1,w:'Gesucht sind die Freiheitsgrade V; alles andere folgt daraus.'},
+ {d:1,q:'Wie sieht das Grundsystem des Weggrößenverfahrens aus?',o:['Statisch bestimmt, Bindungen gelöst','Kinematisch bestimmt, alle Knoten festgehalten','Gelenke an allen Knoten','Nur Kragarme'],c:1,w:'Beim AWGV werden alle Knoten festgehalten. Das Gegenstück ist das statisch bestimmte Grundsystem im KGV.'},
+ {d:1,q:'Wie viele Gleichungen muss man beim AWGV lösen?',o:['So viele wie der Grad der statischen Unbestimmtheit','So viele wie Freiheitsgrade','Immer drei pro Stab','So viele wie Lager'],c:1,w:'K·V = P hat eine Zeile pro Freiheitsgrad.'},
+ {d:1,q:'Welche Beziehung beschreibt das Gleichgewicht?',o:['v = a·V','s = k·v','P = aᵀ·s','K = a·k'],c:2,w:'Kinematik v = a·V, Werkstoff s = k·v, Gleichgewicht P = aᵀ·s.'},
+ {d:1,q:'Was steht im Vektor v eines Stabes?',o:['N<sub>r</sub>, M<sub>l</sub>, M<sub>r</sub>','Δu, τ<sub>l</sub>, τ<sub>r</sub>','u, w, φ','V<sub>1</sub>, V<sub>2</sub>, V<sub>3</sub>'],c:1,w:'v = innere Weggrößen: Verlängerung und die beiden Endtangentendrehwinkel.'},
+ {d:1,q:'In VZK II sind M<sub>l</sub>, M<sub>r</sub>, τ und φ positiv …',o:['im Uhrzeigersinn','gegen den Uhrzeigersinn','links gegen, rechts im Uhrzeigersinn','je nach Stabrichtung'],c:1,w:'Alle gegen den Uhrzeigersinn, an beiden Enden gleich.'},
+ {d:1,q:'Ein Stab hat M<sub>l</sub> = +20 kNm (VZK II). Welcher Wert steht in der Momentenlinie am Stabanfang?',o:['+20 kNm','−20 kNm','0','+10 kNm'],c:1,w:'M(Stabanfang) = −M<sub>l</sub>.'},
+ {d:1,q:'Was beschreibt Spalte 3 der Elementsteifigkeitsmatrix k?',o:['Verformungen infolge M<sub>r</sub> = 1','Stabendkräfte bei τ<sub>r</sub> = 1, alle anderen Verformungen 0','Die Normalkraft','Die Querkraft am rechten Ende'],c:1,w:'Spalte j = Kräfte bei Einheitsverformung j. „Verformung infolge Kraft = 1“ ist die Flexibilität f.'},
+ {d:1,q:'Was ist K(i,j)?',o:['Verformung am FHG i infolge Kraft 1 am FHG j','Kraft am FHG i, wenn FHG j = 1 und alle anderen festgehalten','Summe aller Steifigkeiten am Knoten','Eintrag der Flexibilitätsmatrix'],c:1,w:'Kraft (bzw. Moment) an i bei Einheitsverschiebung j, alle anderen V = 0.'},
+ {d:1,q:'Warum ist der Nebendiagonaleintrag von k genau halb so groß wie der Diagonaleintrag (2EI/L zu 4EI/L)?',o:['Fortleitungszahl ½ ans festgehaltene Ende','Weil L halbiert wird','Rundung','Wegen EA = ∞'],c:0,w:'Das kennst du vom Drehwinkelverfahren/Cross.'},
+ {d:1,q:'Die Gesamtsteifigkeitsmatrix K ist immer …',o:['symmetrisch','dreieckig','eine Diagonalmatrix','singulär'],c:0,w:'K = aᵀ·k·a ist symmetrisch. Ist deine nicht symmetrisch, steckt ein Fehler drin.'},
+ {d:1,n:1,q:'Stab mit L = 6 m, EI = 9 000 kNm². Wie groß ist 4EI/L in kNm?',a:6000,w:'4 · 9000 / 6 = 6000 kNm.'},
+ {d:1,n:1,q:'EI/L = 1500 kNm, τ<sub>l</sub> = 0,002, τ<sub>r</sub> = 0. Wie groß ist M<sub>r</sub> in kNm?',a:6,w:'M<sub>r</sub> = 1500 · (2·0,002 + 4·0) = 6 kNm.'},
+ {d:1,n:1,q:'Unbelasteter Stab, L = 5 m, M<sub>l</sub> = 30 kNm, M<sub>r</sub> = −10 kNm (VZK II). Querkraft Q in kN?',a:4,w:'Q = (M<sub>l</sub> + M<sub>r</sub>)/L = 20/5 = 4 kN.'},
+ {d:1,n:1,q:'An einem Knoten (Drehfreiheitsgrad) hängen zwei Stäbe mit L = 3 m und L = 6 m, EI = 6 000 kNm², beide Enden gegenüber festgehalten. K(1,1) in kNm?',a:12000,w:'4·6000/3 + 4·6000/6 = 8000 + 4000 = 12 000 kNm.'},
+ // Tag 2
+ {d:2,q:'Kragarm, links eingespannt, EA = ∞, EI endlich. Wie viele Freiheitsgrade?',o:['1','2','3','0'],c:1,w:'Freies Ende: u durch EA = ∞ gesperrt, übrig w und φ.'},
+ {d:2,q:'Rahmen, beide Füße eingespannt, alle EA = ∞, EI endlich. Wie viele Freiheitsgrade?',o:['1','2','3','6'],c:2,w:'Riegelverschiebung u + zwei Eckdrehungen.'},
+ {d:2,q:'Derselbe Rahmen mit Riegel EI = ∞. Wie viele Freiheitsgrade?',o:['1','2','3','0'],c:0,w:'Der starre Riegel kann sich nicht drehen, weil seine Enden nicht absacken können. Bleibt u.'},
+ {d:2,q:'Wie viele Zeilen hat a für 3 Stäbe mit EA = ∞ (EI endlich)?',o:['3','6','9','so viele wie Freiheitsgrade'],c:1,w:'Pro Stab τ<sub>l</sub> und τ<sub>r</sub>, die Δu-Zeilen entfallen: 3 · 2 = 6.'},
+ {d:2,q:'Ein Knoten dreht sich um 1, sonst bewegt sich nichts. Welche Einträge stehen in dieser Spalte von a?',o:['1/L überall','1 bei jedem τ eines Stabendes an diesem Knoten, sonst 0','−1 und +1','nur Nullen'],c:1,w:'τ = φ + ψ mit ψ = 0.'},
+ {d:2,q:'Wie lautet der Tangentendrehwinkel am linken Stabende (VZK II)?',o:['τ<sub>l</sub> = φ<sub>l</sub> − ψ','τ<sub>l</sub> = φ<sub>l</sub> + ψ','τ<sub>l</sub> = −(φ<sub>l</sub> + ψ)','τ<sub>l</sub> = ψ'],c:1,w:'τ<sub>l</sub> = φ<sub>l</sub> + ψ und τ<sub>r</sub> = φ<sub>r</sub> + ψ. Die Variante mit Minus ist VZK I.'},
+ {d:2,q:'Der Stabdrehwinkel ψ ist positiv, wenn die Sehne …',o:['im Uhrzeigersinn kippt','gegen den Uhrzeigersinn kippt','länger wird','sich nicht bewegt'],c:0,w:'ψ = (w<sub>r</sub> − w<sub>l</sub>)/L, im Uhrzeigersinn positiv.'},
+ {d:2,q:'Was passiert in a mit einem Stab mit EI = ∞ und EA = ∞?',o:['Er bekommt Zeilen mit ∞','Er taucht nicht auf, er koppelt nur Freiheitsgrade','Er bekommt Nullzeilen in k','Man teilt ihn auf'],c:1,w:'Starre Stäbe verformen sich nicht, sie haben also kein v und kein s.'},
+ {d:2,q:'Wie bestimmt man Δu eines schrägen Stabes?',o:['Horizontalverschiebung des Endknotens','Knotenverschiebung auf die Stabachse projizieren (r minus l)','Vertikalverschiebung mal L','gar nicht, Δu ist immer 0'],c:1,w:'Δu = (Verschiebung r − Verschiebung l) · Einheitsvektor in Stabrichtung.'},
+ {d:2,q:'Was steht in Spalte j der Matrix a?',o:['Kräfte infolge V<sub>j</sub> = 1','Stabverformungen aller Stäbe infolge V<sub>j</sub> = 1','Die Steifigkeit von Stab j','Die Lasten am Knoten j'],c:1,w:'Merksatz aus dem Skript.'},
+ {d:2,n:1,q:'Stiel mit h = 5 m, unten eingespannt, Kopf um u = 1 seitlich verschoben, keine Knotendrehung. Wie groß ist τ<sub>l</sub>?',a:0.2,w:'ψ = 1/h = 0,2, φ = 0 → τ = 0,2.'},
+ {d:2,n:1,q:'Beidseitig eingespannter Stiel, h = 3 m, EI = 27 000 kNm². Quersteifigkeit 12EI/h³ in kN/m?',a:12000,w:'12 · 27000 / 27 = 12 000 kN/m.'},
+ {d:2,n:1,q:'Rahmen, starrer Riegel, zwei eingespannte Stiele h = 4 m, EI = 6 400 kNm². K für die Riegelverschiebung in kN/m?',a:2400,w:'2 · 12 · 6400 / 64 = 2400 kN/m.'},
+ {d:2,n:1,q:'Schräger Stab im 3-4-5-Dreieck (3 m nach rechts, 4 m nach unten zum Knoten K). K verschiebt sich um w = 1 nach unten (u = 0). Δu?',a:0.8,w:'Δu = 0,6·u + 0,8·w = 0,8.'}
+];
+let qz=null;
+function qzSetup(){
+  const m=Math.max(1,maxDay());
+  const days=[...new Set(QZ.map(q=>q.d))].sort();
+  document.getElementById('qz-days').innerHTML=days.map(d=>'<label><input type="checkbox" value="'+d+'" '+(d<=m?'checked':'')+'> Tag '+d+'</label>').join('');
+  document.getElementById('qz-info').textContent='Neue Fragen kommen mit jedem neuen Lerntag dazu. Aktuell: '+QZ.length+' Fragen.';
+}
+function qzStart(){
+  const sel=[...document.querySelectorAll('#qz-days input:checked')].map(i=>+i.value);
+  if(!sel.length)return;
+  let pool=QZ.filter(q=>sel.includes(q.d));
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  pool=pool.slice(0,+document.getElementById('qz-n').value);
+  qz={pool,i:0,score:0,wrong:[]};
+  document.getElementById('qz-setup').style.display='none';document.getElementById('qz-end').style.display='none';
+  document.getElementById('qz-run').style.display='block';qzShow();
+}
+function qzShow(){
+  const q=qz.pool[qz.i],c=document.getElementById('qz-card');
+  document.getElementById('qz-prog').style.width=(qz.i/qz.pool.length*100)+'%';
+  let h='<div class="qz-meta">Frage '+(qz.i+1)+' von '+qz.pool.length+' · Tag '+q.d+'</div><div class="qz-q">'+q.q+'</div>';
+  if(q.n){h+='<div class="ans"><input class="n" id="qz-in" inputmode="decimal"><button id="qz-chk">Prüfen</button></div>';}
+  else{h+=q.o.map((o,i)=>'<button class="qz-opt" data-i="'+i+'">'+o+'</button>').join('');}
+  h+='<div id="qz-after"></div>';c.innerHTML=h;
+  if(q.n){document.getElementById('qz-chk').onclick=()=>{const v=parseNum(document.getElementById('qz-in').value);const ok=close(v,q.a);
+      document.getElementById('qz-in').classList.add(ok?'ok':'bad');qzAfter(ok,q,'Richtig: '+String(q.a).replace('.',','));};}
+  else{c.querySelectorAll('.qz-opt').forEach(b=>b.onclick=()=>{if(c.dataset.done)return;c.dataset.done=1;const i=+b.dataset.i,ok=i===q.c;
+      b.classList.add(ok?'ok':'bad');if(!ok)c.querySelectorAll('.qz-opt')[q.c].classList.add('ok');qzAfter(ok,q);});}
+  delete c.dataset.done;
+}
+function qzAfter(ok,q,extra){
+  if(qz.answered===qz.i)return;qz.answered=qz.i;
+  if(ok)qz.score++;else qz.wrong.push(q);
+  document.getElementById('qz-after').innerHTML='<div class="qz-why"><b style="color:'+(ok?'var(--ok)':'var(--bad)')+'">'+(ok?'Richtig!':'Nicht ganz.')+'</b> '+(extra&&!ok?extra+'. ':'')+q.w+'</div><p><button id="qz-next">'+(qz.i+1<qz.pool.length?'Weiter →':'Auswertung')+'</button></p>';
+  document.getElementById('qz-next').onclick=()=>{qz.i++;if(qz.i<qz.pool.length)qzShow();else qzEnd();};
+}
+function qzEnd(){
+  document.getElementById('qz-run').style.display='none';
+  const e=document.getElementById('qz-end');e.style.display='block';
+  const pct=Math.round(qz.score/qz.pool.length*100);
+  e.innerHTML='<div class="card" style="text-align:center"><div class="qz-big">'+qz.score+' / '+qz.pool.length+'</div><div>'+(pct>=80?'Sehr gut, das sitzt!':pct>=50?'Solide, schau dir die Fehler unten nochmal an.':'Lies die Lektion nochmal durch und wiederhole das Quiz.')+'</div></div>'+
+   (qz.wrong.length?'<h3>Diese Fragen nochmal anschauen</h3>'+qz.wrong.map(q=>'<div class="mc done"><div class="q">'+q.q+'</div><div class="why" style="display:block">'+(q.n?'Lösung: '+String(q.a).replace('.',',')+'. ':'Richtig: '+q.o[q.c]+'. ')+q.w+'</div></div>').join(''):'')+
+   '<p><button id="qz-again">Neues Quiz</button></p>';
+  document.getElementById('qz-again').onclick=()=>{e.style.display='none';document.getElementById('qz-setup').style.display='block';qzSetup();};
+}
+document.getElementById('qz-start').onclick=qzStart;
+
 /* ---------- Plan ---------- */
 const DAYS=[
  ['19.11.','Do','Tag 1 · Die Grundidee','Zustandsgrößen, VZK II, Elementsteifigkeit k, Bedeutung von K(i,j)','tag1'],
  ['20.11.','Fr','Tag 2 · Diskretisieren & Matrix a','Freiheitsgrade, ψ und τ, kinematische Transformationsmatrix','tag2'],
- ['21.11.','Sa','Tag 3 · Lasten, Lösen, Schnittgrößen','s̊ aus dem Hilfsblatt, P = P̄ − aᵀs̊, Federn, erste Klausuraufgabe komplett',null],
+ ['21.11.','Sa','Tag 3 · Lasten, Lösen, Schnittgrößen','s̊ aus dem Hilfsblatt, P = P̄ − aᵀs̊, Federn, gelenkige Stabenden (3EI/L), erste Klausuraufgabe komplett',null],
  ['22.11.','So','Tag 4 · Typ A gegen die Uhr','Rahmen 2016, Stützensenkung 2018, Fachwerk + Feder 2020',null],
  ['23.11.','Mo','Tag 5 · Typ B: k herleiten','Flexibilität mit Arbeitssatz, Dehnstab mit ln, schubweich, Klausur 2026',null],
  ['24.11.','Di','Tag 6 · Typ C & größere Systeme','K-Einträge deuten, Kondensation, Fehler im M-Verlauf finden, Rahmen 2025, 3D',null],
@@ -1106,11 +1297,11 @@ function renderDays(){
     const el=document.createElement('div');el.className='day'+(prog[i]?' done':'')+(d[4]?'':' soon');
     el.innerHTML='<div class="dt">'+(d[1]?'<b>'+d[1]+'</b>':'')+d[0]+'</div><div><div class="tt">'+d[2]+'</div><div class="ds">'+d[3]+'</div></div>'+
       '<div style="display:flex;gap:8px;align-items:center">'+(d[4]?'<a class="go" href="#'+d[4]+'">Öffnen</a>':'<a class="go">folgt</a>')+'<input type="checkbox" class="chk" '+(prog[i]?'checked':'')+' aria-label="erledigt"></div>';
-    el.querySelector('input').addEventListener('change',e=>{prog[i]=e.target.checked;try{localStorage.setItem('awgv-prog',JSON.stringify(prog));}catch(_){}renderDays();});
+    el.querySelector('input').addEventListener('change',e=>{prog[i]=e.target.checked;try{localStorage.setItem('awgv-prog',JSON.stringify(prog));}catch(_){}renderDays();renderExams();qzSetup();});
     h.appendChild(el);
   });
 }
-renderDays();
+renderDays();renderExams();qzSetup();
 (function(){
   const now=new Date(),ex=new Date('2026-12-08T08:00:00');
   const days=Math.max(0,Math.ceil((ex-now)/864e5));
