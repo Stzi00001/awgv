@@ -80,6 +80,13 @@ svg{max-width:100%;height:auto;display:block;margin:6px auto}
 .skgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
 .skgrid figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px}
 .skgrid figcaption{font-size:14px;color:var(--muted);padding:0 6px 4px}
+kbd{display:inline-block;min-width:22px;text-align:center;border:1px solid #9aa0ac;border-bottom-width:2.5px;border-radius:6px;padding:0 6px;margin:1px 1px;font:600 13px/1.6 "JetBrains Mono",monospace;background:#fff;color:#1d2433;white-space:nowrap}
+kbd.s{background:#f6d58a;border-color:#b7791f}
+details.calc{border-color:#cfc4ec;background:#f7f4ff}
+details.calc summary{color:#6b4fbb}
+.keys{line-height:2.1}
+.keys ol{padding-left:20px;margin:6px 0}
+.keys li{margin:4px 0}
 /* Exercises */
 .ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
 .ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
@@ -163,6 +170,7 @@ details > div{padding:4px 14px 12px}
     <a href="#merkzettel">Merkzettel</a>
     <a href="#tag1">Tag 1</a>
     <a href="#tag2">Tag 2</a>
+    <a href="#rechner">Rechner</a>
     <a href="#karten">Karteikarten</a>
   </nav>
 </div></header>
@@ -283,7 +291,15 @@ details > div{padding:4px 14px 12px}
       <span class="small">M<sub>r</sub> = 0 am Gelenklager – Kontrolle bestanden.</span></li>
     <li><b>Verläufe:</b> M(l) = −M<sub>l</sub> = <b>−45 kNm</b> (Einspannung, Zug oben), M(r) = 0. Gerade verbinden, Parabel mit qL²/8 = 45 einhängen. Querkraft: Q(l) = (45 + 0)/6 + 30 = <b>37,5 kN</b>, Q(r) = 7,5 − 30 = <b>−22,5 kN</b>.</li>
   </ol>
-  <div class="box merk"><b class="t">Gegenprobe mit Bekanntem</b>Das Einspannmoment des einseitig eingespannten Trägers ist −qL²/8 = −45 kNm, die Auflagerkräfte sind 5qL/8 = 37,5 kN und 3qL/8 = 22,5 kN. Das AWGV liefert genau die Tabellenwerte (Hilfsblatt S. 23, Volleinspannmomente). So kannst du in der Klausur bei einfachen Teilsystemen immer gegenprüfen.</div>
+  <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+<p>Ein Freiheitsgrad → normaler Rechenmodus, EI ausgeklammert:</p>
+<p>K: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd> → 0,6667 · Speichern: <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>(−)</kbd> (Variable A)<br>
+V: <kbd>30</kbd><kbd>÷</kbd><kbd>ALPHA</kbd><kbd>(−)</kbd><kbd>=</kbd> → 45 · Speichern: <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>°'"</kbd> (Variable B)<br>
+M<sub>l</sub>: <kbd>2</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd><kbd>°'"</kbd><kbd>+</kbd><kbd>30</kbd><kbd>=</kbd> → 45<br>
+M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd><kbd>°'"</kbd><kbd>−</kbd><kbd>30</kbd><kbd>=</kbd> → 0 ✓</p>
+<p class="small">Im normalen Modus sind <kbd>(−)</kbd> und <kbd>°'"</kbd> nach STO bzw. ALPHA die Variablen A und B. So tippst du Zwischenergebnisse nie ab.</p>
+</div></details>
+<div class="box merk"><b class="t">Gegenprobe mit Bekanntem</b>Das Einspannmoment des einseitig eingespannten Trägers ist −qL²/8 = −45 kNm, die Auflagerkräfte sind 5qL/8 = 37,5 kN und 3qL/8 = 22,5 kN. Das AWGV liefert genau die Tabellenwerte (Hilfsblatt S. 23, Volleinspannmomente). So kannst du in der Klausur bei einfachen Teilsystemen immer gegenprüfen.</div>
 </section>
 
 <!-- ===================== MERKZETTEL ===================== -->
@@ -537,6 +553,10 @@ details > div{padding:4px 14px 12px}
     <div class="ans"><label>4EI/L [kNm] =</label><input class="n" data-ans="8000"><span class="fb"></span></div>
     <div class="ans"><label>2EI/L [kNm] =</label><input class="n" data-ans="4000"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><p>Normaler Rechenmodus (<kbd>MENU</kbd><kbd>1</kbd>):</p>
+<p>EA/L: <kbd>2</kbd><kbd>×10ˣ</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>5</kbd><kbd>=</kbd> → 400 000<br>
+4EI/L: <kbd>4</kbd><kbd>×</kbd><kbd>10000</kbd><kbd>÷</kbd><kbd>5</kbd><kbd>=</kbd> → 8 000<br>
+2EI/L: <kbd>Ans</kbd><kbd>÷</kbd><kbd>2</kbd><kbd>=</kbd> → 4 000</p></div></details>
   </div>
 
   <div class="ex">
@@ -548,6 +568,14 @@ details > div{padding:4px 14px 12px}
     <div class="ans"><label>M<sub>r</sub> [kNm] =</label><input class="n" data-ans="-12"><span class="fb"></span></div>
     <div class="ans"><label>M(Stabende) in der Momentenlinie [kNm] =</label><input class="n" data-ans="-12"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><ol>
+<li><kbd>MENU</kbd><kbd>4</kbd> → <kbd>1</kbd> (MatA) → <kbd>3</kbd> Zeilen → <kbd>3</kbd> Spalten</li>
+<li>k eintippen (EA/L = 50 000, 4EI/L = 8 000, 2EI/L = 4 000):<br>
+<kbd>50000</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>0</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd> · <kbd>0</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
+<li><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB) → <kbd>3</kbd> Zeilen → <kbd>1</kbd> Spalte:<br>
+<kbd>0.0005</kbd><kbd>=</kbd><kbd>0.001</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>0.002</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
+<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b>[25; 0; −12]</b> = [N<sub>r</sub>; M<sub>l</sub>; M<sub>r</sub>]</li>
+</ol></div></details>
     <details><summary>Lösungsweg</summary><div>
       <p>EI/L = 8000/4 = 2000 kNm, EA/L = 50 000 kN/m.</p>
       <p>N<sub>r</sub> = 50 000 · 0,0005 = <b>25 kN</b> (Zug)</p>
@@ -565,6 +593,9 @@ details > div{padding:4px 14px 12px}
     <div class="ans"><label>K(1,2) [kNm] =</label><input class="n" data-ans="4000"><span class="fb"></span></div>
     <div class="ans"><label>K(2,2) [kNm] =</label><input class="n" data-ans="8000"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><p>Hier brauchst du keine Matrix, das sind drei kurze Rechnungen im normalen Modus:</p>
+<p>K(1,1): <kbd>4</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>4</kbd><kbd>+</kbd><kbd>4</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd> → 20 000<br>
+K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd> → 4 000 · K(2,2): <kbd>4</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd> → 8 000</p></div></details>
     <details><summary>Lösungsweg</summary><div>
       <p>K(1,1) = 4·12000/4 + 4·12000/6 = 12 000 + 8 000 = <b>20 000 kNm</b></p>
       <p>K(1,2) = K(2,1) = 2·12000/6 = <b>4 000 kNm</b> (nur Stab ② verbindet die beiden Knoten)</p>
@@ -579,6 +610,12 @@ details > div{padding:4px 14px 12px}
     <div class="ans"><label>V<sub>1</sub> [10⁻³ rad] =</label><input class="n" data-ans="3.333"><span class="fb"></span></div>
     <div class="ans"><label>V<sub>2</sub> [10⁻³ rad] =</label><input class="n" data-ans="-1.667"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><p><b>Weg A – Matrix:</b></p><ol>
+<li><kbd>MENU</kbd><kbd>4</kbd> → <kbd>1</kbd> (MatA) → <kbd>2</kbd> → <kbd>2</kbd>: <kbd>20000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
+<li><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB) → <kbd>2</kbd> → <kbd>1</kbd>: <kbd>60</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
+<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b>[3,333·10⁻³; −1,667·10⁻³]</b></li>
+</ol>
+<p><b>Weg B – Gleichungssystem:</b> <kbd>MENU</kbd> → „Gleichung/Funkt“ → „Lin. Gleichungssystem“ → 2 Unbekannte → Zeile 1: <kbd>20000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>60</kbd><kbd>=</kbd>, Zeile 2: <kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> → <kbd>=</kbd> → x = 1/300, y = −1/600</p></div></details>
     <details><summary>Lösungsweg</summary><div>
       <p>det K = 20000·8000 − 4000² = 1,44·10⁸</p>
       <p>V<sub>1</sub> = 8000·60 / 1,44·10⁸ = 3,333·10⁻³ rad, V<sub>2</sub> = −4000·60 / 1,44·10⁸ = −1,667·10⁻³ rad</p>
@@ -770,6 +807,12 @@ details > div{padding:4px 14px 12px}
     <div class="ans"><label>K(1,2) [kN/m] =</label><input class="n" data-ans="960"><span class="fb"></span></div>
     <div class="ans"><label>K(2,2) [kN/m] =</label><input class="n" data-ans="3780"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><ol>
+<li><kbd>MENU</kbd><kbd>4</kbd> → <kbd>1</kbd> (MatA = a) → <kbd>2</kbd> → <kbd>2</kbd>: <kbd>0.6</kbd><kbd>=</kbd><kbd>0.8</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
+<li><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB = k) → <kbd>2</kbd> → <kbd>2</kbd>: <kbd>2000</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>2500</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
+<li><kbd>OPTN</kbd><kbd>▼</kbd> „Transposition“ <kbd>OPTN</kbd><kbd>3</kbd><kbd>)</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>3</kbd><kbd>=</kbd></li>
+<li>→ <b>[720 960; 960 3780]</b></li>
+</ol></div></details>
     <details><summary>Lösungsweg</summary><div>
       <p>k = diag(10000/5; 10000/4) = diag(2000; 2500)</p>
       <p>K(1,1) = 0,6² · 2000 = 720 &nbsp;·&nbsp; K(1,2) = 0,6·0,8 · 2000 = 960 &nbsp;·&nbsp; K(2,2) = 0,8² · 2000 + 1² · 2500 = 1280 + 2500 = 3780</p>
@@ -784,6 +827,12 @@ details > div{padding:4px 14px 12px}
     <div class="ans"><label>M<sub>l</sub>² [kNm] =</label><input class="n" data-ans="20"><span class="fb"></span></div>
     <div class="ans"><label>M<sub>r</sub>² [kNm] =</label><input class="n" data-ans="0" data-abs="0.05"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><ol>
+<li>MatA = k² ohne Δu (2×2): <kbd>8000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd></li>
+<li>MatB = v² = [V<sub>1</sub>; V<sub>2</sub>] (2×1), exakt als Bruch: <kbd>1</kbd><kbd>÷</kbd><kbd>300</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>1</kbd><kbd>÷</kbd><kbd>600</kbd><kbd>=</kbd></li>
+<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b>[20; 0]</b></li>
+</ol>
+<p class="small">Tipp: Hast du V aus Ü 1.4 noch als MatAns, kopier es direkt: <kbd>OPTN</kbd><kbd>7</kbd><kbd>=</kbd> <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>°'"</kbd> → MatB. So vermeidest du Rundungsfehler.</p></div></details>
     <details><summary>Lösungsweg</summary><div>
       <p>τ<sub>l</sub>² = V<sub>1</sub> = 3,333·10⁻³, τ<sub>r</sub>² = V<sub>2</sub> = −1,667·10⁻³, EI/L = 2000.</p>
       <p>M<sub>l</sub>² = 2000·(4·3,333 − 2·1,667)·10⁻³ = 2000·0,01 = <b>20 kNm</b>, M<sub>r</sub>² = 2000·(2·3,333 − 4·1,667)·10⁻³ = <b>0</b> ✓ (gelenkiges Ende → Moment null, gute Kontrolle!)</p>
@@ -795,6 +844,62 @@ details > div{padding:4px 14px 12px}
   <div id="mc2"></div>
 
   <div class="chat"><b>Heute im Chat:</b> Schick mir ein Foto deiner Skizzen der drei Einheitszustände aus Ü 2.2 (V<sub>1</sub> = 1, V<sub>2</sub> = 1, V<sub>3</sub> = 1). Das Skizzieren ist der Schritt, an dem in der Klausur die meisten Punkte verloren gehen.</div>
+</section>
+
+
+<!-- ===================== RECHNER ===================== -->
+<section class="view" id="v-rechner">
+  <h1>Casio fx-991DE X im AWGV</h1>
+  <p class="lead">Alles, was du für Matrizen brauchst – Schritt für Schritt mit Tasten. Bei jeder Übung findest du außerdem einen lila Kasten „Taschenrechner“ mit der genauen Tastenfolge.</p>
+
+  <div class="box warn"><b class="t">Die wichtigste Grenze</b>Der Rechner kann Matrizen nur bis <b>4 × 4</b>. Eine ganze Matrix a (z. B. 6 × 3) passt also oft nicht rein. Lösung: K <b>Stab für Stab</b> ausrechnen und aufsummieren (siehe Trick unten). K selbst ist bei Klausuraufgaben fast immer höchstens 4 × 4.</div>
+
+  <h2>1. Matrix-Modus öffnen und Matrix eingeben</h2>
+  <div class="keys"><ol>
+    <li><kbd>MENU</kbd> <kbd>4</kbd> → Matrizen-Modus. Es erscheint „Matrix definieren“.</li>
+    <li>Speicher wählen: <kbd>1</kbd> = MatA, <kbd>2</kbd> = MatB, <kbd>3</kbd> = MatC, <kbd>4</kbd> = MatD.</li>
+    <li>Zeilenanzahl wählen (Zifferntaste), dann Spaltenanzahl.</li>
+    <li>Werte zeilenweise eintippen, jeden mit <kbd>=</kbd> bestätigen. Der Cursor springt nach rechts, dann in die nächste Zeile.</li>
+    <li><kbd>AC</kbd> → zurück zum Rechenbildschirm.</li>
+  </ol>
+  <p><b>Weitere Matrix definieren:</b> <kbd>OPTN</kbd> <kbd>1</kbd> (Matrix definieren) → Speicher wählen → wie oben.<br>
+  <b>Werte nachträglich ändern:</b> <kbd>OPTN</kbd> <kbd>2</kbd> (Mat. bearbeiten).</p></div>
+  <div class="box warn"><b class="t">Minus-Zeichen</b>Negative Werte mit der Vorzeichentaste <kbd>(−)</kbd> eingeben, nicht mit der Minus-Taste. Brüche wie 1/4 kannst du direkt als <kbd>1</kbd> <kbd>÷</kbd> <kbd>4</kbd> in die Zelle tippen oder 0,25 nehmen.</div>
+
+  <h2>2. Rechnen</h2>
+  <p>Auf dem Rechenbildschirm holst du die Matrizen über <kbd>OPTN</kbd>:</p>
+  <table>
+    <tr><th>Was</th><th>Tasten</th></tr>
+    <tr><td>MatA / MatB / MatC / MatD einfügen</td><td><kbd>OPTN</kbd> <kbd>3</kbd> / <kbd>4</kbd> / <kbd>5</kbd> / <kbd>6</kbd></td></tr>
+    <tr><td>MatAns (letztes Ergebnis)</td><td><kbd>OPTN</kbd> <kbd>7</kbd></td></tr>
+    <tr><td>Transponieren Trn(…)</td><td><kbd>OPTN</kbd> <kbd>▼</kbd> → „Transposition“ wählen → Matrix einfügen → <kbd>)</kbd></td></tr>
+    <tr><td>Inverse</td><td>Matrix einfügen, dann <kbd>x⁻¹</kbd></td></tr>
+    <tr><td>Determinante</td><td><kbd>OPTN</kbd> <kbd>▼</kbd> → „Determinante“ → Matrix → <kbd>)</kbd></td></tr>
+    <tr><td>Multiplizieren</td><td><kbd>×</kbd> zwischen zwei Matrizen</td></tr>
+  </table>
+  <p class="small">Die Menünummern stammen aus der Casio-Anleitung. Sollte bei dir eine Nummer anders sein, orientiere dich am Menütext auf dem Display.</p>
+
+  <h2>3. Ergebnis speichern (MatAns → MatC)</h2>
+  <div class="keys"><p>Wenn das Ergebnis angezeigt wird: <kbd class="s">SHIFT</kbd> <kbd>RCL</kbd> (= STO) und dann das Ziel:</p>
+  <p><kbd>(−)</kbd> → MatA &nbsp; <kbd>°'"</kbd> → MatB &nbsp; <kbd>x⁻¹</kbd> → MatC &nbsp; <kbd>sin</kbd> → MatD</p>
+  <p>Falls gerade nicht das Ergebnis angezeigt wird: erst <kbd>OPTN</kbd> <kbd>7</kbd> (MatAns) <kbd>=</kbd>, dann STO wie oben.</p></div>
+
+  <h2>4. Der Trick: K Stab für Stab</h2>
+  <p>K = aᵀ·k·a ist eine Summe über alle Stäbe: <b>K = Σ a<sub>p</sub>ᵀ · k<sub>p</sub> · a<sub>p</sub></b>. Dabei ist a<sub>p</sub> nur der Teil von a, der zu Stab p gehört (2 oder 3 Zeilen). Das passt immer in den Rechner.</p>
+  <p><b>Beispiel Rahmen mit starrem Riegel (Tag 2):</b> a<sub>1</sub> = [¼; ¼], a<sub>2</sub> = [½; ½], EI ausklammern.</p>
+  <div class="keys"><ol>
+    <li><b>Stab ①:</b> MatA = a<sub>1</sub> (2×1): <kbd>0.25</kbd><kbd>=</kbd><kbd>0.25</kbd><kbd>=</kbd>. MatB = k<sub>1</sub>/EI = (1/4)·[4 2; 2 4] = [1 0,5; 0,5 1] (2×2).</li>
+    <li>Rechnen: <kbd>OPTN</kbd><kbd>▼</kbd> Transposition <kbd>OPTN</kbd><kbd>3</kbd><kbd>)</kbd> <kbd>×</kbd> <kbd>OPTN</kbd><kbd>4</kbd> <kbd>×</kbd> <kbd>OPTN</kbd><kbd>3</kbd> <kbd>=</kbd> → <b>[0,1875]</b></li>
+    <li>Speichern: <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>x⁻¹</kbd> → MatC = 0,1875</li>
+    <li><b>Stab ②:</b> MatA und MatB über <kbd>OPTN</kbd><kbd>2</kbd> (bearbeiten) bzw. <kbd>OPTN</kbd><kbd>1</kbd> neu definieren: MatA = [0,5; 0,5], MatB = (1/2)·[4 2; 2 4] = [2 1; 1 2].</li>
+    <li>Rechnen und dazuzählen: Trn(MatA) × MatB × MatA <kbd>+</kbd> <kbd>OPTN</kbd><kbd>5</kbd> <kbd>=</kbd> → <b>[1,6875]</b> → K = 1,6875 EI ✓</li>
+  </ol></div>
+  <div class="box merk"><b class="t">Tipp: EI ausklammern</b>Rechne mit EI = 1 und schreib „· EI“ dahinter. Dann kommen V als „…/EI“ heraus und die EI kürzen sich in s = k·a·V wieder weg. Das spart Tipparbeit und große Zahlen.</div>
+
+  <h2>5. K·V = P lösen – zwei Wege</h2>
+  <p><b>Weg A (Matrix):</b> MatA = K, MatB = P (m×1), dann <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd>.</p>
+  <p><b>Weg B (Gleichungssystem):</b> <kbd>MENU</kbd> → „Gleichung/Funkt“ → „Lin. Gleichungssystem“ → Anzahl Unbekannte (2–4) → Zeile für Zeile die Koeffizienten von K und rechts P eintippen → <kbd>=</kbd> liefert x = V<sub>1</sub>, y = V<sub>2</sub>, …</p>
+  <p><b>Ein Freiheitsgrad:</b> gar keine Matrix nötig. Im normalen Rechenmodus V = P ÷ K.</p>
 </section>
 
 <!-- ===================== KARTEIKARTEN ===================== -->
