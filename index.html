@@ -75,6 +75,11 @@ svg{max-width:100%;height:auto;display:block;margin:6px auto}
 .steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
 .steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
 .steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.sk{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px;margin:10px 0}
+.sk svg{margin:0 auto}
+.skgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.skgrid figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px}
+.skgrid figcaption{font-size:14px;color:var(--muted);padding:0 6px 4px}
 /* Exercises */
 .ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
 .ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
@@ -142,6 +147,14 @@ details > div{padding:4px 14px 12px}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+      <marker id="arR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+      <marker id="arG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+      <marker id="arK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2433"/></marker>
+<marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
+<marker id="mkr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+<marker id="mkg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+</defs></svg>
 <header class="top"><div class="topin">
   <div class="brand">AWGV in 7 Tagen<small>Allgemeines Weggrößenverfahren · Baustatik · Klausur 8.12.</small></div>
   <nav class="tabs" id="tabs">
@@ -394,11 +407,6 @@ details > div{padding:4px 14px 12px}
   <h2 id="t1-3">3. Vorzeichenkonvention II (VZK II)</h2>
   <p>Dein Skript und die Hilfsblätter (S. 19–24) rechnen in <b>VZK II</b>. Die Regel ist zum Glück einfach:</p>
   <svg viewBox="0 0 420 175" role="img" aria-label="Positive Richtungen in VZK II">
-    <defs>
-      <marker id="arR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
-      <marker id="arG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
-      <marker id="arK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2433"/></marker>
-    </defs>
     <line x1="80" y1="70" x2="320" y2="70" stroke="#1d2433" stroke-width="4"/>
     <line x1="80" y1="76" x2="320" y2="76" stroke="#1d2433" stroke-width="1.2" stroke-dasharray="5 4"/>
     <circle cx="80" cy="70" r="4" fill="#1d2433"/><circle cx="320" cy="70" r="4" fill="#1d2433"/>
@@ -524,6 +532,7 @@ details > div{padding:4px 14px 12px}
   <div class="ex">
     <div class="h"><span class="tag">Ü 1.1</span><span class="ti">Elementsteifigkeit mit Zahlen</span></div>
     <p>Ein Stab hat L = 5 m, EI = 10 000 kNm², EA = 2 000 000 kN. Berechne die Einträge von k.</p>
+    <div class="sk" data-sk="ue11"></div>
     <div class="ans"><label>EA/L [kN/m] =</label><input class="n" data-ans="400000"><span class="fb"></span></div>
     <div class="ans"><label>4EI/L [kNm] =</label><input class="n" data-ans="8000"><span class="fb"></span></div>
     <div class="ans"><label>2EI/L [kNm] =</label><input class="n" data-ans="4000"><span class="fb"></span></div>
@@ -533,6 +542,7 @@ details > div{padding:4px 14px 12px}
   <div class="ex">
     <div class="h"><span class="tag">Ü 1.2</span><span class="ti">Von Verformungen zu Schnittgrößen</span></div>
     <p>Stab mit L = 4 m, EI = 8 000 kNm², EA = 200 000 kN. Bekannt sind die Stabverformungen Δu = 0,0005 m, τ<sub>l</sub> = 0,001 rad, τ<sub>r</sub> = −0,002 rad. Berechne <span class="f">s</span> = k·<span class="d">v</span>.</p>
+    <div class="sk" data-sk="ue12"></div>
     <div class="ans"><label>N<sub>r</sub> [kN] =</label><input class="n" data-ans="25"><span class="fb"></span></div>
     <div class="ans"><label>M<sub>l</sub> [kNm] =</label><input class="n" data-ans="0" data-abs="0.05"><span class="fb"></span></div>
     <div class="ans"><label>M<sub>r</sub> [kNm] =</label><input class="n" data-ans="-12"><span class="fb"></span></div>
@@ -550,6 +560,7 @@ details > div{padding:4px 14px 12px}
   <div class="ex">
     <div class="h"><span class="tag">Ü 1.3</span><span class="ti">K-Einträge physikalisch</span></div>
     <p>Wie im Beispiel oben: Zweifeldträger, links eingespannt, aber jetzt mit EI = 12 000 kNm², L<sub>1</sub> = 4 m, L<sub>2</sub> = 6 m. V<sub>1</sub> = Verdrehung Mittelknoten, V<sub>2</sub> = Verdrehung rechtes Lager.</p>
+    <div class="sk" data-sk="ue13"></div>
     <div class="ans"><label>K(1,1) [kNm] =</label><input class="n" data-ans="20000"><span class="fb"></span></div>
     <div class="ans"><label>K(1,2) [kNm] =</label><input class="n" data-ans="4000"><span class="fb"></span></div>
     <div class="ans"><label>K(2,2) [kNm] =</label><input class="n" data-ans="8000"><span class="fb"></span></div>
@@ -564,6 +575,7 @@ details > div{padding:4px 14px 12px}
   <div class="ex">
     <div class="h"><span class="tag">Ü 1.4</span><span class="ti">Bonus: Lösen</span></div>
     <p>Am System aus Ü 1.3 greift am Mittelknoten ein Knotenmoment P<sub>1</sub> = 60 kNm (gegen den Uhrzeigersinn) an, P<sub>2</sub> = 0. Löse <b>K·V = P</b> mit deinem Taschenrechner.</p>
+    <div class="sk" data-sk="ue14"></div>
     <div class="ans"><label>V<sub>1</sub> [10⁻³ rad] =</label><input class="n" data-ans="3.333"><span class="fb"></span></div>
     <div class="ans"><label>V<sub>2</sub> [10⁻³ rad] =</label><input class="n" data-ans="-1.667"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
@@ -708,6 +720,7 @@ details > div{padding:4px 14px 12px}
   <div class="ex">
     <div class="h"><span class="tag">Ü 2.1</span><span class="ti">Freiheitsgrade zählen</span></div>
     <p>Wie viele unbekannte Freiheitsgrade hat das System? (ebene Systeme)</p>
+    <div class="sk" data-sk="ue21"></div>
     <div class="ans"><label>a) Kragarm, links eingespannt, EA und EI endlich</label><input class="n" data-ans="3" style="width:70px"><span class="fb"></span></div>
     <div class="ans"><label>b) derselbe Kragarm, aber EA = ∞</label><input class="n" data-ans="2" style="width:70px"><span class="fb"></span></div>
     <div class="ans"><label>c) Rahmen, beide Stielfüße eingespannt, alle EA = ∞, alle EI endlich</label><input class="n" data-ans="3" style="width:70px"><span class="fb"></span></div>
@@ -752,6 +765,7 @@ details > div{padding:4px 14px 12px}
   <div class="ex">
     <div class="h"><span class="tag">Ü 2.3</span><span class="ti">K für das Zweistabsystem</span></div>
     <p>Für das Zweistabsystem aus Abschnitt 6 gilt EA = 10 000 kN für beide Stäbe. Berechne K = aᵀ·k·a mit k = diag(EA/L<sub>1</sub>, EA/L<sub>2</sub>).</p>
+    <div class="sk" data-sk="ue23"></div>
     <div class="ans"><label>K(1,1) [kN/m] =</label><input class="n" data-ans="720"><span class="fb"></span></div>
     <div class="ans"><label>K(1,2) [kN/m] =</label><input class="n" data-ans="960"><span class="fb"></span></div>
     <div class="ans"><label>K(2,2) [kN/m] =</label><input class="n" data-ans="3780"><span class="fb"></span></div>
@@ -766,6 +780,7 @@ details > div{padding:4px 14px 12px}
   <div class="ex">
     <div class="h"><span class="tag">Ü 2.4</span><span class="ti">Bonus: Ü 1.4 zu Ende rechnen</span></div>
     <p>Aus Ü 1.4 kennst du V<sub>1</sub> = 3,333·10⁻³ und V<sub>2</sub> = −1,667·10⁻³ (EI = 12 000). Berechne mit v = a·V und s = k·v die Endmomente von Stab ② (L = 6 m).</p>
+    <div class="sk" data-sk="ue24"></div>
     <div class="ans"><label>M<sub>l</sub>² [kNm] =</label><input class="n" data-ans="20"><span class="fb"></span></div>
     <div class="ans"><label>M<sub>r</sub>² [kNm] =</label><input class="n" data-ans="0" data-abs="0.05"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
@@ -802,6 +817,66 @@ document.querySelectorAll('.m[data-m]').forEach(el=>{
   const rows=JSON.parse(el.dataset.m);
   el.style.gridTemplateColumns='repeat('+rows[0].length+',auto)';
   el.innerHTML=rows.flat().map(c=>'<span>'+fmt(c)+'</span>').join('');
+});
+
+
+/* ---------- Klausur-Skizzen ---------- */
+const SK=(()=>{
+ const K='#111',F='Source Sans 3, sans-serif',S='Source Serif 4, serif';
+ const bar=(x1,y1,x2,y2,w=3.5)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${K}" stroke-width="${w}" stroke-linecap="round"/>`;
+ const hatch=(x1,y1,x2,y2,dx,dy,n)=>{let o='';for(let i=0;i<=n;i++){const t=i/n,x=x1+(x2-x1)*t,y=y1+(y2-y1)*t;o+=`<line x1="${x}" y1="${y}" x2="${x+dx}" y2="${y+dy}" stroke="${K}" stroke-width="1"/>`;}return o;};
+ const wallL=(x,y)=>`<line x1="${x}" y1="${y-24}" x2="${x}" y2="${y+24}" stroke="${K}" stroke-width="2"/>`+hatch(x,y-22,x,y+22,-9,9,5);
+ const ground=(x,y,w=20)=>`<line x1="${x-w}" y1="${y}" x2="${x+w}" y2="${y}" stroke="${K}" stroke-width="2"/>`+hatch(x-w+4,y,x+w,y,-8,9,4);
+ const pin=(x,y)=>`<path d="M${x},${y} L${x-11},${y+17} L${x+11},${y+17} Z" fill="#fff" stroke="${K}" stroke-width="1.6"/>`+ground(x,y+17,16);
+ const roller=(x,y)=>`<path d="M${x},${y} L${x-11},${y+17} L${x+11},${y+17} Z" fill="#fff" stroke="${K}" stroke-width="1.6"/><line x1="${x-14}" y1="${y+21}" x2="${x+14}" y2="${y+21}" stroke="${K}" stroke-width="1.6"/>`+hatch(x-10,y+25,x+14,y+25,-8,8,3)+`<line x1="${x-16}" y1="${y+25}" x2="${x+16}" y2="${y+25}" stroke="${K}" stroke-width="1.2"/>`;
+ const pinTop=(x,y)=>`<path d="M${x},${y} L${x-11},${y-17} L${x+11},${y-17} Z" fill="#fff" stroke="${K}" stroke-width="1.6"/><line x1="${x-18}" y1="${y-17}" x2="${x+18}" y2="${y-17}" stroke="${K}" stroke-width="2"/>`+hatch(x-14,y-17,x+18,y-17,-8,-9,4);
+ const node=(x,y)=>`<circle cx="${x}" cy="${y}" r="3.5" fill="#fff" stroke="${K}" stroke-width="1.6"/>`;
+ const tx=(x,y,t,o={})=>`<text x="${x}" y="${y}" font-family="${o.serif?S:F}" font-style="${o.serif?'italic':'normal'}" font-size="${o.fs||14}" fill="${o.c||K}" text-anchor="${o.a||'middle'}" font-weight="${o.b?700:400}">${t}</text>`;
+ const dimH=(x1,x2,y,t)=>`<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${K}" stroke-width="1"/>`+[x1,x2].map(x=>`<line x1="${x}" y1="${y-7}" x2="${x}" y2="${y+7}" stroke="${K}" stroke-width="1"/><line x1="${x-4}" y1="${y+4}" x2="${x+4}" y2="${y-4}" stroke="${K}" stroke-width="1.6"/>`).join('')+tx((x1+x2)/2,y-5,t,{fs:13});
+ const dimV=(y1,y2,x,t)=>`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${K}" stroke-width="1"/>`+[y1,y2].map(y=>`<line x1="${x-7}" y1="${y}" x2="${x+7}" y2="${y}" stroke="${K}" stroke-width="1"/><line x1="${x-4}" y1="${y+4}" x2="${x+4}" y2="${y-4}" stroke="${K}" stroke-width="1.6"/>`).join('')+`<text x="${x+6}" y="${(y1+y2)/2}" font-family="${F}" font-size="13" transform="rotate(-90 ${x+6} ${(y1+y2)/2})" text-anchor="middle" dy="10">${t}</text>`;
+ const mom=(x,y,r,c,lab,lx,ly)=>`<path d="M${x+r},${y-5} A${r},${r} 0 0,0 ${x-r},${y-5}" fill="none" stroke="${c}" stroke-width="2" marker-end="url(#${c==='#2e8b57'?'mkg':c==='#c0392b'?'mkr':'mk'})"/>`+(lab?tx(lx,ly,lab,{serif:1,c:c,fs:16}):'');
+ const arr=(x1,y1,x2,y2,c,lab,lx,ly)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2" marker-end="url(#${c==='#2e8b57'?'mkg':c==='#c0392b'?'mkr':'mk'})"/>`+(lab?tx(lx,ly,lab,{serif:1,c:c,fs:16}):'');
+ const G='#2e8b57',R='#c0392b';
+ const svg=(w,h,body,lab)=>`<svg viewBox="0 0 ${w} ${h}" style="max-width:${Math.min(w*1.35,620)}px" role="img" aria-label="${lab||'Systemskizze'}">${body}</svg>`;
+ const zwf=(extra)=> // Zweifeldträger 4,0 / 6,0
+   wallL(40,60)+bar(40,60,440,60)+pin(200,60)+roller(440,60)+node(200,60)+node(440,60)+
+   tx(120,48,'①',{fs:15})+tx(320,48,'②',{fs:15})+dimH(40,200,118,'4,0 m')+dimH(200,440,118,'6,0 m')+extra;
+ return {
+  ue11: svg(340,115, bar(50,55,290,55)+node(50,55)+node(290,55)+tx(50,40,'l',{serif:1})+tx(290,40,'r',{serif:1})+
+        tx(170,42,'EI = 10 000 kNm²   EA = 2·10⁶ kN',{fs:13})+dimH(50,290,95,'5,0 m'),'Stab L = 5 m'),
+  ue12: svg(380,150, `<line x1="50" y1="80" x2="250" y2="80" stroke="${K}" stroke-width="1.5" stroke-dasharray="6 4"/>`+
+        `<path d="M50,80 C110,55 220,40 266,80" fill="none" stroke="${G}" stroke-width="3"/>`+node(50,80)+node(266,80)+
+        `<line x1="50" y1="80" x2="100" y2="65" stroke="${G}" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="266" y1="80" x2="226" y2="50" stroke="${G}" stroke-width="1.2" stroke-dasharray="3 3"/>`+
+        tx(92,98,'τ_l = +0,001'.replace('_l','<tspan font-size="11" dy="3">l</tspan><tspan dy="-3"></tspan>'),{serif:1,c:G,fs:14})+
+        tx(240,104,'τ<tspan font-size="11" dy="3">r</tspan><tspan dy="-3"> = −0,002</tspan>',{serif:1,c:G,fs:14})+
+        arr(236,122,268,122,G)+tx(274,127,'Δu = 0,0005 m',{c:G,fs:13,a:'start'})+
+        dimH(50,250,20,'L = 4,0 m')+tx(330,80,'EI = 8000',{fs:12})+tx(330,96,'EA = 2·10⁵',{fs:12}),'Verformter Stab'),
+  ue13: svg(490,135, zwf(mom(200,60,22,G,'V₁',200,26)+mom(440,60,22,G,'V₂',440,26)+tx(320,90,'EI = 12 000 kNm², EA = ∞',{fs:13})),'Zweifeldträger mit V1 und V2'),
+  ue14: svg(490,135, zwf(mom(200,60,24,R,'P₁ = 60 kNm',200,22)+tx(320,90,'EI = 12 000 kNm², EA = ∞',{fs:13})),'Zweifeldträger mit Knotenmoment'),
+  ue24: svg(490,135, zwf(mom(200,60,24,R,'P₁ = 60 kNm',200,22)+tx(320,90,'gesucht: M_l², M_r²'.replace('M_l²','M<tspan font-size="10" dy="3">l</tspan><tspan dy="-3">²</tspan>').replace('M_r²','M<tspan font-size="10" dy="3">r</tspan><tspan dy="-3">²</tspan>'),{fs:13})),'Zweifeldträger Stab 2'),
+  ue23: svg(330,240, pinTop(70,50)+pinTop(160,50)+bar(70,50,160,170)+bar(160,50,160,170)+node(70,50)+node(160,50)+node(160,170)+
+        tx(48,64,'A',{b:1})+tx(180,64,'B',{b:1})+tx(146,186,'K',{b:1})+tx(98,120,'①',{fs:15})+tx(176,115,'②',{fs:15})+
+        tx(80,140,'EA',{fs:12})+tx(186,132,'EA',{fs:12})+
+        arr(168,170,215,170,G,'V₁',232,175)+arr(160,178,160,222,G,'V₂',182,218)+
+        dimH(70,160,18,'3,0 m')+dimV(50,170,265,'4,0 m'),'Zweistabsystem'),
+  ue21: (()=>{
+    const fr=(riegel)=>ground(50,100)+ground(180,100)+bar(50,100,50,30)+bar(180,100,180,30)+bar(50,30,180,30,riegel)+node(50,30)+node(180,30);
+    const items=[
+     ['a) Kragarm, EA und EI endlich', wallL(30,50)+bar(30,50,190,50)+node(190,50)+tx(110,85,'EA, EI endlich',{fs:13})],
+     ['b) Kragarm, EA = ∞', wallL(30,50)+bar(30,50,190,50)+node(190,50)+tx(110,85,'EA = ∞, EI endlich',{fs:13})],
+     ['c) Rahmen, Füße eingespannt', fr(3.5)+tx(115,60,'alle EA = ∞',{fs:13})+tx(115,76,'EI endlich',{fs:13})],
+     ['d) wie c), Riegel starr', fr(8)+tx(115,20,'Riegel EI = ∞',{fs:13})+tx(115,66,'alle EA = ∞',{fs:13})],
+     ['e) Zweifeldträger', wallL(25,45)+bar(25,45,205,45)+roller(110,45)+roller(205,45)+node(110,45)+node(205,45)+tx(115,98,'EA = ∞',{fs:13})]
+    ];
+    return '<div class="skgrid">'+items.map(([c,b])=>`<figure><figcaption>${c}</figcaption><svg viewBox="0 0 230 112" role="img" aria-label="${c}">${b}</svg></figure>`).join('')+'</div>';
+  })()
+ };
+})();
+
+document.querySelectorAll('.sk[data-sk]').forEach(el=>{
+  const k=el.dataset.sk;
+  if(k==='ue21'){el.outerHTML=SK.ue21;return;}
+  el.innerHTML=SK[k]||'';
 });
 
 /* ---------- Number parsing & checks ---------- */
