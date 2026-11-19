@@ -1473,6 +1473,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <ul class="toc">
     <li><a href="#t2-1">1. Freiheitsgrade finden</a></li>
     <li><a href="#t2-2">2. Stabdrehwinkel ψ und τ</a></li>
+    <li><a href="#t2-a">★ Matrix a ganz einfach</a></li>
     <li><a href="#t2-3">3. Das Rezept für a</a></li>
     <li><a href="#t2-4">4. Beispiel: Zweifeldträger</a></li>
     <li><a href="#t2-5">5. Beispiel: Rahmen mit starrem Riegel</a></li>
@@ -1519,6 +1520,58 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <div class="box warn"><b class="t">Die zwei Klassiker, die du sofort erkennen musst</b>
   <b>Knoten dreht sich um 1, sonst nichts:</b> An jedem Stabende an diesem Knoten ist τ = 1, alles andere null.<br>
   <b>Stab wird quer verschoben um 1 (ohne Knotendrehung):</b> ψ = 1/L, also τ<sub>l</sub> = τ<sub>r</sub> = 1/L an diesem Stab.</div>
+
+
+  <h2 id="t2-a">★ Matrix a ganz einfach</h2>
+  <p class="lead" style="font-size:17px">Vergiss kurz die Formeln. Matrix a ist nur eine <b>Tabelle mit Antworten auf immer dieselbe Frage</b>.</p>
+
+  <div class="box merk"><b class="t">Die eine Frage</b>
+  <span style="font-size:18px">„Wenn ich <b>nur diesen einen Knoten-Freiheitsgrad um 1</b> bewege, um wie viel <b>verdreht (oder dehnt) sich dann jedes Stabende</b>?“</span></div>
+
+  <h3>a ist ein Übersetzer</h3>
+  <p>Du kennst zwei „Sprachen“:</p>
+  <ul>
+    <li><b class="d">Knotensprache V:</b> Was machen die Knoten? (Ecke dreht sich, Riegel schiebt nach rechts …)</li>
+    <li><b class="d">Stabsprache v:</b> Was spürt jeder einzelne Stab? (Wie stark ist sein Ende verdreht, ist er länger geworden?)</li>
+  </ul>
+  <p>Die Stäbe interessieren sich nicht für Knoten. Sie können nur sagen „mein Ende ist um so viel verdreht“. Daraus berechnen sie mit k ihre Kräfte. <b>a übersetzt Knotensprache in Stabsprache:</b> v = a · V.</p>
+
+  <h3>So sieht die Tabelle aus</h3>
+  <table>
+    <tr><th></th><th>V<sub>1</sub> = 1</th><th>V<sub>2</sub> = 1</th><th>V<sub>3</sub> = 1</th></tr>
+    <tr><td>Stab ① unten</td><td>?</td><td>?</td><td>?</td></tr>
+    <tr><td>Stab ① oben</td><td>?</td><td>?</td><td>?</td></tr>
+    <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+  </table>
+  <p><b>Zeilen</b> = alle Stabenden (pro Stab: Anfang l, Ende r, bei EA endlich auch die Längenänderung). <b>Spalten</b> = die Freiheitsgrade. Du füllst die Tabelle <b>spaltenweise</b>: Eine Spalte ist ein „Foto“ des Tragwerks, bei dem genau ein Freiheitsgrad = 1 ist und alle anderen = 0.</p>
+
+  <h3>Nur 4 Regeln, mehr brauchst du nicht</h3>
+  <table>
+    <tr><th>#</th><th>Was passiert im Foto?</th><th>Was trägst du ein?</th></tr>
+    <tr><td><b>1</b></td><td>Ein <b>Knoten dreht sich</b> um 1 (gegen den Uhrzeigersinn)</td><td><b>+1</b> bei <b>jedem</b> Stabende, das an diesem Knoten hängt (biegesteif)</td></tr>
+    <tr><td><b>2</b></td><td>Ein Stabende wird <b>quer</b> zum Stab um 1 verschoben</td><td><b>±1/L</b> bei <b>beiden</b> Enden dieses Stabs. Plus, wenn der Stab dabei <b>im Uhrzeigersinn</b> kippt</td></tr>
+    <tr><td><b>3</b></td><td>Ein Stabende wird <b>längs</b> zum Stab verschoben (nur wenn EA endlich)</td><td><b>Δu = ±1</b>: Plus, wenn der Stab <b>länger</b> wird. Bei schrägen Stäben der Anteil in Stabrichtung (cos/sin)</td></tr>
+    <tr><td><b>4</b></td><td>Der Stab merkt nichts davon</td><td><b>0</b></td></tr>
+  </table>
+  <div class="box warn"><b class="t">Gleichzeitig Drehung und Kippen?</b>Dann einfach addieren: τ = (Knotendrehung) + (Kippen). Das ist genau die Formel τ = φ + ψ, nur in Worten.</div>
+
+  <h3>Ausprobieren: Tippe auf einen Freiheitsgrad</h3>
+  <p>Rahmen mit Stielen h = 4 m und Riegel L = 6 m, alle EA = ∞. Stiele von unten (l) nach oben (r), Riegel von links (l) nach rechts (r).</p>
+  <div class="card" id="aw">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <button class="ghost aw-b" data-j="0">V₁ = 1 (Riegel schiebt)</button>
+      <button class="ghost aw-b" data-j="1">V₂ = 1 (linke Ecke dreht)</button>
+      <button class="ghost aw-b" data-j="2">V₃ = 1 (rechte Ecke dreht)</button>
+    </div>
+    <div id="aw-svg"></div>
+    <div class="scroll"><table id="aw-tab"></table></div>
+    <div id="aw-why" class="small"></div>
+  </div>
+
+  <div class="box merk"><b class="t">Klausur-Tipp: So schreibst du es auf</b>
+  1. Für jeden Freiheitsgrad eine <b>kleine Skizze</b> „V<sub>j</sub> = 1“ wie oben, das bringt Punkte.<br>
+  2. Daneben die Spalte, mit einem Wort Begründung pro Eintrag („Ecke dreht → 1“, „kippt → 1/4“).<br>
+  3. Am Ende alle Spalten nebeneinander = a.</div>
 
   <h2 id="t2-3">3. Das Rezept für die Matrix a</h2>
   <p>Die Matrix a hat <b>eine Zeile pro Stabverformung</b> (Δu<sup>1</sup>, τ<sub>l</sub><sup>1</sup>, τ<sub>r</sub><sup>1</sup>, Δu<sup>2</sup>, …) und <b>eine Spalte pro Freiheitsgrad</b>. Bei EA = ∞ lässt du die Δu-Zeilen weg.</p>
@@ -1967,6 +2020,48 @@ document.querySelectorAll('.timer[data-min]').forEach(t=>{
   br.onclick=()=>{clearInterval(iv);iv=null;left=total;bs.textContent='Start';show();};
   show();
 });
+
+
+/* ---------- Interaktive Matrix a ---------- */
+(function(){
+  const host=document.getElementById('aw');if(!host)return;
+  const rows=['Stab ① unten (τ<sub>l</sub>¹)','Stab ① oben (τ<sub>r</sub>¹)','Riegel links (τ<sub>l</sub>²)','Riegel rechts (τ<sub>r</sub>²)','Stab ③ unten (τ<sub>l</sub>³)','Stab ③ oben (τ<sub>r</sub>³)'];
+  const A=[['1/4','0','0'],['1/4','1','0'],['0','1','0'],['0','0','1'],['1/4','0','0'],['1/4','0','1']];
+  const WHY=[
+   ['Stiel kippt im Uhrzeigersinn um 1/4 (Regel 2), Fuß dreht nicht','Stiel kippt um 1/4 (Regel 2), Ecke dreht nicht','Riegel wird nur längs verschoben → merkt nichts (Regel 4)','dito → 0','Stiel kippt um 1/4 (Regel 2)','Stiel kippt um 1/4 (Regel 2)'],
+   ['Fuß ist eingespannt, Stiel kippt nicht → 0','Hängt an der linken Ecke, die dreht sich → 1 (Regel 1)','Hängt an der linken Ecke → 1 (Regel 1)','Rechte Ecke steht still → 0','Rechter Stiel merkt nichts → 0','Rechte Ecke steht still → 0'],
+   ['Linker Stiel merkt nichts → 0','Linke Ecke steht still → 0','Linke Ecke steht still → 0','Hängt an der rechten Ecke → 1 (Regel 1)','Fuß eingespannt → 0','Hängt an der rechten Ecke → 1 (Regel 1)']
+  ];
+  const K='#111',G='#2e8b57';
+  const base=`<g stroke="#c9c9c9" stroke-width="3" fill="none"><line x1="60" y1="200" x2="60" y2="60"/><line x1="60" y1="60" x2="240" y2="60"/><line x1="240" y1="60" x2="240" y2="200"/></g>`+
+    `<g stroke="${K}" stroke-width="1.5"><line x1="40" y1="200" x2="80" y2="200"/><line x1="220" y1="200" x2="260" y2="200"/></g>`+
+    `<g font-family="Source Sans 3" font-size="13" fill="#5d6475"><text x="38" y="135">①</text><text x="145" y="52">②</text><text x="252" y="135">③</text></g>`;
+  const SH=[
+   `<path d="M60,200 C60,130 90,130 90,60" stroke="${G}" stroke-width="3.5" fill="none"/><path d="M90,60 L270,60" stroke="${G}" stroke-width="3.5"/><path d="M240,200 C240,130 270,130 270,60" stroke="${G}" stroke-width="3.5" fill="none"/>`+
+   `<line x1="60" y1="200" x2="90" y2="60" stroke="${G}" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="240" y1="200" x2="270" y2="60" stroke="${G}" stroke-width="1.2" stroke-dasharray="4 3"/>`+
+   `<line x1="140" y1="30" x2="185" y2="30" stroke="${G}" stroke-width="2.5" marker-end="url(#mkg)"/><text x="192" y="35" fill="${G}" font-family="Source Serif 4" font-style="italic" font-size="16">1</text>`+
+   `<text x="98" y="150" fill="${G}" font-family="Source Sans 3" font-size="13">kippt um 1/4</text>`,
+   `<path d="M60,200 C60,150 74,110 60,60" stroke="${G}" stroke-width="3.5" fill="none"/><path d="M60,60 C100,36 180,60 240,60" stroke="${G}" stroke-width="3.5" fill="none"/><line x1="240" y1="60" x2="240" y2="200" stroke="${G}" stroke-width="3.5"/>`+
+   `<path d="M74,38 A22,22 0 1,0 74,82" fill="none" stroke="${G}" stroke-width="2.2" marker-end="url(#mkg)"/><text x="18" y="40" fill="${G}" font-family="Source Serif 4" font-style="italic" font-size="16">1</text>`,
+   `<line x1="60" y1="200" x2="60" y2="60" stroke="${G}" stroke-width="3.5"/><path d="M60,60 C120,60 200,84 240,60" stroke="${G}" stroke-width="3.5" fill="none"/><path d="M240,200 C240,150 254,110 240,60" stroke="${G}" stroke-width="3.5" fill="none"/>`+
+   `<path d="M254,38 A22,22 0 1,0 254,82" fill="none" stroke="${G}" stroke-width="2.2" marker-end="url(#mkg)"/><text x="268" y="40" fill="${G}" font-family="Source Serif 4" font-style="italic" font-size="16">1</text>`
+  ];
+  const TXT=['<b>Foto V₁ = 1:</b> Der Riegel schiebt sich um 1 nach rechts. Die Ecken drehen sich nicht. Beide Stiele kippen.',
+             '<b>Foto V₂ = 1:</b> Nur die linke Ecke dreht sich um 1 gegen den Uhrzeigersinn. Alles andere bleibt, wo es ist.',
+             '<b>Foto V₃ = 1:</b> Nur die rechte Ecke dreht sich um 1.'];
+  let done=new Set();
+  function show(j){
+    done.add(j);
+    document.getElementById('aw-svg').innerHTML=`<svg viewBox="0 0 300 220" style="max-width:420px">${base}${SH[j]}</svg>`;
+    let h='<tr><th>Stabende</th>'+[0,1,2].map(c=>`<th style="${c===j?'background:#e6f4ec;color:#2e8b57':''}">V${'₁₂₃'[c]}</th>`).join('')+'<th>Warum (für V'+'₁₂₃'[j]+')</th></tr>';
+    rows.forEach((r,i)=>{h+='<tr><td>'+r+'</td>'+[0,1,2].map(c=>`<td style="text-align:center;font-weight:700;${c===j?'background:#e6f4ec;color:#2e8b57':''}">${done.has(c)?A[i][c]:'?'}</td>`).join('')+'<td class="small">'+WHY[j][i]+'</td></tr>';});
+    document.getElementById('aw-tab').innerHTML=h;
+    document.getElementById('aw-why').innerHTML='<p>'+TXT[j]+(done.size===3?' <b style="color:#2e8b57">Alle drei Spalten zusammen sind die komplette Matrix a ✓</b>':' Tippe auf den nächsten Freiheitsgrad.')+'</p>';
+    host.querySelectorAll('.aw-b').forEach(b=>{b.style.background=(+b.dataset.j===j)?'#1d2433':'';b.style.color=(+b.dataset.j===j)?'#fff':'';});
+  }
+  host.querySelectorAll('.aw-b').forEach(b=>b.onclick=()=>show(+b.dataset.j));
+  show(0);
+})();
 
 /* ---------- Number parsing & checks ---------- */
 function parseNum(s){
