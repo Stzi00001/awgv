@@ -1056,7 +1056,7 @@ details > div{padding:4px 14px 12px}
 <!-- ===================== KOCHREZEPT ===================== -->
 <section class="view" id="v-rezept">
   <h1>Kochrezept AWGV</h1>
-  <p class="lead">So gehst du in der Klausur bei jeder Typ-A-Aufgabe vor. Jeder Schritt hat: was du tust, wo du nachschlägst, wie du dich kontrollierst. Unten ist alles einmal komplett durchgerechnet.</p>
+  <p class="lead">So gehst du in der Klausur bei jeder Typ-A-Aufgabe vor. Jeder Schritt hat: was du tust, wo du nachschlägst, wie du dich kontrollierst. Unten ist alles einmal komplett durchgerechnet. <a href="#stolper">→ Stolperfallen</a></p>
 
   <div class="box hb"><b class="t">Zeitplan für 30 Minuten</b>
   Schritt 1–2: 8 min · Schritt 3: 5 min · Schritt 4–5: 5 min · Schritt 6: 4 min · Schritt 7 (Verläufe zeichnen): 8 min</div>
@@ -1108,6 +1108,103 @@ details > div{padding:4px 14px 12px}
     <p><b>Normalkraft:</b> N = N<sub>r</sub> aus s, bei EA = ∞ aus Knotengleichgewicht der Querkräfte.</p>
     <p><b>Verformungsfigur:</b> Knotenwege aus V eintragen, Biegelinie passend zur Momentenlinie (Krümmung zur Zugseite).</p>
   </div>
+
+  <h2 id="stolper">Stolperfallen – damit dir das nicht passiert</h2>
+  <p class="lead" style="font-size:17px">Alles, was beim Lernen unklar war, gesammelt und den Schritten zugeordnet. Vor jeder Klausuraufgabe einmal überfliegen.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">Zu Schritt 1–2 · Matrix a</h3>
+    <ul>
+      <li><b>Die eine Frage für jede Spalte:</b> „Wenn ich <b>nur diesen einen</b> Freiheitsgrad um 1 bewege, um wie viel verdreht oder dehnt sich jedes Stabende?“ Alle anderen Freiheitsgrade sind dabei 0.</li>
+      <li><b>Pro Spalte nur ein Freiheitsgrad:</b> In Spalte V<sub>1</sub> ist u = 1 und w = 0, in Spalte V<sub>2</sub> umgekehrt. Nie beide gleichzeitig einsetzen.</li>
+      <li><b>Die 4 Regeln:</b> Knoten dreht → +1 an jedem Stabende dort · quer verschoben → ±1/L · länger → Δu = +… · merkt nichts → 0.</li>
+      <li><b>Drehen und Kippen gleichzeitig:</b> addieren, τ = φ + ψ. Dreht sich die Ecke in dieser Spalte nicht (φ = 0), gilt einfach <b>τ = ψ</b>.</li>
+      <li><b>Bezeichnungen nicht verwechseln:</b> Δu<sub>1</sub>, Δu<sub>2</sub> → die Nummer ist die <b>Stabnummer</b> (Verlängerung von Stab ① bzw. ②). u allein ist die horizontale <b>Knotenverschiebung</b>. V<sub>1</sub>, V<sub>2</sub> sind die Spalten.</li>
+      <li><b>Kontrolle:</b> K = aᵀ·k·a muss symmetrisch sein, und einen Diagonaleintrag kannst du physikalisch nachrechnen (z. B. 12EI/h³).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Vorzeichen von τ und ψ</h3>
+    <ul>
+      <li><b>Die eine Regel:</b> τ ist positiv, wenn die <b>Tangente gegenüber der Sehne</b> gegen den Uhrzeigersinn verdreht ist.</li>
+      <li>Knoten dreht gegen den Uhrzeigersinn → <b>+1</b>.</li>
+      <li>Sehne kippt <b>im</b> Uhrzeigersinn → ψ <b>positiv</b>. Das ist kein Widerspruch: Die Tangente bleibt stehen, die Sehne läuft weg, und relativ zur Sehne steht die Tangente gegen den Uhrzeigersinn (Bild: Zifferblatt drehen, Zeiger festhalten).</li>
+      <li>Sehne kippt gegen den Uhrzeigersinn → ψ negativ (z. B. WS 2016/17: τ<sub>r</sub> = −1/5).</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Schräge Stäbe</h3>
+    <ul>
+      <li><b>Zerlegen:</b> Die Knotenbewegung hat einen Anteil <b>längs</b> (→ Δu) und einen Anteil <b>quer</b> (→ ψ).</li>
+      <li><b>Richtungszahlen:</b> c<sub>x</sub> = Δx/L, c<sub>z</sub> = Δz/L, immer <b>vom Stabanfang l zum Stabende r</b> gelesen.</li>
+      <li><b>Vorzeichen von Δx und Δz:</b> x nach rechts und z nach <b>unten</b> sind positiv. Liest du jeden Stab von links nach rechts, ist Δx immer ≥ 0. Δz musst du jedes Mal prüfen: Stab <b>steigt</b> nach rechts → Δz <b>negativ</b>, Stab fällt → positiv. Senkrechte Stäbe immer gleich lesen, z. B. von unten nach oben (Δz = −h).</li>
+      <li><b>Δx und Δz nicht vertauschen:</b> Bei SS 2017 geht Stab ① 1 m nach rechts und 6 m hoch → c<sub>x</sub> = 1/6,083, c<sub>z</sub> = −6/6,083 (nicht 6/6,083).</li>
+      <li><b>Formeln:</b> Δu = c<sub>x</sub>·u + c<sub>z</sub>·w &nbsp;·&nbsp; quer = −c<sub>z</sub>·u + c<sub>x</sub>·w &nbsp;·&nbsp; ψ = (quer<sub>r</sub> − quer<sub>l</sub>)/L. Bewegt sich der <b>Anfang</b> l, ändert sich das Vorzeichen.</li>
+      <li><b>quer<sub>l</sub> und quer<sub>r</sub>:</b> Für jedes Stabende einzeln, mit der Bewegung <b>des Knotens an diesem Ende</b>. Festes Lager → quer = 0. Probe: Bei einem waagerechten Stab ist quer = w, bei einem Stiel (unten → oben) ist quer = u.</li>
+      <li><b>Plausibilität:</b> Ein steiler Stab reagiert auf senkrechte Bewegung fast nur mit Δu (kaum Kippen), ein flacher Stab fast nur mit Kippen.</li>
+      <li><b>Die Stabrichtung</b> darfst du frei wählen, musst sie dann aber als Pfeil in die Skizze zeichnen und überall beibehalten.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Zu Schritt 3–4 · Gelenke und Lasten</h3>
+    <ul>
+      <li><b>Gelenkiges Stabende, zwei gleichwertige Wege:</b> (a) 3EI/L-Element mit nur einer Zeile, oder (b) der <b>½-Trick</b> aus den Musterlösungen: normale k-Matrix und in a <b>τ<sub>Gelenk</sub> = −½ · τ<sub>anderes Ende</sub></b> (weil 4τ<sub>G</sub> + 2τ<sub>f</sub> = 0). Daher stammen Einträge wie 1/10, −1/8, −0,5 in den Musterlösungen.</li>
+      <li><b>s̊ bei Gelenkstäben</b> immer aus Hilfsblatt <b>S. 23</b> (einseitig eingespannt), egal welchen Weg du nimmst.</li>
+      <li><b>P = P̄ + P̂ − aᵀs̊:</b> P̂ (Einfeldträger-Auflagerkräfte, z. B. qL/2) nicht vergessen, wenn sich ein Knoten <b>verschieben</b> kann. Bei reinen Drehfreiheitsgraden ist P̂ = 0.</li>
+      <li><b>Lastrichtung:</b> „Unten“ in der Tabelle heißt rechts vom Stabpfeil. Bei einem Stiel von unten nach oben ist das die rechte Seite.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Taschenrechner (fx-991DE X)</h3>
+    <ul>
+      <li><b>K = aᵀ·k·a:</b> MatA = a, MatB = k (Blockdiagonale, Rest 0), dann <kbd>OPTN</kbd><kbd>▼</kbd> Transposition (MatA) × MatB × MatA. Schritt für Schritt in Tag 2, Abschnitt 4.</li>
+      <li><b>EI ausklammern</b> (EI = 1 setzen), am Ende „· EI“ dahinterschreiben.</li>
+      <li><b>Maximal 4×4:</b> Bei größerem a Stab für Stab rechnen und mit STO in MatC aufsummieren (Tab „Rechner“).</li>
+      <li>Negative Zahlen mit <kbd>(−)</kbd>, Brüche direkt als <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd> eintippen.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Flexibilitätsmatrix f</h3>
+    <ul>
+      <li><b>f = Nachgiebigkeit</b> (Verformung infolge Kraft = 1), <b>k = Steifigkeit</b>. Es gilt k = f⁻¹.</li>
+      <li><b>Einträge = δ-Werte</b> aus dem Kraftgrößenverfahren: Momentenlinien der Einheitslastfälle zeichnen und mit der Koppeltafel überlagern.</li>
+      <li><b>Für ein ganzes System</b> (SS 2023): f<sub>ij</sub> = Verschiebung an i infolge H = 1 an j. Pendelstäbe (beidseitig gelenkig) und Riegel mit EI = ∞ liefern <b>nichts</b>. δ<sub>12</sub> nur dort, wo <b>beide</b> Lastfälle Moment haben.</li>
+      <li><b>2×2-Inverse:</b> 1/(ad − b²) · [d −b; −b a].</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Zu Schritt 7 · Kontrollen und Ausdrucke lesen</h3>
+    <ul>
+      <li><b>Horizontal prüfen:</b> waagerecht durch ein Geschoss schneiden. Σ Q der <b>Stiele</b> = Horizontallast oberhalb, mit Q = (M<sub>oben</sub> − M<sub>unten</sub>)/h. Riegel zählen nicht, weil ihre Querkraft senkrecht wirkt.</li>
+      <li><b>Schnitt so legen,</b> dass keine unbekannte Lagerkraft mit drin ist (bei SS 2024 oberhalb des rechten Horizontallagers).</li>
+      <li><b>Zahl im Ausdruck zuordnen:</b> Stiel-Ordinaten sind waagerecht angetragen, Riegel-Ordinaten senkrecht. Im Zweifel hilft das Knotengleichgewicht: Stielmoment = Summe der Riegelmomente an der Ecke.</li>
+      <li><b>Merksatz:</b> Horizontal prüfen → durch die Stiele schneiden. Vertikal prüfen → durch die Riegel schneiden.</li>
+    </ul>
+  </div>
+
+  <div class="box warn"><b class="t">Musterlösungen mit Vorsicht</b>
+  WS 2019/20: N<sub>1</sub> = N<sub>2</sub> = <b>2,81 kN</b> (in der Musterlösung steht 4,12, dort wurde die volle Last statt der Vertikalkomponente eingesetzt).<br>
+  SS 2020: Grenzfälle c) und d) sind vertauscht. Für EI → 0 trägt die Feder alles.</div>
+
+  <details class="calc"><summary>📋 Referenz: komplette Matrix a von SS 2017 (zum Vergleichen)</summary><div>
+    <p>Stab ① Fuß (l, Gelenk) → Ecke (r), Stab ② Ecke (l) → Lager (r, Gelenk), L = 6,083 m, mit ½-Trick an den Gelenken:</p>
+    <table>
+      <tr><th></th><th>V<sub>1</sub> (Ecke →)</th><th>V<sub>2</sub> (Ecke ↓)</th><th>V<sub>3</sub> (Ecke dreht)</th></tr>
+      <tr><td>Δu<sub>1</sub></td><td>0,164</td><td>−0,986</td><td>0</td></tr>
+      <tr><td>τ<sub>l</sub>¹</td><td>−0,081</td><td>−0,0135</td><td>−0,5</td></tr>
+      <tr><td>τ<sub>r</sub>¹</td><td>0,162</td><td>0,027</td><td>1</td></tr>
+      <tr><td>Δu<sub>2</sub></td><td>−0,986</td><td>0,164</td><td>0</td></tr>
+      <tr><td>τ<sub>l</sub>²</td><td>−0,027</td><td>−0,162</td><td>1</td></tr>
+      <tr><td>τ<sub>r</sub>²</td><td>0,0135</td><td>0,081</td><td>−0,5</td></tr>
+    </table>
+    <p class="small">Beispiel τ<sub>l</sub>¹ in V<sub>2</sub>: quer<sub>r</sub> = c<sub>x</sub>·1 = 0,164 → ψ = 0,164/6,083 = 0,027 → τ<sub>r</sub>¹ = 0,027 → Gelenk: τ<sub>l</sub>¹ = −½ · 0,027 = −0,0135.</p>
+  </div></details>
 
   <h2>Einmal komplett durchgekocht</h2>
   <p><b>Aufgabe:</b> Einfeldträger, links eingespannt, rechts gelenkig gelagert, L = 6 m, Gleichlast q = 10 kN/m, EI konstant, EA = ∞. Gesucht: Momentenverlauf nach AWGV.</p>
@@ -2511,7 +2608,7 @@ function route(){
   if(h.startsWith('t1-')){view='tag1';anchor=h;}
   if(h.startsWith('t2-')){view='tag2';anchor=h;}
   const mm=h.match(/^t([3-7])-/);if(mm){view='tag'+mm[1];anchor=h;}
-  if(!document.getElementById('v-'+view)){view='start';}
+  if(!document.getElementById('v-'+view)){const el=document.getElementById(h);const sec=el&&el.closest('section.view');if(sec){view=sec.id.slice(2);anchor=h;}else{view='start';}}
   document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
   document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+view));
   if(anchor){const el=document.getElementById(anchor);if(el)setTimeout(()=>el.scrollIntoView({behavior:'smooth'}),30);}
