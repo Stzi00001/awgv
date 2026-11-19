@@ -115,6 +115,9 @@ details.calc summary{color:#6b4fbb}
 details.why{border-color:#f0d9a8;background:#fffaf0}
 details.why summary{color:#9a6412}
 details.why h4{margin:10px 0 2px;font-size:16px}
+.timer{display:flex;align-items:center;gap:10px;margin:6px 0 10px;flex-wrap:wrap}
+.timer .tm{font:700 22px "JetBrains Mono",monospace;min-width:82px}
+.timer .tm.over{color:var(--bad)}
 /* Exercises */
 .ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
 .ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px}
@@ -198,6 +201,11 @@ details > div{padding:4px 14px 12px}
     <a href="#merkzettel">Merkzettel</a>
     <a href="#tag1">Tag 1</a>
     <a href="#tag2">Tag 2</a>
+    <a href="#tag3">Tag 3</a>
+    <a href="#tag4">Tag 4</a>
+    <a href="#tag5">Tag 5</a>
+    <a href="#tag6">Tag 6</a>
+    <a href="#tag7">Tag 7</a>
     <a href="#quiz">Quiz</a>
     <a href="#klausuren">Klausuren</a>
     <a href="#rechner">Rechner</a>
@@ -234,6 +242,765 @@ details > div{padding:4px 14px 12px}
 </section>
 
 
+<!-- ===================== TAG 3 ===================== -->
+<section class="view" id="v-tag3">
+  <p class="small">Tag 3 · Sa 21.11. · ≈ 2–3 h</p>
+  <h1>Lasten, Lösen, Schnittgrößen</h1>
+  <p class="lead">Heute wird das Verfahren komplett. Bisher hatten wir nur Knotenlasten. Jetzt kommen Lasten auf den Stäben dazu, außerdem Federn und gelenkige Stabenden. Am Ende rechnest du die erste Klausuraufgabe von vorne bis hinten.</p>
+
+  <ul class="toc">
+    <li><a href="#t3-1">1. Die Idee: festhalten und loslassen</a></li>
+    <li><a href="#t3-2">2. Festhaltekräfte s̊ aus dem Hilfsblatt</a></li>
+    <li><a href="#t3-3">3. Der Lastvektor P</a></li>
+    <li><a href="#t3-4">4. Gelenkige Stabenden (3EI/L)</a></li>
+    <li><a href="#t3-5">5. Federn</a></li>
+    <li><a href="#t3-6">6. Verläufe zeichnen</a></li>
+    <li><a href="#t3-7">7. Klausur WS 2016/17 komplett</a></li>
+    <li><a href="#t3-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t3-1">1. Die Idee: festhalten und loslassen</h2>
+  <p>Liegt eine Last <i>auf</i> einem Stab, rechnest du in zwei Zuständen und addierst sie:</p>
+  <table>
+    <tr><th>Zustand</th><th>Was passiert</th><th>Ergebnis</th></tr>
+    <tr><td><b>0 – Festhalten</b></td><td>Alle Knoten werden festgehalten (V = 0). Jeder belastete Stab ist dann ein beidseitig eingespannter Träger.</td><td>Festhaltekräfte <b>s̊</b> aus dem Hilfsblatt</td></tr>
+    <tr><td><b>1 – Loslassen</b></td><td>Die Knoten dürfen sich um V bewegen. Die Stäbe verformen sich dadurch zusätzlich.</td><td><b>k · a · V</b></td></tr>
+  </table>
+  <div class="eq" style="font-size:22px">s = k · a · V + s̊</div>
+  <p>Das kennst du vom Drehwinkelverfahren: Volleinspannmomente plus Anteil aus den Knotendrehungen. Das AWGV macht dasselbe, nur in Matrixform.</p>
+
+  <h2 id="t3-2">2. Festhaltekräfte s̊ aus dem Hilfsblatt</h2>
+  <p>s̊ = [N̊<sub>r</sub>, M̊<sub>l</sub>, M̊<sub>r</sub>] liest du ab. Die Hilfsblätter rechnen schon in VZK II, du musst also nichts umrechnen.</p>
+  <table>
+    <tr><th>Fall</th><th>M̊<sub>l</sub></th><th>M̊<sub>r</sub></th><th>Hilfsblatt</th></tr>
+    <tr><td>Gleichlast q, beidseitig eingespannt</td><td>+qL²/12</td><td>−qL²/12</td><td>S. 19, Fall 3</td></tr>
+    <tr><td>Einzellast P mittig, beidseitig</td><td>+PL/8</td><td>−PL/8</td><td>S. 20, Fall 9</td></tr>
+    <tr><td>Stützensenkung Δw am rechten Ende</td><td>+6EI/L²·Δw</td><td>+6EI/L²·Δw</td><td>S. 20, Fall 17</td></tr>
+    <tr><td>Gleichlast, <b>Gelenk links</b>, rechts eingespannt</td><td>0</td><td>−qL²/8</td><td>S. 23</td></tr>
+    <tr><td>Gleichlast, links eingespannt, <b>Gelenk rechts</b></td><td>+qL²/8</td><td>0</td><td>S. 23</td></tr>
+  </table>
+  <div class="box warn"><b class="t">In Stabrichtung lesen!</b>Die Tabelle gilt für einen Stab von l nach r mit Last „nach unten“. „Unten“ heißt: auf der rechten Seite deines Stabpfeils, also in Richtung der gestrichelten Faser. Bei einem Stiel von unten (l) nach oben (r) ist „unten“ deshalb <b>rechts</b>. Wind von links auf so einen Stiel liest du also ganz normal mit +qL²/12 und −qL²/12.</div>
+  <div class="box merk"><b class="t">Vorzeichen-Check ohne Tabelle</b>Frag dich: In welche Richtung würde sich das Stabende ohne Einspannung drehen? Die Einspannung hält mit dem <b>Gegen</b>moment. Gegen den Uhrzeigersinn ist positiv.</div>
+
+  <h2 id="t3-3">3. Der Lastvektor P</h2>
+  <p>So schreibt es dein Prof im Skript und in den Musterlösungen:</p>
+  <div class="eq" style="font-size:22px">P = P̄ + P̂ − aᵀ · s̊</div>
+  <table>
+    <tr><th>Teil</th><th>Bedeutung</th></tr>
+    <tr><td><b>P̄</b></td><td>Lasten, die direkt auf einem Knoten in Richtung eines Freiheitsgrades angreifen (Einzelkraft am Knoten, Knotenmoment).</td></tr>
+    <tr><td><b>P̂</b></td><td>Auflagerkräfte, die die Stablast als <b>gelenkig gelagerter Einfeldträger</b> an die Knoten abgibt, in Richtung der Verschiebungs-Freiheitsgrade. Beispiel: Gleichlast auf einem Stab, dessen Ende sich um V verschieben kann → qL/2 an diesem Ende. Bei Drehfreiheitsgraden ist P̂ = 0.</td></tr>
+    <tr><td><b>−aᵀ·s̊</b></td><td>Die Festhaltemomente werden „losgelassen“: Ihr Gegenteil wirkt als Last auf die Knoten.</td></tr>
+  </table>
+  <div class="box merk"><b class="t">Warum braucht es P̂?</b>s̊ enthält nur die Momente (und N). Die Querkräfte aus der Stablast fehlen darin, weil Q in s nicht vorkommt. Kann sich ein Knoten verschieben, muss aber auch die Querkraft, die die Last dorthin schickt, als Knotenlast auftauchen. Ihren „gelenkigen“ Teil liefert P̂, den Teil aus den Einspannmomenten liefert −aᵀs̊. Zusammen ergibt das z. B. genau 3qL/8 oder 5qL/8, wie du in der Klausur von WS 2016/17 siehst.</div>
+
+  <h2 id="t3-4">4. Gelenkige Stabenden: das 3EI/L-Element</h2>
+  <p>Ist ein Stab an einem Ende gelenkig angeschlossen (Gelenklager, Gelenk im System), ist dort M = 0. Dann ist die Verdrehung an diesem Ende kein interessanter Freiheitsgrad. Am einfachsten nimmst du das <b>verkürzte Element</b>:</p>
+  <div class="eq">Gelenk links: M<sub>r</sub> = (3EI/L) · τ<sub>r</sub> &nbsp;&nbsp;&nbsp; Gelenk rechts: M<sub>l</sub> = (3EI/L) · τ<sub>l</sub></div>
+  <p>In a gibt es für diesen Stab nur eine Zeile, nämlich das τ am eingespannten Ende (τ = φ + ψ wie immer). Die Festhaltemomente nimmst du dann aus dem Hilfsblatt S. 23 für den <b>einseitig</b> eingespannten Stab.</p>
+  <div class="box hb"><b class="t">So steht es in den Musterlösungen</b>Dein Prof behält manchmal die volle 2×2-Matrix und setzt am Gelenk τ = −½ · τ<sub>anderes Ende</sub> in a ein (weil dort 4τ<sub>gelenk</sub> + 2τ<sub>fest</sub> = 0). Ausmultipliziert ergibt das exakt dasselbe wie 3EI/L. Erkennst du in einer Musterlösung „1/10“ und „−1/5“ in a: Das ist dieser Trick.</div>
+  <div class="box merk"><b class="t">Merkzahlen Steifigkeit</b>Drehsteifigkeit am Stabende: 4EI/L (anderes Ende fest) · 3EI/L (anderes Ende gelenkig).<br>Quersteifigkeit eines Stiels: 12EI/h³ (beide Enden fest) · 3EI/h³ (ein Ende gelenkig).</div>
+
+  <h2 id="t3-5">5. Federn</h2>
+  <p>Eine Feder ist ein ganz normales Element mit einer Zeile:</p>
+  <div class="eq">F<sub>Feder</sub> = c · Δ &nbsp;&nbsp; (Δ = Federverlängerung, Zug positiv)</div>
+  <p>In a steht in der Feder-Zeile, um wie viel die Feder bei V<sub>j</sub> = 1 länger wird. Steht die Feder schräg, projizierst du wie beim schrägen Fachwerkstab: Δ = (Verschiebung) · (Richtung der Feder).</p>
+  <div class="box warn"><b class="t">Typischer Vorzeichenfehler</b>Eine Feder <b>unter</b> einem Knoten wird kürzer, wenn der Knoten nach unten geht: Δ = −1. Steht sie <b>über</b> dem Knoten (hängend), wird sie länger: Δ = +1. Für K ist das egal (Δ² ist immer positiv), aber für das Vorzeichen der Federkraft (Zug oder Druck) nicht.</div>
+
+  <h2 id="t3-6">6. Verläufe zeichnen</h2>
+  <ol class="steps">
+    <li><b>Momente:</b> M(l) = −M<sub>l</sub>, M(r) = +M<sub>r</sub> eintragen, gerade verbinden, bei Gleichlast die Parabel mit Stich qL²/8 einhängen, bei Einzellast mittig die Spitze PL/4.</li>
+    <li><b>Querkraft:</b> Q(l) = (M<sub>l</sub> + M<sub>r</sub>)/L + qL/2 &nbsp;und&nbsp; Q(r) = (M<sub>l</sub> + M<sub>r</sub>)/L − qL/2.</li>
+    <li><b>Normalkraft:</b> N = N<sub>r</sub> aus s. Bei EA = ∞ über das Knotengleichgewicht: Die Querkräfte der anschließenden Stäbe werden zur Normalkraft im Nachbarstab.</li>
+    <li><b>Kontrolle:</b> Knotengleichgewicht der Momente, Σ H und Σ V am Gesamtsystem.</li>
+  </ol>
+
+  <h2 id="t3-7">7. Klausur WS 2016/17 komplett</h2>
+  <div class="sk" data-sk="t3ex"></div>
+  <p>Träger L = 5 m, EI = 10 000 kNm², EA = GA<sub>v</sub> = ∞. Links eine Wegfeder c<sub>N</sub> = 2000 kN/m, 30° gegen die Vertikale geneigt. Rechts starr eingespannt, Gleichlast q = 10 kN/m.</p>
+  <ol class="steps">
+    <li><b>Diskretisieren:</b> Rechts ist alles fest. Links ist der Träger gelenkig auf der Feder gelagert. Horizontal kann er wegen EA = ∞ und Einspannung nicht. Es bleibt <b>V = Vertikalverschiebung links</b> (nach unten positiv). Die Drehung links ist frei, M<sub>l</sub> = 0 → wir nehmen das 3EI/L-Element mit „Gelenk links“.</li>
+    <li><b>Matrix a:</b> Bei V = 1 geht das linke Ende runter, das rechte bleibt. Die Sehne kippt gegen den Uhrzeigersinn: ψ = (0 − 1)/5 = −0,2 → τ<sub>r</sub> = φ<sub>r</sub> + ψ = −0,2. Die Feder steht unter dem Knoten und wird um cos 30° = 0,866 kürzer: Δ = −0,866.
+      <div class="eq"><span class="mx"><span class="m d" data-m='[["Δ_F"],["τ_r"]]'></span><span class="op">=</span><span class="m" data-m='[["−0,866"],["−0,2"]]'></span><span class="op">· V</span></span></div></li>
+    <li><b>Lasten:</b> Hilfsblatt S. 23 (Gelenk links): M̊<sub>r</sub> = −qL²/8 = −31,25 kNm. P̂ = qL/2 = 25 kN (das linke Ende kann sich nach unten verschieben, die Last will genau dahin).
+      <div class="eq">P = 0 + 25 − (−0,2)·(−31,25) = 25 − 6,25 = 18,75 kN</div>
+      <span class="small">18,75 = 3qL/8: genau die Auflagerkraft des einseitig eingespannten Trägers ✓</span></li>
+    <li><b>Steifigkeit:</b> k = diag(c; 3EI/L) = diag(2000; 6000)
+      <div class="eq">K = 2000 · 0,866² + 6000 · 0,2² = 1500 + 240 = 1740 kN/m</div></li>
+    <li><b>Lösen:</b> V = 18,75 / 1740 = <b>0,01078 m = 10,8 mm</b> nach unten</li>
+    <li><b>Schnittgrößen:</b>
+      <div class="eq">Federkraft = 2000 · (−0,866 · 0,01078) = −18,66 kN (Druck)</div>
+      <div class="eq">M<sub>r</sub> = 6000 · (−0,2 · 0,01078) − 31,25 = −12,93 − 31,25 = −44,18 kNm</div></li>
+    <li><b>Verläufe:</b> M(r) = +M<sub>r</sub> = <b>−44,18 kNm</b> (Zug oben an der Einspannung), M(l) = 0, Parabel mit qL²/8 = 31,25 einhängen → Feldmoment ca. +13,1 kNm. Querkraft links: Vertikalanteil der Feder 18,66 · cos 30° = <b>16,16 kN</b>, rechts 16,16 − 50 = <b>−33,84 kN</b>. Normalkraft: Horizontalanteil der Feder 18,66 · sin 30° = <b>−9,33 kN</b> (Druck).</li>
+  </ol>
+  <div class="box merk"><b class="t">Mit der Musterlösung abgeglichen</b>Dein Prof kommt auf V = 107,62/EI = 10,76 mm, F = −18,65 kN, M = −44,16 kNm, Q = 16,17 / −33,83 kN, N = −9,33 kN. Das passt bis auf Rundung. Er rechnet mit dem τ = −½-Trick aus Abschnitt 4 und schreibt EI = 1 heraus: K = 0,174 EI = 1740 kN/m.</div>
+  <details class="why"><summary>💡 Warum ist das so?</summary><div>
+    <h4>Warum ist die Feder schwächer als 2000?</h4><p>Die Feder steht schräg. Sie wird bei 1 m Senkung nur um 0,866 m zusammengedrückt, und ihre Kraft wirkt auch nur zu 0,866 vertikal. Deshalb steckt cos²30° = 0,75 in K: effektiv nur 1500 kN/m.</p>
+    <h4>Warum ist P kleiner als die halbe Last?</h4><p>Der Träger ist rechts eingespannt. Selbst wenn die Feder unendlich steif wäre, würde die Einspannung mehr übernehmen: links 3qL/8 = 18,75, rechts 5qL/8 = 31,25. Genau dieser linke Anteil ist P.</p>
+    <h4>Warum gibt es eine Normalkraft?</h4><p>Die schräge Feder drückt nicht nur nach oben, sondern auch zur Seite (sin 30°). Weil der Träger dehnstarr ist, leitet er diesen Anteil bis zur Einspannung durch.</p>
+  </div></details>
+  <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+    <p>Ein Freiheitsgrad, also normaler Rechenmodus:</p>
+    <p>K: <kbd>2000</kbd><kbd>×</kbd><kbd>cos</kbd><kbd>30</kbd><kbd>)</kbd><kbd>x²</kbd><kbd>+</kbd><kbd>6000</kbd><kbd>×</kbd><kbd>0.2</kbd><kbd>x²</kbd><kbd>=</kbd> → 1740 · STO A: <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>(−)</kbd><br>
+    V: <kbd>18.75</kbd><kbd>÷</kbd><kbd>ALPHA</kbd><kbd>(−)</kbd><kbd>=</kbd> → 0,010776 · STO B: <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>°'"</kbd><br>
+    M<sub>r</sub>: <kbd>6000</kbd><kbd>×</kbd><kbd>(−)</kbd><kbd>0.2</kbd><kbd>×</kbd><kbd>ALPHA</kbd><kbd>°'"</kbd><kbd>−</kbd><kbd>31.25</kbd><kbd>=</kbd> → −44,18</p>
+    <p class="small">Winkelmodus muss auf Grad (D) stehen: SETUP-Menü über <kbd class="s">SHIFT</kbd><kbd>MENU</kbd>.</p>
+  </div></details>
+
+  <h2 id="t3-ue">Übungen Tag 3</h2>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 3.1</span><span class="ti">Festhaltemomente ablesen</span></div>
+    <p>Lies mit dem Hilfsblatt (oder der Tabelle oben) die Festhaltemomente in VZK II ab. Stabrichtung jeweils von links nach rechts.</p>
+    <div class="sk" data-sk="u31"></div>
+    <div class="ans"><label>a) M̊<sub>l</sub> [kNm] =</label><input class="n" data-ans="25"><span class="fb"></span></div>
+    <div class="ans"><label>a) M̊<sub>r</sub> [kNm] =</label><input class="n" data-ans="-25"><span class="fb"></span></div>
+    <div class="ans"><label>b) M̊<sub>l</sub> [kNm] =</label><input class="n" data-ans="10"><span class="fb"></span></div>
+    <div class="ans"><label>c) M̊<sub>r</sub> [kNm] =</label><input class="n" data-ans="-36"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>a) qL²/12 = 12·25/12 = 25 → M̊<sub>l</sub> = +25, M̊<sub>r</sub> = −25.<br>b) PL/8 = 20·4/8 = 10 → +10 / −10.<br>c) Gelenk links, S. 23: M̊<sub>r</sub> = −qL²/8 = −8·36/8 = −36, M̊<sub>l</sub> = 0.</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum ist bei c) das Moment größer (qL²/8 statt qL²/12)?</h4><p>Das Gelenk links kann nichts halten. Die ganze „Einspannarbeit“ liegt rechts. Der Träger ist weicher und biegt sich stärker durch, also muss die rechte Einspannung mehr halten.</p>
+      <h4>Warum links +, rechts −?</h4><p>Unter Last will sich das linke Ende im Uhrzeigersinn drehen, das rechte gegen den Uhrzeigersinn. Die Einspannungen halten jeweils dagegen: links gegen den Uhrzeigersinn (+), rechts im Uhrzeigersinn (−).</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 3.2</span><span class="ti">Träger mit Wegfeder (wie Klausur, gespiegelt)</span></div>
+    <p>Links eingespannt, rechts auf einer senkrechten Feder c = 1500 kN/m gelagert (Drehung rechts frei). L = 4 m, EI = 8 000 kNm², EA = ∞, q = 10 kN/m. Freiheitsgrad V = Senkung des rechten Endes.</p>
+    <div class="sk" data-sk="u32"></div>
+    <div class="ans"><label>K [kN/m] =</label><input class="n" data-ans="1875"><span class="fb"></span></div>
+    <div class="ans"><label>P [kN] =</label><input class="n" data-ans="15"><span class="fb"></span></div>
+    <div class="ans"><label>V [mm] =</label><input class="n" data-ans="8"><span class="fb"></span></div>
+    <div class="ans"><label>Federkraft (Betrag) [kN] =</label><input class="n" data-ans="12"><span class="fb"></span></div>
+    <div class="ans"><label>M an der Einspannung (Momentenlinie) [kNm] =</label><input class="n" data-ans="-32"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>a:</b> Gelenk rechts → Element M<sub>l</sub> = 3EI/L·τ<sub>l</sub>. Bei V = 1: ψ = (1 − 0)/4 = 0,25 → τ<sub>l</sub> = 0,25. Die Feder unter dem Knoten wird kürzer: Δ = −1.</p>
+      <p><b>K</b> = 1500·(−1)² + (3·8000/4)·0,25² = 1500 + 6000·0,0625 = 1500 + 375 = <b>1875 kN/m</b></p>
+      <p><b>s̊:</b> S. 23, Gelenk rechts: M̊<sub>l</sub> = +qL²/8 = +20. <b>P̂</b> = qL/2 = 20 (rechtes Ende kann nach unten).<br>
+      <b>P</b> = 20 − 0,25·20 = <b>15 kN</b> (= 3qL/8 ✓)</p>
+      <p><b>V</b> = 15/1875 = 0,008 m = <b>8 mm</b></p>
+      <p><b>Federkraft</b> = 1500·(−1)·0,008 = −12 kN → <b>12 kN Druck</b></p>
+      <p><b>M<sub>l</sub></b> = 6000·0,25·0,008 + 20 = 12 + 20 = 32 kNm → Momentenlinie M(l) = −M<sub>l</sub> = <b>−32 kNm</b></p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Plausibilität mit Grenzfällen</h4><p>Wäre die Feder starr (c → ∞), wäre es der bekannte einseitig eingespannte Träger: Auflagerkraft 3qL/8 = 15 kN, Einspannmoment qL²/8 = 20. Die weiche Feder gibt nach, nimmt also weniger (12 statt 15 kN). Den Rest muss die Einspannung übernehmen, darum steigt das Moment auf 32 kNm.</p>
+      <h4>Kontrolle per Gleichgewicht</h4><p>Moment um die Einspannung: q·L²/2 − 12·4 = 80 − 48 = 32 ✓</p>
+    </div></details>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+      <p>K: <kbd>1500</kbd><kbd>+</kbd><kbd>6000</kbd><kbd>×</kbd><kbd>0.25</kbd><kbd>x²</kbd><kbd>=</kbd> → 1875<br>
+      V: <kbd>15</kbd><kbd>÷</kbd><kbd>Ans</kbd><kbd>=</kbd> → 0,008<br>
+      M<sub>l</sub>: <kbd>6000</kbd><kbd>×</kbd><kbd>0.25</kbd><kbd>×</kbd><kbd>Ans</kbd><kbd>+</kbd><kbd>20</kbd><kbd>=</kbd> → 32</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 3.3</span><span class="ti">Klausur SS 2017, Teil 3</span></div>
+    <p>Überdachung aus zwei Stäben (beide L* = √37 m, EI gleich), unten links und oben rechts gelenkig gelagert. Gleichlast q = 5 kN/m senkrecht auf Stab ②. Bei EA = ∞ bleibt nur die Eckverdrehung V<sub>3</sub>. Gesucht ist der Biegemomentenverlauf.</p>
+    <div class="sk" data-sk="u33"></div>
+    <div class="ans"><label>M̊ von Stab ② an der Ecke [kNm] =</label><input class="n" data-ans="23.125"><span class="fb"></span></div>
+    <div class="ans"><label>K / EI =</label><input class="n" data-ans="0.9864"><span class="fb"></span></div>
+    <div class="ans"><label>Eckmoment (Momentenlinie) [kNm] =</label><input class="n" data-ans="-11.5625"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>Beide Stäbe sind an ihrem äußeren Ende gelenkig → 3EI/L-Elemente. Bei V<sub>3</sub> = 1 ist τ = 1 an beiden Ecken-Enden (ψ = 0, weil EA = ∞ keine Knotenverschiebung erlaubt).</p>
+      <p><b>K</b> = 3EI/√37 + 3EI/√37 = 6EI/6,083 = <b>0,9864 EI</b></p>
+      <p><b>s̊:</b> Stab ② von der Ecke (l, eingespannt) zum Gelenk (r): M̊<sub>l</sub> = +qL*²/8 = 5·37/8 = <b>23,125 kNm</b><br>
+      <b>P</b> = −aᵀs̊ = −23,125 → V<sub>3</sub> = −23,125/(0,9864 EI) = −23,44/EI</p>
+      <p>Stab ②: M<sub>l</sub> = 0,4932 EI·(−23,44/EI) + 23,125 = −11,56 + 23,125 = 11,56 → M(Ecke) = −M<sub>l</sub> = <b>−11,56 kNm</b><br>
+      Stab ①: M<sub>r</sub> = 0,4932 EI·(−23,44/EI) = −11,56 → M(Ecke) = +M<sub>r</sub> = <b>−11,56 kNm</b></p>
+      <p>Verlauf: von 0 an den Gelenken linear zur Ecke (−11,56, Zug außen), in Stab ② die Parabel mit qL*²/8 = 23,13 einhängen. Musterlösung: −11,563 ✓</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum genau die Hälfte von 23,125?</h4><p>An der Ecke hängen zwei gleich steife Stäbe (beide 3EI/L). Das Festhaltemoment wird beim Loslassen im Verhältnis der Steifigkeiten verteilt, also 50 : 50, wie beim Cross-Verfahren. Die Ecke behält 23,125 − 11,56 = 11,56.</p>
+      <h4>Warum ist das Moment in beiden Stäben gleich?</h4><p>Knotengleichgewicht: Ohne äußeres Moment an der Ecke müssen sich die beiden Stabendmomente aufheben. Bei einer Ecke heißt das: gleiche Zugseite (außen) und gleicher Betrag.</p>
+    </div></details>
+  </div>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc3"></div>
+
+  <div class="unlock" data-day="3"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne Ü 3.2 auf Papier und schick mir ein Foto deines Momentenverlaufs mit Zahlen. Ich prüfe besonders die Vorzeichen und die Parabel.</div>
+</section>
+<!-- ===================== TAG 4 ===================== -->
+<section class="view" id="v-tag4">
+  <p class="small">Tag 4 · So 22.11. · ≈ 2–3 h</p>
+  <h1>Typ A gegen die Uhr</h1>
+  <p class="lead">Heute gibt es keine neue Theorie, nur Klausuraufgaben unter Zeitdruck. Jede Aufgabe hat einen Timer. Rechne komplett auf Papier mit Hilfsblättern und Taschenrechner, tipp erst danach deine Ergebnisse ein.</p>
+  <div class="box merk"><b class="t">So arbeitest du heute</b>Timer starten → rechnen → Ergebnisse prüfen → <b>erst dann</b> Lösung aufklappen → Fehler in einem Satz notieren („Vorzeichen von ψ vergessen“). Diese Fehlerliste ist morgen und an Tag 7 Gold wert.</div>
+
+  <!-- A1 -->
+  <div class="ex">
+    <div class="h"><span class="tag">A 1</span><span class="ti">Klausur SS 2016 · Rahmen mit starrem Riegel</span></div>
+    <div class="timer" data-min="30"></div>
+    <p>Riegel EI<sub>R</sub> = ∞, Stiele EI<sub>S</sub>, alle EA = ∞. Linker Stiel 4 m, unten gelenkig, mit Gleichlast 5 kN/m von links. Rechter Stiel 2 m, unten eingespannt. Ein Freiheitsgrad. Ergebnisse EI<sub>S</sub>-fach angeben.</p>
+    <div class="sk" data-sk="t4a"></div>
+    <div class="ans"><label>K / EI =</label><input class="n" data-ans="1.546875"><span class="fb"></span></div>
+    <div class="ans"><label>P [kN] =</label><input class="n" data-ans="12.5"><span class="fb"></span></div>
+    <div class="ans"><label>u · EI =</label><input class="n" data-ans="8.081"><span class="fb"></span></div>
+    <div class="ans"><label>M am Kopf links (Momentenlinie) [kNm] =</label><input class="n" data-ans="-8.485"><span class="fb"></span></div>
+    <div class="ans"><label>M am Fuß rechts (Momentenlinie) [kNm] =</label><input class="n" data-ans="-12.12"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>1) Diskretisieren:</b> Der starre Riegel kann nicht absacken (Stiele dehnstarr), also auch nicht drehen. Es bleibt <b>u</b> (horizontal).</p>
+      <p><b>2) a:</b> Stiele von unten (l) nach oben (r). Linker Stiel: Gelenk unten → 3EI/L-Element, Zeile τ<sub>r</sub>¹ = ψ = 1/4. Rechter Stiel: beide Enden fest → τ<sub>l</sub>³ = τ<sub>r</sub>³ = 1/2.</p>
+      <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_r¹"],["τ_l³"],["τ_r³"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/2"],["1/2"]]'></span><span class="op">· u</span></span></div>
+      <p><b>3) s̊:</b> Linker Stiel, Gelenk unten, Last „nach unten“ (= rechts bei Stabrichtung nach oben): S. 23 → M̊<sub>r</sub>¹ = −qh²/8 = −5·16/8 = <b>−10</b>. P̂ = qh/2 = 10 (Kopf kann sich verschieben).</p>
+      <div class="eq">P = 10 − (1/4)·(−10) = 12,5 kN</div>
+      <p><b>4) K:</b> 3EI/4·(1/4)² + (EI/2)·[½ ½]·[4 2; 2 4]·[½; ½] = 0,046875 EI + 1,5 EI = <b>1,546875 EI</b> (= 3EI/h₁³ + 12EI/h₃³)</p>
+      <p><b>5) u</b> = 12,5 / 1,546875 EI = <b>8,081/EI</b></p>
+      <p><b>6) s:</b> Linker Stiel M<sub>r</sub> = (3EI/4)·(8,081/4EI) − 10 = 1,515 − 10 = <b>−8,485</b>. Rechter Stiel: τ = 4,040/EI → M<sub>l</sub> = M<sub>r</sub> = (EI/2)·6·4,040/EI = <b>12,12</b>.</p>
+      <p><b>7) Verläufe:</b> Linker Stiel: Fuß 0, Kopf M(r) = −8,49, Parabel qh²/8 = 10 einhängen. Rechter Stiel: Fuß M(l) = −12,12, Kopf M(r) = +12,12. Riegel (EI = ∞) übernimmt die Eckmomente: links 8,49, rechts 12,12 (Knotengleichgewicht). Musterlösung: s¹ = −8,5; s³ = 12,12 ✓</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum ist der kurze Stiel so dominant?</h4><p>Quersteifigkeit 12EI/h³: halbe Höhe heißt 8-fache Steifigkeit. Dazu ist er unten eingespannt (12 statt 3). Zusammen ist er 32-mal steifer als der linke Stiel und zieht fast die ganze Horizontallast.</p>
+      <h4>Kontrolle Σ H</h4><p>Querkraft rechter Stiel: (12,12 + 12,12)/2 = 12,12 kN. Fußkraft links: 20 − 12,12 = 7,88 kN. Moment am linken Stielkopf aus der Fußkraft: 7,88·4 − 5·4·2 = −8,48 ✓</p>
+    </div></details>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+      <p>EI = 1 setzen. K: <kbd>3</kbd><kbd>÷</kbd><kbd>4</kbd><kbd>×</kbd><kbd>0.25</kbd><kbd>x²</kbd><kbd>+</kbd><kbd>12</kbd><kbd>÷</kbd><kbd>2</kbd><kbd>x³</kbd><kbd>=</kbd> → 1,546875 → STO A<br>
+      u: <kbd>12.5</kbd><kbd>÷</kbd><kbd>ALPHA</kbd><kbd>(−)</kbd><kbd>=</kbd> → 8,0808 → STO B<br>
+      M links: <kbd>3</kbd><kbd>÷</kbd><kbd>4</kbd><kbd>×</kbd><kbd>ALPHA</kbd><kbd>°'"</kbd><kbd>÷</kbd><kbd>4</kbd><kbd>−</kbd><kbd>10</kbd><kbd>=</kbd> → −8,485<br>
+      M rechts: <kbd>6</kbd><kbd>÷</kbd><kbd>2</kbd><kbd>×</kbd><kbd>ALPHA</kbd><kbd>°'"</kbd><kbd>÷</kbd><kbd>2</kbd><kbd>=</kbd> → 12,12</p>
+    </div></details>
+  </div>
+
+  <!-- A2 -->
+  <div class="ex">
+    <div class="h"><span class="tag">A 2</span><span class="ti">Klausur WS 2017/18, Teil 1 · Stützensenkung</span></div>
+    <div class="timer" data-min="10"></div>
+    <p>Beidseitig eingespannter Einfeldträger, L = 6 m, rechtes Ende senkt sich um 0,02 m. Schubstarr, b/h = 0,20/4,00 m, E = 3·10⁷ kN/m².</p>
+    <div class="sk" data-sk="t4b"></div>
+    <div class="ans"><label>EI [kNm²] =</label><input class="n" data-ans="32000000"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>l</sub> = M<sub>r</sub> (VZK II) [kNm] =</label><input class="n" data-ans="106667"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>Freiheitsgrade:</b> keine! Beide Enden sind eingespannt, die Senkung ist <i>vorgegeben</i> und nicht unbekannt. Die Lösung ist direkt der Festhaltezustand.</p>
+      <p>EI = 3·10⁷ · 0,2·4³/12 = 3·10⁷ · 1,0667 = <b>3,2·10⁷ kNm²</b></p>
+      <p>Hilfsblatt S. 20, Fall 17: M̊<sub>l</sub> = M̊<sub>r</sub> = 6EI/L² · Δw = 6·3,2·10⁷/36 · 0,02 = <b>106 667 kNm</b></p>
+      <p>Alternativ über k·v: ψ = 0,02/6 = 3,33·10⁻³ → τ<sub>l</sub> = τ<sub>r</sub> = ψ → M = (EI/L)·(4+2)·ψ = 6EI/L·ψ ✓</p>
+      <p>Momentenlinie: M(l) = −106 667, M(r) = +106 667, linear dazwischen (Nulldurchgang in Feldmitte). Musterlösung: ±106 560 (mit gerundetem ψ) ✓</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum so ein riesiges Moment?</h4><p>Der Querschnitt ist 4 m hoch, also eigentlich eine Wandscheibe. EI ist gigantisch, und Zwangsschnittgrößen sind proportional zur Steifigkeit. Genau deshalb fragt Teil 2 nach dem schubweichen Modell: Bei so gedrungenen Trägern ist die Schubverformung nicht mehr vernachlässigbar, und das Moment halbiert sich fast (siehe Tag 5).</p>
+      <h4>Warum antimetrisch?</h4><p>Die Verformung ist eine reine S-Kurve: Beide Enden bleiben waagerecht, nur das rechte liegt tiefer. Die S-Kurve hat in der Mitte einen Wendepunkt, also M = 0.</p>
+    </div></details>
+  </div>
+
+  <!-- A3 -->
+  <div class="ex">
+    <div class="h"><span class="tag">A 3</span><span class="ti">Klausur WS 2019/20 · Fachwerk mit Feder</span></div>
+    <div class="timer" data-min="30"></div>
+    <p>Stäbe ① und ② EA = 10 000 kN, Stab ③ EA = ∞, Feder c<sub>N</sub> = 1 500 kN/m, P = 10 kN unter 50° nach rechts oben.</p>
+    <div class="sk" data-sk="t4c"></div>
+    <div class="ans"><label>K [kN/m] =</label><input class="n" data-ans="4362.3"><span class="fb"></span></div>
+    <div class="ans"><label>Verschiebung [mm] =</label><input class="n" data-ans="1.756"><span class="fb"></span></div>
+    <div class="ans"><label>Federkraft [kN] =</label><input class="n" data-ans="2.634"><span class="fb"></span></div>
+    <div class="ans"><label>N<sub>1</sub> = N<sub>2</sub> [kN] =</label><input class="n" data-ans="2.81"><span class="fb"></span></div>
+    <div class="ans"><label>N<sub>3</sub> [kN] =</label><input class="n" data-ans="6.43"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>Freiheitsgrad:</b> Stab ③ ist dehnstarr und hält den Knoten horizontal fest. Es bleibt die <b>Vertikalverschiebung</b> (nach oben positiv).</p>
+      <p><b>Geometrie:</b> L<sub>1</sub> = L<sub>2</sub> = √(2,5² + 5²) = 5,59 m, Neigung gegen die Vertikale tan α = 2,5/5 → α = 26,57°, cos α = 0,894.</p>
+      <p><b>a:</b> Knoten 1 nach oben um 1 → Stäbe ① und ② werden um cos α = 0,894 länger, die Feder (über dem Knoten) wird um 1 kürzer.</p>
+      <p><b>K</b> = 2·(10 000/5,59)·0,894² + 1 500 = 2·1 789·0,8 + 1 500 = <b>4 362 kN/m</b></p>
+      <p><b>P</b> = Vertikalanteil = 10·sin 50° = 7,66 kN → <b>u</b> = 7,66/4 362 = <b>1,756 mm</b> ✓ Musterlösung</p>
+      <p><b>Federkraft</b> = 1 500·1,756·10⁻³ = <b>2,63 kN</b> ✓</p>
+      <p><b>N<sub>1</sub> = N<sub>2</sub></b> = (EA/L)·Δu = 1 789·0,894·1,756·10⁻³ = <b>2,81 kN</b> (Zug)</p>
+      <p><b>N<sub>3</sub></b> = Horizontalanteil = 10·cos 50° = <b>6,43 kN</b> (Zug) ✓</p>
+    </div></details>
+    <div class="box warn"><b class="t">Achtung, Musterlösung</b>In der Musterlösung steht N<sub>1</sub> = N<sub>2</sub> = 4,12 kN, gerechnet als (10 − 2,63)·½/cos α. Dort wurde die <b>volle</b> Last 10 kN statt der Vertikalkomponente 7,66 kN eingesetzt. Kontrolle über Σ V am Knoten: 2·2,81·0,894 + 2,63 = 7,66 ✓. Mit 4,12 kämen 10,0 heraus, das passt nicht zur Vertikallast. Ich habe das zusätzlich mit einem Stabwerksprogramm nachgerechnet: 2,81 kN. Frag im Zweifel deinen Prof, ob die Lösung korrigiert wurde.</div>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum zieht Stab ③ die ganze Horizontalkraft?</h4><p>Er ist dehnstarr, also unendlich steif in seiner Richtung. Kräfte fließen immer zum steifsten Weg. Die schrägen Stäbe bekommen horizontal nichts, weil der Knoten sich horizontal gar nicht bewegt.</p>
+      <h4>Warum cos² in K?</h4><p>Einmal cos α, weil der Stab bei 1 m Hub nur um cos α länger wird. Und noch einmal cos α, weil nur dieser Anteil seiner Kraft vertikal wirkt.</p>
+    </div></details>
+  </div>
+
+  <!-- A4 -->
+  <div class="ex">
+    <div class="h"><span class="tag">A 4</span><span class="ti">Klausur SS 2025 · Rahmen mit Federn (40 min)</span></div>
+    <div class="timer" data-min="40"></div>
+    <p>Riegel 2 × 4 m, links und rechts vertikal gelagert und horizontal über Federn c<sub>F</sub> = 5 000 kN/m gehalten. Stiel 4 m, unten eingespannt. Gleichlast 5 kN/m auf dem linken Feld, Knotenmoment 10 kNm (im Uhrzeigersinn) an der Ecke, 5 kN horizontal in Stielmitte. EI = 10 000 kNm², EA = GA = ∞.</p>
+    <div class="sk" data-sk="t4d"></div>
+    <div class="ans"><label>K<sub>11</sub> (u,u) [kN/m] =</label><input class="n" data-ans="11875"><span class="fb"></span></div>
+    <div class="ans"><label>K<sub>12</sub> (u,φ) [kN] =</label><input class="n" data-ans="3750"><span class="fb"></span></div>
+    <div class="ans"><label>K<sub>22</sub> (φ,φ) [kNm] =</label><input class="n" data-ans="25000"><span class="fb"></span></div>
+    <div class="ans"><label>P<sub>1</sub> [kN] =</label><input class="n" data-ans="2.5"><span class="fb"></span></div>
+    <div class="ans"><label>P<sub>2</sub> [kNm] =</label><input class="n" data-ans="2.5"><span class="fb"></span></div>
+    <div class="ans"><label>M linkes Feld an der Ecke (Momentenlinie) [kNm] =</label><input class="n" data-ans="-9.46"><span class="fb"></span></div>
+    <div class="ans"><label>Federkraft [kN] =</label><input class="n" data-ans="0.94"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>1) Freiheitsgrade:</b> Riegel dehnstarr → beide Riegelenden und die Ecke haben dasselbe <b>u</b>. Der Stiel ist dehnstarr → die Ecke sackt nicht ab. Dazu kommt die Eckdrehung <b>φ</b>. → V = [u; φ]</p>
+      <p><b>2) Elemente und a:</b></p>
+      <ul>
+        <li>Linkes Feld, Gelenk links: M<sub>r</sub> = 3EI/4·τ<sub>r</sub> = 7 500·τ<sub>r</sub>, τ<sub>r</sub> = φ</li>
+        <li>Rechtes Feld, Gelenk rechts: M<sub>l</sub> = 7 500·τ<sub>l</sub>, τ<sub>l</sub> = φ</li>
+        <li>Stiel (l = Fuß, r = Ecke): k = [10 000 5 000; 5 000 10 000], τ<sub>l</sub> = u/4, τ<sub>r</sub> = φ + u/4</li>
+        <li>Zwei Federn: Δ = ±u, je 5 000</li>
+      </ul>
+      <p><b>3) K:</b> K<sub>11</sub> = 2·5 000 + (1/16)(10 000 + 2·5 000 + 10 000) = 10 000 + 1 875 = <b>11 875</b><br>
+      K<sub>12</sub> = (1/4)(5 000 + 10 000) = <b>3 750</b><br>
+      K<sub>22</sub> = 7 500 + 7 500 + 10 000 = <b>25 000</b></p>
+      <p><b>4) Lasten:</b> s̊ linkes Feld (Gelenk links, S. 23): M̊<sub>r</sub> = −qL²/8 = −10. Stiel mit Einzellast in der Mitte („unten“ = rechts): M̊<sub>l</sub> = +PL/8 = 2,5, M̊<sub>r</sub> = −2,5. P̂<sub>u</sub> = 5/2 = 2,5 (Stielkopf-Auflagerkraft des Einfeldträgers). P̄<sub>φ</sub> = −10 (Uhrzeigersinn).<br>
+      P<sub>1</sub> = 2,5 − [¼·2,5 + ¼·(−2,5)] = <b>2,5</b><br>
+      P<sub>2</sub> = −10 − [(−10) + (−2,5)] = <b>2,5</b></p>
+      <p><b>5) Lösen:</b> u = 1,878·10⁻⁴ m, φ = 7,18·10⁻⁵ rad</p>
+      <p><b>6) Schnittgrößen:</b><br>
+      Linkes Feld: M<sub>r</sub> = 7 500·φ − 10 = 0,54 − 10 = <b>−9,46</b><br>
+      Rechtes Feld: M<sub>l</sub> = 7 500·φ = <b>0,54</b><br>
+      Stiel: M<sub>l</sub> = 10 000·u/4 + 5 000·(φ + u/4) + 2,5 = <b>3,56</b>; M<sub>r</sub> = 5 000·u/4 + 10 000·(φ + u/4) − 2,5 = <b>−1,08</b><br>
+      Federn: 5 000·u = <b>0,94 kN</b></p>
+      <p><b>7) Momentenlinie:</b> linkes Feld an der Ecke −9,46 (Zug oben), Parabel qL²/8 = 10 → Feldmoment ≈ +5,8. Rechtes Feld an der Ecke −0,54. Stiel: Fuß −3,56, Mitte +2,68 (Knick unter der Einzellast), Kopf −1,08. Alles stimmt mit dem EDV-Ausdruck überein (9,46 / 0,54 / 3,57 / 2,68 / 5,82, N = 0,94).</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum ist P<sub>1</sub> nur 2,5, obwohl 5 kN am Stiel ziehen?</h4><p>Die Hälfte der Stiellast geht als Einfeldträger-Auflagerkraft direkt in den eingespannten Fuß. Nur die obere Hälfte kommt am Riegel an (P̂ = 2,5). Der Momentenanteil −aᵀs̊ hebt sich für u auf, weil M̊<sub>l</sub> und M̊<sub>r</sub> gleich groß und entgegengesetzt sind.</p>
+      <h4>Warum hat K eine Kopplung K<sub>12</sub>?</h4><p>Nur der Stiel verbindet u und φ: Verschiebst du die Ecke, verbiegt sich der Stiel und will die Ecke mitdrehen. Darum braucht es ein Moment, um φ = 0 zu halten. Die Riegel haben keine Kopplung, weil u sie nur längs verschiebt.</p>
+      <h4>Kontrolle Knotengleichgewicht</h4><p>An der Ecke: −9,46 + 0,54 + (−1,08) = −10,0 = Knotenmoment (im Uhrzeigersinn) ✓</p>
+    </div></details>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+      <p>MatA = K (2×2): <kbd>11875</kbd><kbd>=</kbd><kbd>3750</kbd><kbd>=</kbd><kbd>3750</kbd><kbd>=</kbd><kbd>25000</kbd><kbd>=</kbd> · MatB = P (2×1): <kbd>2.5</kbd><kbd>=</kbd><kbd>2.5</kbd><kbd>=</kbd><br>
+      <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → [1,878·10⁻⁴; 7,18·10⁻⁵]</p>
+      <p>Oder Gleichungssystem: <kbd>MENU</kbd> → Gleichung/Funkt → Lin. Gleichungssystem → 2 Unbekannte.</p>
+      <p>Stielmomente auf einen Schlag: MatC = Stiel-k (2×2) <kbd>10000</kbd><kbd>=</kbd><kbd>5000</kbd><kbd>=</kbd><kbd>5000</kbd><kbd>=</kbd><kbd>10000</kbd><kbd>=</kbd>, MatD = Stiel-a (2×2) <kbd>0.25</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0.25</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd> → <kbd>OPTN</kbd><kbd>5</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>6</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>7</kbd><kbd>=</kbd> → [1,06; 1,42], dann s̊ addieren: +2,5 / −2,5.</p>
+    </div></details>
+  </div>
+
+  <h3>Fehler-Checkliste für heute Abend</h3>
+  <ul>
+    <li>Hab ich bei jedem Stab die Stabrichtung l → r in die Skizze gezeichnet?</li>
+    <li>ψ im Uhrzeigersinn positiv, τ = φ + ψ?</li>
+    <li>Gelenk erkannt → 3EI/L und s̊ aus S. 23?</li>
+    <li>P̂ (Einfeldträger-Auflagerkraft) bei Verschiebungs-Freiheitsgraden nicht vergessen?</li>
+    <li>Am Ende M(l) = −M<sub>l</sub> und M(r) = +M<sub>r</sub> beim Zeichnen?</li>
+  </ul>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc4"></div>
+  <div class="unlock" data-day="4"></div>
+  <div class="chat"><b>Heute im Chat:</b> Schick mir deine Fehlerliste von heute. Daraus mache ich dir für Tag 7 eine Probeklausur, die genau deine Schwachstellen testet.</div>
+</section>
+<!-- ===================== TAG 5 ===================== -->
+<section class="view" id="v-tag5">
+  <p class="small">Tag 5 · Mo 23.11. · ≈ 2–3 h</p>
+  <h1>Typ B: Die Steifigkeit selbst herleiten</h1>
+  <p class="lead">Bei einigen Klausuraufgaben ist der Stab „besonders“: veränderlicher Querschnitt, geschwächt, schubweich. Dann musst du k selbst bestimmen. Das Rezept ist immer gleich und nutzt den Arbeitssatz, den du schon kannst.</p>
+
+  <ul class="toc">
+    <li><a href="#t5-1">1. Das Rezept: erst f, dann k = f⁻¹</a></li>
+    <li><a href="#t5-2">2. Dehnstab mit veränderlichem A</a></li>
+    <li><a href="#t5-3">3. Biegestab mit Abschnitten</a></li>
+    <li><a href="#t5-4">4. Schubweicher Träger</a></li>
+    <li><a href="#t5-5">5. Ersatzfedern und Grenzfälle</a></li>
+    <li><a href="#t5-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t5-1">1. Das Rezept: erst f, dann k = f⁻¹</h2>
+  <p>Kräfte aufbringen und Verformungen messen ist leicht, das kannst du mit dem Arbeitssatz. Das Gegenteil, Verformungen erzwingen und Kräfte messen, ist schwer. Also gehst du über die <b>Flexibilitätsmatrix f</b>:</p>
+  <ol class="steps">
+    <li><b>Einfeldträger</b> gelenkig gelagert (statisch bestimmt), darauf die Einheitszustände: N = 1, M<sub>l</sub> = 1, M<sub>r</sub> = 1.</li>
+    <li><b>Zustandslinien</b> (VZK I): n = 1 &nbsp;·&nbsp; m<sub>1</sub>(x) = −(1 − x/L) &nbsp;·&nbsp; m<sub>2</sub>(x) = x/L &nbsp;·&nbsp; q = (M<sub>l</sub>+M<sub>r</sub>)/L = 1/L</li>
+    <li><b>Arbeitssatz:</b> f<sub>ij</sub> = ∫ m<sub>i</sub> m<sub>j</sub>/EI dx (+ ∫ q<sub>i</sub> q<sub>j</sub>/GA<sub>v</sub> dx bei Schub) &nbsp;·&nbsp; f<sub>N</sub> = ∫ 1/EA dx</li>
+    <li><b>Invertieren:</b> k = f⁻¹. Für 2×2: <span class="mx"><span class="m" data-m='[["a","b"],["b","d"]]'></span><span class="op">⁻¹ = 1/(ad − b²) ·</span><span class="m" data-m='[["d","−b"],["−b","a"]]'></span></span></li>
+  </ol>
+  <p>Für den normalen Stab kommt heraus: f = (L/6EI)·[2 −1; −1 2] → k = (EI/L)·[4 2; 2 4]. Die 4 und die 2 sind also kein Zufall.</p>
+  <div class="box hb"><b class="t">Hilfsblatt</b>Für die Integrale nimmst du die Koppeltafeln S. 8–10. Bei Abschnitten mit verschiedenem EI teilst du das Integral in Abschnitte und koppelst jeden Abschnitt einzeln.</div>
+  <div class="box merk"><b class="t">Selbstkontrolle</b>f und k sind symmetrisch. In VZK II ist f<sub>12</sub> negativ und k<sub>12</sub> positiv. Wird ein Abschnitt weicher, werden die Einträge von k kleiner. Setzt du alle Abschnitte gleich, muss 4EI/L und 2EI/L herauskommen.</div>
+
+  <h2 id="t5-2">2. Dehnstab mit veränderlichem Querschnitt (SS 2018, WS 2023/24)</h2>
+  <div class="sk" data-sk="t5a"></div>
+  <p>A(x) = A<sub>L</sub>(1 − x/L) + A<sub>R</sub>·x/L. Gesucht ist F = k · Δu.</p>
+  <ol class="steps">
+    <li><b>Gleichgewicht:</b> N(x) = F (konstant, keine Last längs des Stabs)</li>
+    <li><b>Werkstoff:</b> σ = N/A(x), ε = σ/E = F/(E·A(x))</li>
+    <li><b>Kinematik:</b> Δu = ∫₀ᴸ ε dx = (F/E) ∫₀ᴸ dx / (A<sub>L</sub> + (A<sub>R</sub> − A<sub>L</sub>)x/L)</li>
+    <li><b>Integral</b> (Hinweis ∫1/x dx = ln x): = (F/E) · L/(A<sub>R</sub> − A<sub>L</sub>) · ln(A<sub>R</sub>/A<sub>L</sub>)</li>
+  </ol>
+  <div class="eq" style="font-size:21px">k = E·(A<sub>R</sub> − A<sub>L</sub>) / (L · ln(A<sub>R</sub>/A<sub>L</sub>))</div>
+  <div class="box merk"><b class="t">Kontrolle</b>Für A<sub>R</sub> → A<sub>L</sub> = A muss EA/L herauskommen. Mit ln(1+ε) ≈ ε: (A<sub>R</sub> − A<sub>L</sub>)/ln(A<sub>R</sub>/A<sub>L</sub>) → A ✓. Diesen Satz in der Klausur hinzuschreiben bringt Sympathiepunkte.</div>
+
+  <h2 id="t5-3">3. Biegestab mit Abschnitten (SS 2026)</h2>
+  <div class="sk" data-sk="t5b"></div>
+  <p>Außen je L/4 mit EI, EA. In der Mitte L/2 mit EI/8 (halbe Höhe → h³/8) und EA/2.</p>
+  <p><b>Normalkraft:</b> f<sub>N</sub> = (L/2)/EA + (L/2)/(EA/2) = 1,5 L/EA → <b>k<sub>N</sub> = 2EA/(3L)</b></p>
+  <p><b>Biegung:</b> In der Mitte ist EI 8-mal kleiner. Das schreibst du als „Grundintegral über die ganze Länge + 7-mal das Integral über die Mitte“:</p>
+  <div class="eq">f<sub>11</sub> = (L/EI)·[1/3 + 7·13/96] = 123/96 · L/EI</div>
+  <div class="eq">f<sub>12</sub> = −(L/EI)·[1/6 + 7·11/96] = −93/96 · L/EI &nbsp;&nbsp; f<sub>22</sub> = f<sub>11</sub></div>
+  <p><span class="small">∫ über die Mitte (ξ = x/L von ¼ bis ¾): ∫(1−ξ)² dξ = 13/96 und ∫ξ(1−ξ) dξ = 11/96</span></p>
+  <p>Invertieren: det = (123² − 93²)/96² = 6480/96² →</p>
+  <div class="eq"><span class="mx"><span class="op">k = </span><span class="m" data-m='[["2EA/3L","0","0"],["0","1,822 EI/L","1,378 EI/L"],["0","1,378 EI/L","1,822 EI/L"]]'></span></span></div>
+  <p class="small">Exakt: k<sub>Biegung</sub> = (2EI/135L)·[123 93; 93 123].</p>
+
+  <h2 id="t5-4">4. Schubweicher Träger (WS 2017/18 Teil 2, WS 2022/23)</h2>
+  <p>Bei GA<sub>v</sub> ≠ ∞ kommt zu f der Schubanteil ∫ q<sub>i</sub>q<sub>j</sub>/GA<sub>v</sub> dx = L·(1/L)(1/L)/GA<sub>v</sub> = 1/(L·GA<sub>v</sub>) dazu, auf <b>alle vier</b> Einträge mit gleichem Vorzeichen.</p>
+  <p>Zahlen der Klausur: EI = 3,2·10⁷, G = E/2 = 1,5·10⁷, A<sub>v</sub> = 5/6·0,8 → GA<sub>v</sub> = 1,0·10⁷, L = 6:</p>
+  <div class="eq">f = 10⁻⁷ · [0,7917 −0,1458; −0,1458 0,7917] &nbsp;→&nbsp; k = 10⁷ · [1,3075 0,2409; 0,2409 1,3075]</div>
+  <div class="eq">M = (1,3075 + 0,2409)·10⁷ · 3,33·10⁻³ = 51 612 kNm</div>
+  <p>Statt 106 667 kNm (schubstarr) nur noch knapp die Hälfte ✓ Musterlösung.</p>
+
+  <h2 id="t5-5">5. Ersatzfedern und Grenzfälle (SS 2020)</h2>
+  <div class="sk" data-sk="t5c"></div>
+  <p>Ein Einfeldträger (Spannweite 2L) mit Feder c<sub>N</sub> in der Mitte wirkt wie <b>zwei parallele Federn</b>: Balken c<sub>B</sub> und Feder c<sub>N</sub>.</p>
+  <ol class="steps">
+    <li><b>c<sub>B</sub> über Prinzip der virtuellen Kräfte:</b> Durchbiegung in Feldmitte unter P = 1: δ = (2L)³/(48EI) = L³/(6EI) → <b>c<sub>B</sub> = 6EI/L³</b></li>
+    <li><b>Parallelschaltung:</b> K = c<sub>B</sub> + c<sub>N</sub>, w = P/K</li>
+    <li><b>Federkraft:</b> F = c<sub>N</sub>·w = P·c<sub>N</sub>/(c<sub>N</sub> + c<sub>B</sub>) = P/(1 + 6EI/(c<sub>N</sub>L³))</li>
+    <li><b>Balkenmoment:</b> M = (P − F)·2L/4 = 3PL/(c<sub>N</sub>L³/EI + 6)</li>
+  </ol>
+  <table>
+    <tr><th>Grenzfall</th><th>Federkraft</th><th>M</th><th>Anschaulich</th></tr>
+    <tr><td>c<sub>N</sub> → 0</td><td>0</td><td>PL/2</td><td>keine Feder, normaler Einfeldträger</td></tr>
+    <tr><td>c<sub>N</sub> → ∞</td><td>P</td><td>0</td><td>starres Lager in der Mitte nimmt alles</td></tr>
+    <tr><td>EI → 0</td><td>P</td><td>0</td><td>Balken ist ein Seil, die Feder trägt alles</td></tr>
+    <tr><td>EI → ∞</td><td>0</td><td>PL/2</td><td>starrer Balken, die Feder wird nicht zusammengedrückt</td></tr>
+  </table>
+  <div class="box warn"><b class="t">Achtung, Musterlösung</b>In den handschriftlichen Notizen zu SS 2020 sind die Fälle c) und d) <b>vertauscht</b>. Setz selbst ein: EI → 0 heißt c<sub>B</sub> → 0, also nimmt die Feder alles (F = P). Das folgt auch direkt aus der Formel F = P/(1 + 6EI/(c<sub>N</sub>L³)).</div>
+
+  <h2 id="t5-ue">Übungen Tag 5</h2>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.1</span><span class="ti">Flexibilität eines normalen Stabes</span></div>
+    <p>L = 6 m, EI = 12 000 kNm². Berechne f<sub>11</sub> und f<sub>12</sub> und daraus k<sub>11</sub> und k<sub>12</sub>.</p>
+    <div class="ans"><label>f<sub>11</sub> [10⁻⁴ 1/kNm] =</label><input class="n" data-ans="1.6667"><span class="fb"></span></div>
+    <div class="ans"><label>f<sub>12</sub> [10⁻⁴ 1/kNm] =</label><input class="n" data-ans="-0.8333"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>11</sub> [kNm] =</label><input class="n" data-ans="8000"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>12</sub> [kNm] =</label><input class="n" data-ans="4000"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>f<sub>11</sub> = L/(3EI) = 6/36 000 = 1,6667·10⁻⁴ &nbsp;·&nbsp; f<sub>12</sub> = −L/(6EI) = −0,8333·10⁻⁴</p>
+      <p>det = (1,6667² − 0,8333²)·10⁻⁸ = 2,0833·10⁻⁸ → k<sub>11</sub> = 1,6667·10⁻⁴/2,0833·10⁻⁸ = 8 000 = 4EI/L ✓ &nbsp;·&nbsp; k<sub>12</sub> = +0,8333·10⁻⁴/2,0833·10⁻⁸ = 4 000 = 2EI/L ✓</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum ist f<sub>12</sub> negativ, k<sub>12</sub> aber positiv?</h4><p>f<sub>12</sub>: Drückst du links mit M = 1 gegen den Uhrzeigersinn, dreht sich das rechte Ende im Uhrzeigersinn, also negativ. k<sub>12</sub>: Willst du links drehen und rechts festhalten, muss das rechte Ende <i>mit</i> gegen den Uhrzeigersinn gehalten werden, also positiv. Die Inverse dreht das Vorzeichen der Nebendiagonale um.</p>
+    </div></details>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+      <p>MatA (2×2): <kbd>6</kbd><kbd>÷</kbd><kbd>36000</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>72000</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>72000</kbd><kbd>=</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>36000</kbd><kbd>=</kbd> → <kbd>AC</kbd> <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>=</kbd> → [8000 4000; 4000 8000]</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.2</span><span class="ti">Dehnstab mit Zahlen</span></div>
+    <p>A<sub>L</sub> = 0,02 m², A<sub>R</sub> = 0,01 m², L = 4 m, E = 2,1·10⁸ kN/m². Berechne k und vergleiche mit EA<sub>mittel</sub>/L.</p>
+    <div class="ans"><label>k [kN/m] =</label><input class="n" data-ans="757415"><span class="fb"></span></div>
+    <div class="ans"><label>E·A<sub>mittel</sub>/L [kN/m] =</label><input class="n" data-ans="787500"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>k = E(A<sub>R</sub> − A<sub>L</sub>)/(L·ln(A<sub>R</sub>/A<sub>L</sub>)) = 2,1·10⁸·(−0,01)/(4·ln 0,5) = −2,1·10⁶/(−2,7726) = <b>757 415 kN/m</b></p>
+      <p>Mit mittlerer Fläche 0,015: 2,1·10⁸·0,015/4 = 787 500 kN/m, also etwa 4 % zu steif.</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum ist der echte Stab weicher als mit der mittleren Fläche?</h4><p>Die Dehnung ist umgekehrt proportional zu A. Die dünnen Stellen dehnen sich überproportional stark, das zieht die Gesamtsteifigkeit nach unten. Mittelwert von 1/A ist größer als 1/Mittelwert von A.</p>
+      <h4>Funktioniert die Formel auch, wenn A<sub>R</sub> &lt; A<sub>L</sub>?</h4><p>Ja. Zähler und ln sind dann beide negativ, der Bruch bleibt positiv.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.3</span><span class="ti">Klausur SS 2026 · Geschwächter Biegestab</span></div>
+    <p>Bestimme die Faktoren der Elementsteifigkeitsmatrix (Herleitung siehe Abschnitt 3).</p>
+    <div class="ans"><label>k<sub>N</sub> = ? · EA/L</label><input class="n" data-ans="0.6667"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>11</sub> = ? · EI/L</label><input class="n" data-ans="1.8222"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>12</sub> = ? · EI/L</label><input class="n" data-ans="1.3778"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>Die Integrale mit ξ = x/L, Gewicht 1 außen und 8 in der Mitte:</p>
+      <p>f<sub>11</sub>·EI/L = ∫₀¹(1−ξ)²dξ + 7∫<sub>¼</sub><sup>¾</sup>(1−ξ)²dξ = 1/3 + 7·13/96 = 123/96</p>
+      <p>f<sub>12</sub>·EI/L = −[∫₀¹ξ(1−ξ)dξ + 7∫<sub>¼</sub><sup>¾</sup>ξ(1−ξ)dξ] = −[1/6 + 7·11/96] = −93/96</p>
+      <p>k = (96/6480)·[123 93; 93 123]·EI/L = [1,8222 1,3778; 1,3778 1,8222]·EI/L</p>
+      <p>Mit Koppeltafel: Teile in 3 Abschnitte, Trapez × Trapez je Abschnitt, Mittelabschnitt mit Faktor 8.</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Plausibel?</h4><p>Ungeschwächt wären es 4 und 2. Die geschwächte Mitte macht den Stab deutlich weicher: 1,82 statt 4. Die Fortleitung ist relativ größer (1,38/1,82 = 0,76 statt 0,5), weil die Mitte weich ist und die Enden steif bleiben. Die steifen Enden „schleppen“ die Verdrehung stärker zum anderen Ende.</p>
+      <h4>Warum EI/8?</h4><p>I = b·h³/12. Halbe Höhe → (½)³ = ⅛. A = b·h → halbe Höhe = halbe Fläche.</p>
+    </div></details>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+      <p>Integrale direkt mit der Integraltaste: <kbd>∫▭</kbd> <kbd>(</kbd><kbd>1</kbd><kbd>−</kbd><kbd>x</kbd><kbd>)</kbd><kbd>x²</kbd> von 0,25 bis 0,75 → 0,1354 (= 13/96)</p>
+      <p>Matrix: MatA = [123 −93; −93 123] eingeben, <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>96</kbd><kbd>=</kbd> → [1,8222 1,3778; …]</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.4</span><span class="ti">Balken mit Mittelfeder (wie SS 2020)</span></div>
+    <p>L = 4 m (Spannweite 2L = 8 m), EI = 8 000 kNm², c<sub>N</sub> = 1 000 kN/m, P = 10 kN in Feldmitte.</p>
+    <div class="ans"><label>c<sub>B</sub> [kN/m] =</label><input class="n" data-ans="750"><span class="fb"></span></div>
+    <div class="ans"><label>Federkraft [kN] =</label><input class="n" data-ans="5.714"><span class="fb"></span></div>
+    <div class="ans"><label>Balkenmoment unter P [kNm] =</label><input class="n" data-ans="8.571"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>c<sub>B</sub> = 6·8000/4³ = 750 kN/m · K = 1750 kN/m · w = 10/1750 = 5,71 mm</p>
+      <p>F = 1000·w = 5,714 kN · Balken trägt 10 − 5,714 = 4,286 kN → M = 4,286·8/4 = 8,571 kNm</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum teilt sich die Last so auf?</h4><p>Parallel geschaltete Federn haben dieselbe Verschiebung. Die Kraft verteilt sich deshalb im Verhältnis der Steifigkeiten: 1000 : 750 → 57 % zur Feder, 43 % zum Balken.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.5</span><span class="ti">Klausur SS 2023 · Flexibilität invertieren</span></div>
+    <p>Für einen zweistöckigen Rahmen mit starren Riegeln liefert der Arbeitssatz (Musterlösung) f = (1/EI)·[18 9; 9 9] für die Horizontalverschiebungen V<sub>1</sub> (oben) und V<sub>2</sub> (Mitte). EI = 10 000 kNm². Berechne K = f⁻¹.</p>
+    <div class="ans"><label>K<sub>11</sub> [kN/m] =</label><input class="n" data-ans="1111.1"><span class="fb"></span></div>
+    <div class="ans"><label>K<sub>12</sub> [kN/m] =</label><input class="n" data-ans="-1111.1"><span class="fb"></span></div>
+    <div class="ans"><label>K<sub>22</sub> [kN/m] =</label><input class="n" data-ans="2222.2"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>det = 18·9 − 9·9 = 81 → K = (EI/81)·[9 −9; −9 18] = [1111 −1111; −1111 2222] kN/m</p>
+      <p>Das ist genau der Hinweis auf dem Aufgabenblatt: (a b; b d)⁻¹ = 1/(ad − b²)·(d −b; −b a).</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum ist K<sub>12</sub> negativ?</h4><p>Verschiebst du nur das obere Geschoss (V<sub>1</sub> = 1) und hältst die Mitte fest, ziehen die oberen Stiele die Mitte mit nach rechts. Damit sie stehen bleibt, musst du sie nach <b>links</b> halten: negative Kraft. Benachbarte Stockwerke koppeln deshalb immer mit negativem Vorzeichen, wie zwei Federn in Reihe.</p>
+    </div></details>
+  </div>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc5"></div>
+  <div class="unlock" data-day="5"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne die SS-2026-Aufgabe (Ü 5.3) einmal komplett mit Koppeltafel statt mit Integralen und schick mir ein Foto. In der Klausur ist die Koppeltafel meist schneller.</div>
+</section>
+<!-- ===================== TAG 6 ===================== -->
+<section class="view" id="v-tag6">
+  <p class="small">Tag 6 · Di 24.11. · ≈ 2–3 h</p>
+  <h1>Typ C und größere Systeme</h1>
+  <p class="lead">Bei großen Systemen wird in der Klausur nicht alles durchgerechnet. Gefragt sind gezielte Teile: einzelne K-Einträge, Abhängigkeiten zwischen Freiheitsgraden, Gleichgewichtskontrollen. Heute lernst du, das mit wenig Rechnen zu erledigen.</p>
+
+  <ul class="toc">
+    <li><a href="#t6-1">1. Einzelne K-Einträge</a></li>
+    <li><a href="#t6-2">2. Abhängige Freiheitsgrade</a></li>
+    <li><a href="#t6-3">3. Fachwerk mit 2 Freiheitsgraden</a></li>
+    <li><a href="#t6-4">4. Gleichgewicht kontrollieren</a></li>
+    <li><a href="#t6-5">5. Lastverteilung nach Steifigkeit</a></li>
+    <li><a href="#t6-6">6. 3D: Träger mit Konsole</a></li>
+    <li><a href="#t6-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t6-1">1. Einzelne K-Einträge (WS 2020/21, WS 2024/25)</h2>
+  <div class="sk" data-sk="t6a"></div>
+  <p>Für K(i,j) brauchst du nicht die ganze Matrix. Du brauchst nur den Einheitszustand V<sub>j</sub> = 1 und schaust, welche Kraft am Freiheitsgrad i entsteht:</p>
+  <ol class="steps">
+    <li>Skizziere V<sub>j</sub> = 1, alle anderen festgehalten.</li>
+    <li>Finde die Stäbe, die sich dabei verformen. Alle anderen liefern null.</li>
+    <li>Rechne deren Stabendkräfte mit k (4EI/L, 2EI/L, 6EI/L², 12EI/L³, EA/L).</li>
+    <li>Sammle am Freiheitsgrad i, was dort in seiner Richtung ankommt.</li>
+  </ol>
+  <p><b>K(2,4) aus WS 2020/21:</b> V<sub>4</sub> = 1 schiebt den Mittelknoten nach unten. Nur der Riegel (L = 4 m) verformt sich: ψ = 1/4 → τ<sub>l</sub> = τ<sub>r</sub> = 1/4. Sein linkes Endmoment wirkt am Freiheitsgrad 2 (Drehung links):</p>
+  <div class="eq">K(2,4) = M<sub>l</sub> = (10 000/4)·(4·¼ + 2·¼) = 6EI/L² = 3 750 kNm/m</div>
+  <p><b>K(1,6):</b> V<sub>6</sub> ist die Horizontalverschiebung am Kragarmende. Bei V<sub>6</sub> = 1 wird nur der Kragarm gedehnt. Kein Stab verbindet das Kragarmende mit dem linken Knoten → <b>K(1,6) = 0</b>.</p>
+  <p><b>K₁₃ aus WS 2024/25:</b> Freiheitsgrad 3 ist die Drehung am linken oberen Knoten, Freiheitsgrad 1 die Horizontalverschiebung dort. Der 6 m hohe Stiel ist unten eingespannt. Drehst du seinen Kopf um 1, entstehen M = 4EI/L oben und 2EI/L unten, also eine Querkraft 6EI/L²:</p>
+  <div class="eq">K₁₃ = 6EI/L² = 6·10 000/36 = 1 666,7 kN</div>
+  <div class="box merk"><b class="t">Die Formulierung für volle Punkte</b>„K(i,j) ist die Knotenkraft am Freiheitsgrad i infolge einer Einheitsverschiebung V<sub>j</sub> = 1, wobei alle anderen Freiheitsgrade festgehalten werden.“ Dann die Skizze des Einheitszustands und die Zahl.</div>
+
+  <h2 id="t6-2">2. Abhängige Freiheitsgrade: der lastfreie Kragarm</h2>
+  <p>WS 2020/21 Teil 3: Auf dem Kragarm (2 m) liegt keine Last. Dann ist er spannungslos und bewegt sich als <b>starrer Körper</b> mit dem Knoten, an dem er hängt:</p>
+  <div class="eq">V<sub>6</sub> = V<sub>3</sub> &nbsp;&nbsp; V<sub>8</sub> = V<sub>5</sub> &nbsp;&nbsp; V<sub>7</sub> = V<sub>4</sub> − 2·V<sub>5</sub></div>
+  <p>Horizontal schiebt er sich gleich mit, die Endverdrehung ist die Knotenverdrehung, und vertikal kommt zur Knotensenkung die Hebelwirkung der Drehung dazu. Eine Drehung gegen den Uhrzeigersinn hebt das rechte Ende an (z nach unten), daher das Minus.</p>
+  <div class="box merk"><b class="t">Warum ist das nützlich?</b>Damit fallen 3 Freiheitsgrade weg (statische Kondensation). Unbelastete Kragarme kannst du im AWGV immer so „wegkürzen“ und am Ende mit diesen Formeln zurückrechnen.</div>
+
+  <h2 id="t6-3">3. Fachwerk mit 2 Freiheitsgraden (SS 2021, WS 2021/22)</h2>
+  <div class="sk" data-sk="t6b"></div>
+  <p>Ein Knoten, 6 Stäbe, alle EA = 5 000 kN. Die vier Diagonalen sind 5 m lang mit Richtungen (±0,6; ±0,8), die zwei waagerechten Stäbe 3 m.</p>
+  <div class="eq">K<sub>11</sub> = Σ (EA/L)·c<sub>x</sub>² = 4·1000·0,36 + 2·1666,7·1 = 4 773 kN/m</div>
+  <div class="eq">K<sub>22</sub> = Σ (EA/L)·c<sub>z</sub>² = 4·1000·0,64 = 2 560 kN/m &nbsp;&nbsp; K<sub>12</sub> = 0 (Symmetrie)</div>
+  <p>u = 5/4773 = 1,048 mm, w = 10/2560 = 3,906 mm. Stabkraft: N = (EA/L)·(c<sub>x</sub>u + c<sub>z</sub>w) mit Richtung vom Lager zum Knoten.</p>
+  <table>
+    <tr><th>Stab</th><th>Richtung (Lager → Knoten)</th><th>N [kN]</th></tr>
+    <tr><td>oben links</td><td>(+0,6; +0,8)</td><td>+3,75</td></tr>
+    <tr><td>oben rechts</td><td>(−0,6; +0,8)</td><td>+2,50</td></tr>
+    <tr><td>unten links</td><td>(+0,6; −0,8)</td><td>−2,50</td></tr>
+    <tr><td>unten rechts</td><td>(−0,6; −0,8)</td><td>−3,75</td></tr>
+    <tr><td>waagerecht links</td><td>(+1; 0)</td><td>+1,75</td></tr>
+    <tr><td>waagerecht rechts</td><td>(−1; 0)</td><td>−1,75</td></tr>
+  </table>
+  <p class="small">Genau die Werte im EDV-Ausdruck der Musterlösung ✓. Statisch unbestimmt: 6 Stäbe − 2 Knotengleichungen = n = 4.</p>
+
+  <h2 id="t6-4">4. Gleichgewicht kontrollieren (SS 2024)</h2>
+  <p><b>Horizontal:</b> Waagerecht durch ein Geschoss schneiden, Stielquerkräfte Q = (M<sub>oben</sub> − M<sub>unten</sub>)/h summieren, mit der Last oberhalb vergleichen. Ergebnis SS 2024: Σ Q = 30 kN ≠ 20 kN. Den vollständigen Weg haben wir im Chat besprochen.</p>
+  <p><b>Prinzip der virtuellen Verschiebungen:</b> Gib dem oberen Geschoss eine virtuelle Verschiebung δu = 1. Da die Riegel starr sind, verformen sich nur die Stiele, und zwar als Starrkörper: Sie drehen sich um δψ = 1/h.</p>
+  <ul>
+    <li>Äußere Arbeit: A<sup>(a)</sup> = 20 kN · 1 = 20</li>
+    <li>Innere Arbeit: A<sup>(i)</sup> = −Σ (Momentensumme der Stiele) · δψ = −Σ Q<sub>Stiel</sub>·h·(1/h) = −30</li>
+    <li>A<sup>(a)</sup> + A<sup>(i)</sup> = −10 ≠ 0 → nicht im Gleichgewicht ✓ Musterlösung</li>
+  </ul>
+  <div class="box merk"><b class="t">Trick bei unleserlichen Ausdrucken</b>Steht an einer Ecke ein Wirrwarr aus Zahlen: Das Stielmoment ist die Summe der Riegelmomente an diesem Knoten (Knotengleichgewicht). Und die Ordinate eines Stiels ist waagerecht angetragen, die eines Riegels senkrecht.</div>
+
+  <h2 id="t6-5">5. Lastverteilung nach Steifigkeit (SS 2022)</h2>
+  <p>SS 2022: Starre Riegel, die mittlere Ebene ist durch das rechte Lager festgehalten. Die Horizontallast H = 10 kN oben verteilt sich auf die Stiele des oberen Geschosses <b>im Verhältnis ihrer Quersteifigkeiten</b>:</p>
+  <table>
+    <tr><th>Stiel</th><th>Lagerung</th><th>Steifigkeit</th></tr>
+    <tr><td>links, 6 m, durchgehend</td><td>beidseitig fest</td><td>12EI/6³ = 0,0556 EI</td></tr>
+    <tr><td>2. Stiel, 3 m</td><td>beidseitig fest</td><td>12EI/3³ = 0,4444 EI</td></tr>
+    <tr><td>3. Stiel, 3 m</td><td>unten Gelenk</td><td>3EI/3³ = 0,1111 EI</td></tr>
+    <tr><td>4. Stiel, 3 m</td><td>beidseitig fest</td><td>0,4444 EI</td></tr>
+  </table>
+  <div class="eq">A<sub>h</sub> = 10 · 0,0556 / 1,0556 = 0,526 kN (entgegen der Last)</div>
+  <p class="small">✓ Musterlösung A<sub>h</sub> = −0,526 kN. Der Knackpunkt ist, das Gelenk am dritten Stiel zu erkennen. Ohne Gelenk käme 0,40 kN heraus.</p>
+
+  <h2 id="t6-6">6. 3D: Träger mit Konsole (WS 2025/26)</h2>
+  <p>Beidseitig voll eingespannter Träger, 2 × 6 m, in der Mitte eine starre Konsole mit 0,5 m Hebel. Lasten P<sub>z</sub> = 10 kN, P<sub>x</sub> = 5 kN. Vier Freiheitsgrade in der Mitte: u (Längsrichtung), w (vertikal), φ<sub>x</sub> (Torsion), φ<sub>z</sub> (Drehung um die vertikale Achse). Bei Symmetrie koppeln sie nicht, und K ist diagonal. Jeder Eintrag ist „zwei gleiche Stäbe parallel“:</p>
+  <table>
+    <tr><th>FHG</th><th>Steifigkeit (2 Stäbe à 6 m)</th><th>Wert</th><th>Last</th><th>Ergebnis</th></tr>
+    <tr><td>u</td><td>2·EA/L</td><td>3 333,3</td><td>P<sub>x</sub> = 5</td><td>1,5·10⁻³</td></tr>
+    <tr><td>φ<sub>x</sub></td><td>2·GI<sub>T</sub>/L</td><td>3 333,3</td><td>P<sub>z</sub>·0,5 = 5</td><td>1,5·10⁻³</td></tr>
+    <tr><td>w</td><td>2·12EI<sub>y</sub>/L³</td><td>555,6</td><td>P<sub>z</sub> = 10</td><td>0,018</td></tr>
+    <tr><td>φ<sub>z</sub></td><td>2·4EI<sub>z</sub>/L</td><td>2 666,7</td><td>P<sub>x</sub>·0,5 = 2,5</td><td>9,375·10⁻⁴</td></tr>
+  </table>
+  <p class="small">✓ Alle vier Werte wie in der Musterlösung. Neu ist nur die Torsion: Sie funktioniert genau wie der Zugstab, mit GI<sub>T</sub> statt EA und Drehwinkel statt Verlängerung.</p>
+
+  <h2 id="t6-ue">Übungen Tag 6</h2>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 6.1</span><span class="ti">K-Einträge im 8-FHG-System (WS 2020/21)</span></div>
+    <p>System oben (Abschnitt 1). Alle EI = 10 000 kNm², EA = 10 000 kN.</p>
+    <div class="ans"><label>K(2,4) =</label><input class="n" data-ans="3750"><span class="fb"></span></div>
+    <div class="ans"><label>K(1,6) =</label><input class="n" data-ans="0" data-abs="0.01"><span class="fb"></span></div>
+    <div class="ans"><label>K(2,2) [kNm] (Riegel + linker Stiel) =</label><input class="n" data-ans="20000"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>K(2,4) und K(1,6) siehe Abschnitt 1.</p>
+      <p>K(2,2): Drehung des linken Knotens. Riegel (4 m, rechtes Ende festgehalten): 4EI/4 = 10 000. Linker Stiel (4 m, unten eingespannt): 4EI/4 = 10 000 → <b>20 000 kNm</b>.</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum 6EI/L² bei K(2,4)?</h4><p>Eine Querverschiebung um 1 an einem Ende erzeugt an beiden Enden das Moment (4+2)·EI/L·(1/L) = 6EI/L². Das ist die „Kopplungszahl“ zwischen Verschiebung und Drehung. Sie taucht in jeder K-Matrix mit Stielen und Riegeln auf.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 6.2</span><span class="ti">Fachwerk SS 2021: Verschiebungen</span></div>
+    <div class="ans"><label>u [mm] =</label><input class="n" data-ans="1.0475"><span class="fb"></span></div>
+    <div class="ans"><label>w [mm] =</label><input class="n" data-ans="3.906"><span class="fb"></span></div>
+    <div class="ans"><label>N oben links [kN] =</label><input class="n" data-ans="3.75"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>u = 5/4773,3 = 1,0475 mm · w = 10/2560 = 3,906 mm</p>
+      <p>N oben links = 1000·(0,6·1,0475 + 0,8·3,906)·10⁻³·1000 = 1000·3,754·10⁻³ = 3,75 kN</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum Zug oben und Druck unten?</h4><p>Der Knoten geht nach unten. Die oberen Stäbe hängen daran und werden gedehnt, die unteren stützen ihn und werden gestaucht, wie bei einem Gewicht zwischen zwei Gummibändern.</p>
+    </div></details>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+      <p>Stab für Stab: MatA = Richtungsvektor e (1×2), MatB = [EA/L] (1×1) → Trn(MatA)×MatB×MatA. Bei 6 Stäben schneller per Hand: K<sub>11</sub> = Σ (EA/L)·c<sub>x</sub>², das sind nur vier Zahlen.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 6.3</span><span class="ti">Lastverteilung SS 2022</span></div>
+    <p>Wie groß wäre A<sub>h</sub>, wenn der dritte Stiel unten <b>nicht</b> gelenkig wäre?</p>
+    <div class="ans"><label>A<sub>h</sub> [kN] =</label><input class="n" data-ans="0.4"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div><p>Σ = 0,0556 + 3·0,4444 = 1,3889 EI → A<sub>h</sub> = 10·0,0556/1,3889 = 0,40 kN</p></div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div><h4>Gelenk macht weich</h4><p>Ein Gelenk reduziert die Quersteifigkeit eines Stiels von 12 auf 3 EI/h³. Die anderen Stiele müssen mehr übernehmen, auch der lange linke. Deshalb steigt A<sub>h</sub> mit Gelenk von 0,40 auf 0,53 kN.</p></div></details>
+  </div>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc6"></div>
+  <div class="unlock" data-day="6"></div>
+  <div class="chat"><b>Heute im Chat:</b> Erkläre mir K(1,2) und K(3,3) für ein System deiner Wahl aus den Altklausuren, mit Skizze des Einheitszustands. Das ist die typische 5-Punkte-Frage.</div>
+</section>
+<!-- ===================== TAG 7 ===================== -->
+<section class="view" id="v-tag7">
+  <p class="small">Tag 7 · Mi 25.11. · ≈ 1,5 h</p>
+  <h1>Probeklausur</h1>
+  <p class="lead">Zwei neue Aufgaben im Stil deines Profs, die du noch nicht kennst. Bedingungen wie am 8.12.: nur Hilfsblätter und Taschenrechner, keine App, kein Skript. Erst nach Ablauf der Zeit Ergebnisse eintippen.</p>
+  <div class="box warn"><b class="t">Regeln</b>Handy weg, Timer an, alles auf Papier. Wenn du hängst: Lass den Teil aus und mach mit dem nächsten weiter, wie in der echten Klausur. Folgefehler geben trotzdem Punkte, wenn der Weg stimmt.</div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">PK 1</span><span class="ti">Rahmen mit Feder · 30 min (≈ 17 %)</span></div>
+    <div class="timer" data-min="30"></div>
+    <div class="sk" data-sk="t7a"></div>
+    <p>Riegel EI = ∞, beide Stiele EI = 8 000 kNm², alle EA = ∞. Linker Stiel unten eingespannt und mit q = 3 kN/m von links belastet. Rechter Stiel unten gelenkig. Am rechten Riegelende eine horizontale Feder c = 1 000 kN/m, oben links H = 10 kN.</p>
+    <ol>
+      <li>Diskretisieren Sie das System mit einem einzigen Freiheitsgrad.</li>
+      <li>Stellen Sie die kinematische Transformationsmatrix auf.</li>
+      <li>Geben Sie den Vektor der Festhaltekraftgrößen und den Lastvektor an.</li>
+      <li>Bauen Sie die Steifigkeitsbeziehung auf und lösen Sie sie.</li>
+      <li>Berechnen Sie die Stabendschnittgrößen und die Federkraft.</li>
+      <li>Stellen Sie den Momentenverlauf dar und prüfen Sie das horizontale Gleichgewicht.</li>
+    </ol>
+    <div class="ans"><label>K [kN/m] =</label><input class="n" data-ans="2875"><span class="fb"></span></div>
+    <div class="ans"><label>P [kN] =</label><input class="n" data-ans="16"><span class="fb"></span></div>
+    <div class="ans"><label>u [mm] =</label><input class="n" data-ans="5.565"><span class="fb"></span></div>
+    <div class="ans"><label>M Fuß links (Momentenlinie) [kNm] =</label><input class="n" data-ans="-20.70"><span class="fb"></span></div>
+    <div class="ans"><label>M Kopf links (Momentenlinie) [kNm] =</label><input class="n" data-ans="12.70"><span class="fb"></span></div>
+    <div class="ans"><label>M Kopf rechts (Momentenlinie) [kNm] =</label><input class="n" data-ans="8.35"><span class="fb"></span></div>
+    <div class="ans"><label>Federkraft (Betrag) [kN] =</label><input class="n" data-ans="5.565"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Musterlösung</summary><div>
+      <p><b>1)</b> Starrer Riegel, dehnstarre Stiele → keine Drehung, kein Absacken. Es bleibt <b>u</b>.</p>
+      <p><b>2)</b> Stiele von unten nach oben. Links fest-fest: τ<sub>l</sub>¹ = τ<sub>r</sub>¹ = 1/4. Rechts Gelenk unten (3EI/L-Element): τ<sub>r</sub>² = 1/4. Die Feder rechts wird bei u nach rechts zusammengedrückt: Δ = −1.</p>
+      <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l¹"],["τ_r¹"],["τ_r²"],["Δ_F"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/4"],["1/4"],["−1"]]'></span><span class="op">· u</span></span></div>
+      <p><b>3)</b> Linker Stiel, Gleichlast „nach unten“ (= rechts): M̊<sub>l</sub> = +qh²/12 = +4, M̊<sub>r</sub> = −4. P̄ = 10, P̂ = qh/2 = 6.<br>
+      P = 10 + 6 − [¼·4 + ¼·(−4)] = <b>16 kN</b></p>
+      <p><b>4)</b> k = diag([8000 4000; 4000 8000]; 3EI/4 = 6000; 1000)<br>
+      K = (1/16)(8000+4000+4000+8000) + 6000/16 + 1000 = 1500 + 375 + 1000 = <b>2875 kN/m</b><br>
+      u = 16/2875 = <b>5,565 mm</b></p>
+      <p><b>5)</b> Links: τ = 1,391·10⁻³ → M<sub>l</sub> = 12 000·τ + 4 = 20,70, M<sub>r</sub> = 12 000·τ − 4 = 12,70<br>
+      Rechts: M<sub>r</sub> = 6000·τ = 8,35<br>
+      Feder: 1000·(−u) = −5,57 kN (Druck)</p>
+      <p><b>6)</b> Links: Fuß M(l) = −20,70, Kopf M(r) = +12,70, Parabel qh²/8 = 6 einhängen. Rechts: Fuß 0, Kopf +8,35. Riegel übernimmt die Eckmomente.<br>
+      <b>Σ H:</b> Fuß links Q = (20,70 + 12,70)/4 + 6 = 14,35 · Fuß rechts 8,35/4 = 2,09 · Feder 5,57 → 22,0 = 10 + 3·4 ✓</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum taucht q nicht in u auf, aber in M schon?</h4><p>Sie taucht auf, über P̂ = 6! Nur der Momentenanteil −aᵀs̊ ist null, weil die Festhaltemomente beim fest-fest-Stiel symmetrisch sind (+4 und −4) und bei u gleich gewichtet werden.</p>
+      <h4>Warum Punkteverteilung beachten?</h4><p>Teil 6 (Kontrolle Σ H) ist geschenkt, wenn du die Querkräfte richtig ablesen kannst, und er zeigt dir sofort, ob vorher alles stimmte.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">PK 2</span><span class="ti">Gestufter Biegestab · 20 min (≈ 11 %)</span></div>
+    <div class="timer" data-min="20"></div>
+    <div class="sk" data-sk="t7b"></div>
+    <p>Ein Biegestab der Länge L hat auf der linken Hälfte die Biegesteifigkeit EI, auf der rechten Hälfte 2EI. Stellen Sie die Elementsteifigkeitsmatrix für M<sub>l</sub>, M<sub>r</sub> (VZK II) auf. Erläutern Sie die physikalische Bedeutung von k<sub>12</sub>.</p>
+    <div class="ans"><label>f<sub>11</sub> = ? · L/EI</label><input class="n" data-ans="0.3125"><span class="fb"></span></div>
+    <div class="ans"><label>f<sub>22</sub> = ? · L/EI</label><input class="n" data-ans="0.1875"><span class="fb"></span></div>
+    <div class="ans"><label>f<sub>12</sub> = ? · L/EI</label><input class="n" data-ans="-0.125"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>11</sub> = ? · EI/L</label><input class="n" data-ans="4.3636"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>12</sub> = ? · EI/L</label><input class="n" data-ans="2.9091"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>22</sub> = ? · EI/L</label><input class="n" data-ans="7.2727"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Musterlösung</summary><div>
+      <p>m<sub>1</sub> = −(1 − ξ), m<sub>2</sub> = ξ, rechte Hälfte mit Faktor ½ (doppelte Steifigkeit):</p>
+      <p>f<sub>11</sub>·EI/L = ∫₀^½(1−ξ)² + ½∫<sub>½</sub>¹(1−ξ)² = 7/24 + ½·1/24 = 15/48 = <b>5/16</b></p>
+      <p>f<sub>22</sub>·EI/L = ∫₀^½ξ² + ½∫<sub>½</sub>¹ξ² = 1/24 + ½·7/24 = 9/48 = <b>3/16</b></p>
+      <p>f<sub>12</sub>·EI/L = −[∫₀^½ξ(1−ξ) + ½∫<sub>½</sub>¹ξ(1−ξ)] = −[1/12 + 1/24] = <b>−2/16</b></p>
+      <p>f = (L/16EI)·[5 −2; −2 3], det = 11 → <b>k = (16EI/11L)·[3 2; 2 5] = (EI/L)·[4,364 2,909; 2,909 7,273]</b></p>
+      <p><b>k<sub>12</sub>:</b> Das Moment am linken Stabende, das nötig ist, um es festzuhalten, wenn das rechte Ende um τ<sub>r</sub> = 1 verdreht wird.</p>
+      <p><b>Kontrolle:</b> Mit EI überall wäre f = (L/6EI)[2 −1; −1 2] → 4 und 2. Die steifere rechte Seite macht das rechte Ende deutlich steifer (7,27 > 4), das linke nur wenig (4,36).</p>
+    </div></details>
+    <details class="why"><summary>💡 Warum ist das so?</summary><div>
+      <h4>Warum ist k<sub>22</sub> so viel größer als k<sub>11</sub>?</h4><p>Ein Moment am rechten Ende wirkt am stärksten auf die rechte Stabhälfte (m<sub>2</sub> = ξ ist dort groß). Genau diese Hälfte ist doppelt so steif. Am linken Ende ist es umgekehrt: Das Moment wirkt vor allem auf die weiche Hälfte.</p>
+    </div></details>
+    <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
+      <p>Integrale mit <kbd>∫▭</kbd>, z. B. f<sub>11</sub>: ∫₀^0,5 (1−x)² dx + 0,5·∫<sub>0,5</sub>¹ (1−x)² dx → 0,3125</p>
+      <p>Inverse: MatA = [5 −2; −2 3] → <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>16</kbd><kbd>=</kbd> → [4,364 2,909; 2,909 7,273]</p>
+    </div></details>
+  </div>
+
+  <h2>Auswertung</h2>
+  <table>
+    <tr><th>Punkte (geschätzt)</th><th>Was jetzt?</th></tr>
+    <tr><td>beide komplett richtig</td><td>Ab jetzt reicht jeden Tag eine Altklausur auf Zeit, plus Quiz.</td></tr>
+    <tr><td>PK 1 Fehler bei a oder P</td><td>Tag 2 Abschnitt 2–3 und Tag 3 Abschnitt 3 nochmal, dann A 1 und A 4 aus Tag 4 wiederholen.</td></tr>
+    <tr><td>PK 2 Fehler bei den Integralen</td><td>Koppeltafeln üben (Hilfsblatt S. 8–10), Ü 5.3 nochmal.</td></tr>
+    <tr><td>Vorzeichen falsch</td><td>Merkzettel ② und ③, Karteikarten täglich.</td></tr>
+  </table>
+
+  <h2>Training bis zum 8.12.</h2>
+  <p>Jeden Tag <b>eine</b> Altklausuraufgabe aus dem Tab „Klausuren“ auf Zeit, danach 10 Quizfragen. Reihenfolge-Vorschlag:</p>
+  <ol>
+    <li>Do 26.11.: WS 2016/17 (ohne hinzusehen)</li>
+    <li>Fr 27.11.: SS 2016</li>
+    <li>Sa 28.11.: WS 2019/20</li>
+    <li>So 29.11.: SS 2018 + SS 2026 (beide Typ B)</li>
+    <li>Mo 30.11.: SS 2025 (40 min)</li>
+    <li>Di 1.12.: WS 2020/21 + WS 2024/25 (K-Einträge)</li>
+    <li>Mi 2.12.: SS 2024 + SS 2022</li>
+    <li>Do 3.12.: WS 2017/18 komplett (beide Teile)</li>
+    <li>Fr 4.12.: SS 2020 + SS 2023</li>
+    <li>Sa 5.12.: Probeklausur nochmal, diesmal in 25 min</li>
+    <li>So 6.12. – Mo 7.12.: nur Merkzettel, Karteikarten, Quiz „alle Tage“. Ausruhen.</li>
+  </ol>
+  <div class="chat"><b>Heute im Chat:</b> Schick mir Fotos deiner Probeklausur. Ich korrigiere sie wie der Prof mit Punktevergabe und sage dir, wo du in den letzten 12 Tagen den Schwerpunkt legen solltest.</div>
+</section>
+
 <!-- ===================== KOCHREZEPT ===================== -->
 <section class="view" id="v-rezept">
   <h1>Kochrezept AWGV</h1>
@@ -258,15 +1025,15 @@ details > div{padding:4px 14px 12px}
 
   <div class="card">
     <h3 style="margin-top:0">Schritt 3 · Festhaltekräfte s̊ und Lastvektor P</h3>
-    <p><b>Tun:</b> Für jeden Stab <b>mit Last</b> (Streckenlast, Einzellast, Temperatur, Stützensenkung) die Festhaltekräfte s̊ = [N̊<sub>r</sub>, M̊<sub>l</sub>, M̊<sub>r</sub>] ablesen. Stäbe ohne Last: s̊ = 0. Lasten direkt auf Knoten in Richtung V<sub>j</sub> kommen in P̄.</p>
-    <div class="eq">P = P̄ − aᵀ · s̊</div>
+    <p><b>Tun:</b> Für jeden Stab <b>mit Last</b> (Streckenlast, Einzellast, Temperatur, Stützensenkung) die Festhaltekräfte s̊ = [N̊<sub>r</sub>, M̊<sub>l</sub>, M̊<sub>r</sub>] ablesen. Stäbe ohne Last: s̊ = 0. Lasten direkt auf Knoten in Richtung V<sub>j</sub> kommen in P̄. Bei <b>Verschiebungs</b>-Freiheitsgraden zusätzlich die Einfeldträger-Auflagerkräfte der Stablast als P̂ (z. B. qL/2).</p>
+    <div class="eq">P = P̄ + P̂ − aᵀ · s̊</div>
     <p><b>Hilfsblatt:</b> S. 19–20 (VZK II, beidseitig eingespannter Stab). Gleichlast: M̊<sub>l</sub> = +qL²/12, M̊<sub>r</sub> = −qL²/12. Stützensenkung: Fall 17.</p>
     <p><b>Kontrolle:</b> Vorzeichen anschaulich prüfen: Die Einspannung hält gegen die Drehung, die die Last erzeugen will. Achtung: S. 19 gilt für die Stabrichtung l → r, die Last also immer aus Sicht deines Stabpfeils lesen.</p>
   </div>
 
   <div class="card">
     <h3 style="margin-top:0">Schritt 4 · Gesamtsteifigkeit K = aᵀ · k · a</h3>
-    <p><b>Tun:</b> k für jeden Stab aufschreiben (EA/L; 4EI/L, 2EI/L), als Blockdiagonale zusammensetzen, Federn als eigene Einträge k = c. Mit dem Taschenrechner aᵀ·k·a.</p>
+    <p><b>Tun:</b> k für jeden Stab aufschreiben (EA/L; 4EI/L, 2EI/L; bei Gelenk am Stabende nur 3EI/L), als Blockdiagonale zusammensetzen, Federn als eigene Einträge k = c. Mit dem Taschenrechner aᵀ·k·a (bei mehr als 4 Zeilen Stab für Stab, siehe Tab „Rechner“).</p>
     <p><b>Kontrolle:</b> K symmetrisch, Diagonale positiv. Einen Diagonaleintrag „physikalisch“ nachrechnen (z. B. Summe der 4EI/L aller Stäbe am Knoten, oder 12EI/h³ bzw. 3EI/h³ für Stiele).</p>
   </div>
 
@@ -349,7 +1116,7 @@ M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd
       <span class="m" data-m='[["EA/L","0","0"],["0","4EI/L","2EI/L"],["0","2EI/L","4EI/L"]]'></span><span class="op">·</span>
       <span class="m d" data-m='[["Δu"],["τ_l"],["τ_r"]]'></span></span>
     </div>
-    <p>Kurz: <span class="f">s</span> = k · <span class="d">v</span>. Ist EA = ∞, fällt die erste Zeile weg (Δu = 0). Eine Feder ist ein eigenes Element mit <i>k = c</i>.</p>
+    <p>Kurz: <span class="f">s</span> = k · <span class="d">v</span>. Ist EA = ∞, fällt die erste Zeile weg (Δu = 0). Eine Feder ist ein eigenes Element mit <i>k = c</i>. Ist ein Stabende gelenkig, gilt am anderen Ende nur <b>M = 3EI/L · τ</b>.</p>
   </div>
 
   <div class="card">
@@ -1061,6 +1828,15 @@ const SK=(()=>{
  const dimV=(y1,y2,x,t)=>`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="${K}" stroke-width="1"/>`+[y1,y2].map(y=>`<line x1="${x-7}" y1="${y}" x2="${x+7}" y2="${y}" stroke="${K}" stroke-width="1"/><line x1="${x-4}" y1="${y+4}" x2="${x+4}" y2="${y-4}" stroke="${K}" stroke-width="1.6"/>`).join('')+`<text x="${x+6}" y="${(y1+y2)/2}" font-family="${F}" font-size="13" transform="rotate(-90 ${x+6} ${(y1+y2)/2})" text-anchor="middle" dy="10">${t}</text>`;
  const mom=(x,y,r,c,lab,lx,ly)=>`<path d="M${x+r},${y-5} A${r},${r} 0 0,0 ${x-r},${y-5}" fill="none" stroke="${c}" stroke-width="2" marker-end="url(#${c==='#2e8b57'?'mkg':c==='#c0392b'?'mkr':'mk'})"/>`+(lab?tx(lx,ly,lab,{serif:1,c:c,fs:16}):'');
  const arr=(x1,y1,x2,y2,c,lab,lx,ly)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2" marker-end="url(#${c==='#2e8b57'?'mkg':c==='#c0392b'?'mkr':'mk'})"/>`+(lab?tx(lx,ly,lab,{serif:1,c:c,fs:16}):'');
+
+ const wallR=(x,y)=>`<line x1="${x}" y1="${y-24}" x2="${x}" y2="${y+24}" stroke="${K}" stroke-width="2"/>`+hatch(x,y-22,x,y+22,9,9,5);
+ const qdown=(x1,x2,y,n,lab)=>{let o=`<line x1="${x1}" y1="${y-28}" x2="${x2}" y2="${y-28}" stroke="#c0392b" stroke-width="1.5"/>`;for(let i=0;i<=n;i++){const x=x1+(x2-x1)*i/n;o+=`<line x1="${x}" y1="${y-28}" x2="${x}" y2="${y-5}" stroke="#c0392b" stroke-width="1.5" marker-end="url(#mkr)"/>`;}return o+(lab?tx((x1+x2)/2,y-33,lab,{c:'#c0392b',fs:13}):'');};
+ const qright=(x,y1,y2,n,lab)=>{let o=`<line x1="${x-30}" y1="${y1}" x2="${x-30}" y2="${y2}" stroke="#c0392b" stroke-width="1.5"/>`;for(let i=0;i<=n;i++){const y=y1+(y2-y1)*i/n;o+=`<line x1="${x-30}" y1="${y}" x2="${x-5}" y2="${y}" stroke="#c0392b" stroke-width="1.5" marker-end="url(#mkr)"/>`;}return o+(lab?`<text x="${x-40}" y="${(y1+y2)/2}" font-family="Source Sans 3, sans-serif" font-size="13" fill="#c0392b" text-anchor="middle" transform="rotate(-90 ${x-40} ${(y1+y2)/2})">${lab}</text>`:'');};
+ const zig=(x1,y1,x2,y2,n=6,w=6)=>{const L=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/L,uy=(y2-y1)/L,px=-uy,py=ux;const pts=[[x1,y1]];const a=L*0.2,b=L*0.8;pts.push([x1+ux*a,y1+uy*a]);for(let i=1;i<=n;i++){const t=a+(b-a)*(i-0.5)/n,sg=(i%2?1:-1)*w;pts.push([x1+ux*t+px*sg,y1+uy*t+py*sg]);}pts.push([x1+ux*b,y1+uy*b]);pts.push([x2,y2]);return `<polyline points="${pts.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="${K}" stroke-width="1.6"/>`;};
+ const momCW=(x,y,r,c,lab,lx,ly)=>`<path d="M${x-r},${y-5} A${r},${r} 0 0,1 ${x+r},${y-5}" fill="none" stroke="${c}" stroke-width="2" marker-end="url(#${c==='#2e8b57'?'mkg':c==='#c0392b'?'mkr':'mk'})"/>`+(lab?tx(lx,ly,lab,{serif:1,c:c,fs:15}):'');
+ const ceil=(x,y,w=16)=>`<line x1="${x-w}" y1="${y}" x2="${x+w}" y2="${y}" stroke="${K}" stroke-width="2"/>`+hatch(x-w+4,y,x+w,y,-8,-9,4);
+ const pinL=(x,y)=>`<path d="M${x},${y} L${x-17},${y-11} L${x-17},${y+11} Z" fill="#fff" stroke="${K}" stroke-width="1.6"/><line x1="${x-21}" y1="${y-14}" x2="${x-21}" y2="${y+14}" stroke="${K}" stroke-width="1.6"/>`+hatch(x-25,y-12,x-25,y+14,-7,-7,3);
+ const grid=(items,vb)=>'<div class="skgrid">'+items.map(([c,b])=>`<figure><figcaption>${c}</figcaption><svg viewBox="${vb}" role="img" aria-label="${c}">${b}</svg></figure>`).join('')+'</div>';
  const G='#2e8b57',R='#c0392b';
  const svg=(w,h,body,lab)=>`<svg viewBox="0 0 ${w} ${h}" style="max-width:${Math.min(w*1.35,620)}px" role="img" aria-label="${lab||'Systemskizze'}">${body}</svg>`;
  const zwf=(extra)=> // Zweifeldträger 4,0 / 6,0
@@ -1084,6 +1860,59 @@ const SK=(()=>{
         tx(80,140,'EA',{fs:12})+tx(186,132,'EA',{fs:12})+
         arr(168,170,215,170,G,'V₁',232,175)+arr(160,178,160,222,G,'V₂',182,218)+
         dimH(70,160,18,'3,0 m')+dimV(50,170,265,'4,0 m'),'Zweistabsystem'),
+  t3ex: svg(420,175, qdown(90,340,70,5,'q = 10 kN/m')+bar(90,70,340,70)+wallR(340,70)+node(90,70)+
+        `<line x1="90" y1="74" x2="90" y2="140" stroke="${K}" stroke-width="1" stroke-dasharray="4 3"/>`+zig(90,74,60,126)+
+        `<line x1="48" y1="119" x2="72" y2="133" stroke="${K}" stroke-width="2"/>`+hatch(50,121,72,133,-6,9,3)+
+        tx(80,152,'30°',{fs:13})+tx(140,128,'c<tspan font-size="10" dy="3">N</tspan><tspan dy="-3"> = 2000 kN/m, 30° zur Vertikalen</tspan>',{fs:12,a:'start'})+
+        arr(118,82,118,118,G,'V',130,112)+tx(230,96,'EI = 10 000 kNm², EA = ∞',{fs:13})+dimH(90,340,160,'5,0 m'),'Träger mit schräger Wegfeder'),
+  u31: grid([
+     ['a) beidseitig eingespannt, Gleichlast', wallL(30,62)+bar(30,62,200,62)+wallR(200,62)+qdown(30,200,62,5,'q = 12 kN/m')+dimH(30,200,100,'5,0 m')],
+     ['b) beidseitig eingespannt, Einzellast mittig', wallL(30,62)+bar(30,62,200,62)+wallR(200,62)+arr(115,20,115,57,R)+tx(150,30,'P = 20 kN',{c:R,fs:13})+dimH(30,115,100,'2,0')+dimH(115,200,100,'2,0')],
+     ['c) links gelenkig, rechts eingespannt', pin(30,62)+bar(30,62,200,62)+node(30,62)+wallR(200,62)+qdown(30,200,62,5,'q = 8 kN/m')+dimH(30,200,104,'6,0 m')]
+    ],'0 0 230 115'),
+  u32: svg(340,190, wallL(40,70)+qdown(40,240,70,5,'q = 10 kN/m')+bar(40,70,240,70)+node(240,70)+zig(240,74,240,140)+ground(240,140,16)+
+        tx(256,112,'c = 1500 kN/m',{a:'start',fs:13})+arr(272,74,272,98,G)+tx(282,92,'V',{serif:1,c:G,fs:16,a:'start'})+
+        tx(140,98,'EI = 8 000 kNm², EA = ∞',{fs:13})+dimH(40,240,175,'4,0 m'),'Träger mit Wegfeder'),
+  u33: svg(300,250, (()=>{let o=`<line x1="80" y1="52" x2="200" y2="32" stroke="${R}" stroke-width="1.5"/>`;for(let i=0;i<=5;i++){const x=80+120*i/5,y=80-20*i/5;o+=`<line x1="${x}" y1="${y-28}" x2="${x}" y2="${y-5}" stroke="${R}" stroke-width="1.5" marker-end="url(#mkr)"/>`;}return o;})()+
+        tx(150,24,'q = 5 kN/m',{c:R,fs:13})+pin(60,200)+bar(60,200,80,80)+bar(80,80,200,60)+node(60,200)+node(200,60)+pin(200,60)+
+        mom(80,80,20,G,'V₃',44,100)+tx(52,145,'①',{fs:15})+tx(140,90,'②',{fs:15})+tx(150,150,'beide Stäbe: L* = √37 = 6,08 m',{fs:12})+tx(150,166,'EI gleich, EA = ∞',{fs:12})+
+        dimH(60,80,238,'1,0')+dimH(80,200,238,'6,0'),'Überdachung SS 2017'),
+  t4a: svg(400,250, bar(70,40,310,40,8)+bar(70,40,70,200)+bar(310,40,310,120)+pin(70,200)+node(70,200)+ground(310,120)+
+        qright(70,48,196,5,'5 kN/m')+tx(190,28,'EI_R = ∞'.replace('_R','<tspan font-size="10" dy="3">R</tspan><tspan dy="-3"></tspan>'),{fs:13})+
+        tx(82,125,'EI<tspan font-size="10" dy="3">S</tspan>',{fs:13,a:'start'})+tx(322,85,'EI<tspan font-size="10" dy="3">S</tspan>',{fs:13,a:'start'})+
+        arr(160,62,205,62,G,'u',214,67)+dimH(70,310,235,'6,0 m')+dimV(40,120,360,'2,0')+dimV(120,200,360,'2,0'),'Rahmen SS 2016'),
+  t4b: svg(380,130, wallL(50,60)+bar(50,60,290,60)+wallR(290,60)+`<path d="M50,60 C130,60 210,86 290,86" fill="none" stroke="${G}" stroke-width="2.5" stroke-dasharray="6 4"/>`+
+        arr(312,60,312,86,R)+tx(320,80,'0,02 m',{a:'start',fs:13,c:R})+dimH(50,290,115,'6,0 m')+tx(170,35,'b/h = 0,20 / 4,00 m · E = 3·10⁷ kN/m²',{fs:12}),'Stützensenkung'),
+  t4c: svg(330,220, ceil(200,14)+zig(200,16,200,58,5,6)+tx(184,40,'c<tspan font-size="10" dy="3">N</tspan>',{fs:14,a:'end'})+
+        wallL(120,60)+bar(120,60,200,60,5)+bar(200,60,150,160)+bar(200,60,250,160)+node(200,60)+pin(150,160)+pin(250,160)+node(150,160)+node(250,160)+
+        arr(200,60,236,17,R)+tx(262,22,'P = 10 kN',{c:R,fs:13})+tx(232,55,'50°',{fs:12})+tx(150,80,'③',{fs:14})+tx(160,115,'①',{fs:14})+tx(242,115,'②',{fs:14})+
+        dimH(150,200,205,'2,5')+dimH(200,250,205,'2,5')+dimV(60,160,295,'5,0 m')+dimH(120,200,32,'4,0'),'Fachwerk mit Feder'),
+  t4d: svg(390,255, wallL(12,60)+zig(12,60,38,60,4,5)+roller(40,60)+bar(40,60,320,60)+roller(320,60)+zig(322,60,348,60,4,5)+wallR(350,60)+
+        bar(180,60,180,200)+ground(180,200)+node(40,60)+node(320,60)+qdown(40,180,60,4,'5 kN/m')+momCW(180,60,16,R,'10 kNm',222,30)+
+        arr(138,130,176,130,R)+tx(128,124,'5 kN',{c:R,fs:13,a:'end'})+tx(260,104,'c<tspan font-size="10" dy="3">F</tspan><tspan dy="-3"> = 5000 kN/m (beide)</tspan>',{fs:12})+tx(260,122,'EI = 10 000 kNm², EA = ∞',{fs:12})+
+        dimH(40,180,238,'4,0 m')+dimH(180,320,238,'4,0 m')+dimV(60,130,372,'2,0')+dimV(130,200,372,'2,0'),'Rahmen SS 2025'),
+  t5a: svg(400,130, wallL(60,60)+`<path d="M60,38 L300,50 L300,70 L60,82 Z" fill="#eef3f7" stroke="${K}" stroke-width="1.8"/>`+`<line x1="60" y1="60" x2="300" y2="60" stroke="${K}" stroke-width="1" stroke-dasharray="6 3 1 3"/>`+
+        arr(302,60,352,60,R,'F',362,65)+tx(66,30,'A<tspan font-size="10" dy="3">L</tspan>',{fs:14})+tx(300,42,'A<tspan font-size="10" dy="3">R</tspan>',{fs:14})+dimH(60,300,110,'L')+tx(330,98,'Δu →',{fs:13,c:G}),'Dehnstab mit veränderlichem Querschnitt'),
+  t5b: svg(380,140, `<rect x="60" y="40" width="70" height="40" fill="#eef3f7" stroke="${K}" stroke-width="1.6"/><rect x="130" y="50" width="120" height="20" fill="#e3e8ee" stroke="${K}" stroke-width="1.6"/><rect x="250" y="40" width="70" height="40" fill="#eef3f7" stroke="${K}" stroke-width="1.6"/>`+
+        `<line x1="50" y1="60" x2="330" y2="60" stroke="${K}" stroke-width="1" stroke-dasharray="6 3 1 3"/>`+pin(60,80)+roller(320,80)+
+        tx(95,30,'EI · EA',{fs:12})+tx(190,40,'EI/8 · EA/2',{fs:12})+tx(285,30,'EI · EA',{fs:12})+dimH(60,130,128,'L/4')+dimH(130,250,128,'L/2')+dimH(250,320,128,'L/4'),'Geschwächter Biegestab'),
+  t5c: svg(330,150, pin(40,60)+bar(40,60,280,60)+roller(280,60)+node(40,60)+node(280,60)+zig(160,64,160,112,5,6)+ground(160,112,14)+
+        arr(160,18,160,55,R)+tx(174,28,'P',{c:R,fs:15,serif:1,a:'start'})+tx(176,96,'c<tspan font-size="10" dy="3">N</tspan>',{fs:14,a:'start'})+tx(100,48,'EI',{fs:13})+
+        dimH(40,160,138,'L')+dimH(160,280,138,'L'),'Balken mit Mittelfeder'),
+  t6a: svg(335,330, pinL(50,60)+bar(50,60,230,60)+bar(50,60,50,180)+bar(170,60,170,300)+ground(50,180)+ground(170,300)+node(230,60)+
+        arr(64,18,64,52,G,'V₁',78,24)+mom(50,60,14,G,'V₂',34,30)+arr(180,80,212,80,G,'V₃',226,86)+arr(156,18,156,52,G,'V₄',142,22)+mom(170,60,14,G,'V₅',196,32)+
+        arr(236,60,270,60,G,'V₆',288,66)+arr(242,16,242,52,G,'V₇',256,20)+mom(230,60,12,G,'V₈',262,44)+
+        dimH(50,170,318,'4,0')+dimH(170,230,318,'2,0')+dimV(60,180,318,'4,0')+dimV(180,300,318,'4,0')+tx(105,230,'EA = 10 000 kN',{fs:11})+tx(105,245,'EI = 10 000 kNm²',{fs:11}),'System mit 8 Freiheitsgraden'),
+  t6b: svg(320,252, pinTop(90,40)+pinTop(210,40)+pin(90,200)+pin(210,200)+bar(90,40,210,200,3)+bar(210,40,90,200,3)+
+        `<line x1="70" y1="120" x2="70" y2="120"/>`+bar(90,120,210,120,3)+pinL(90,120)+`<g transform="translate(300,0) scale(-1,1)">${pinL(90,120)}</g>`+node(150,120)+
+        arr(150,70,150,115,R)+tx(156,64,'10 kN',{c:R,fs:13,a:'start'})+arr(155,120,190,120,R)+tx(178,140,'5 kN',{c:R,fs:13})+
+        dimH(90,150,242,'3,0')+dimH(150,210,242,'3,0')+dimV(40,120,300,'4,0')+dimV(120,200,300,'4,0'),'Fachwerk mit 6 Stäben'),
+  t7a: svg(410,250, bar(70,40,310,40,8)+bar(70,40,70,200)+bar(310,40,310,200)+ground(70,200)+pin(310,200)+node(310,200)+zig(314,40,348,40,4,5)+wallR(350,40)+
+        qright(70,50,196,5,'q = 3 kN/m')+arr(10,40,62,40,R)+tx(20,30,'H = 10 kN',{c:R,fs:13,a:'start'})+tx(190,28,'EI = ∞',{fs:13})+
+        tx(82,125,'EI',{fs:13,a:'start'})+tx(296,125,'EI',{fs:13,a:'end'})+tx(300,62,'c = 1000 kN/m',{fs:12,a:'end'})+
+        dimH(70,310,235,'6,0 m')+dimV(40,200,385,'4,0 m'),'Probeklausur Rahmen'),
+  t7b: svg(360,130, `<rect x="50" y="52" width="130" height="16" fill="#e3e8ee" stroke="${K}" stroke-width="1.6"/><rect x="180" y="44" width="130" height="32" fill="#eef3f7" stroke="${K}" stroke-width="1.6"/>`+
+        pin(50,68)+roller(310,76)+tx(115,42,'EI',{fs:13})+tx(245,34,'2EI',{fs:13})+dimH(50,180,120,'L/2')+dimH(180,310,120,'L/2'),'Gestufter Biegestab'),
   ue21: (()=>{
     const fr=(riegel)=>ground(50,100)+ground(180,100)+bar(50,100,50,30)+bar(180,100,180,30)+bar(50,30,180,30,riegel)+node(50,30)+node(180,30);
     const items=[
@@ -1102,6 +1931,18 @@ document.querySelectorAll('.sk[data-sk]').forEach(el=>{
   const k=el.dataset.sk;
   if(k==='ue21'){el.outerHTML=SK.ue21;return;}
   el.innerHTML=SK[k]||'';
+});
+
+
+/* ---------- Timer ---------- */
+document.querySelectorAll('.timer[data-min]').forEach(t=>{
+  const total=+t.dataset.min*60;let left=total,iv=null;
+  t.innerHTML='<span>⏱</span><span class="tm"></span><button class="ghost">Start</button><button class="ghost">Reset</button><span class="small">'+t.dataset.min+' min wie in der Klausur</span>';
+  const tm=t.querySelector('.tm'),[bs,br]=t.querySelectorAll('button');
+  const show=()=>{const a=Math.abs(left);tm.textContent=(left<0?'+':'')+String(Math.floor(a/60)).padStart(2,'0')+':'+String(a%60).padStart(2,'0');tm.classList.toggle('over',left<0);};
+  bs.onclick=()=>{if(iv){clearInterval(iv);iv=null;bs.textContent='Weiter';}else{iv=setInterval(()=>{left--;show();},1000);bs.textContent='Pause';}};
+  br.onclick=()=>{clearInterval(iv);iv=null;left=total;bs.textContent='Start';show();};
+  show();
 });
 
 /* ---------- Number parsing & checks ---------- */
@@ -1158,6 +1999,30 @@ const MC={
   {q:'Ein Stab (Länge L) wird quer um 1 verschoben, seine Knoten drehen sich nicht. Welche τ entstehen?',o:['τ<sub>l</sub> = τ<sub>r</sub> = 1','τ<sub>l</sub> = τ<sub>r</sub> = 1/L','τ<sub>l</sub> = 1/L, τ<sub>r</sub> = −1/L','keine'],c:1,w:'ψ = 1/L, φ = 0 → τ<sub>l</sub> = τ<sub>r</sub> = 1/L (mit Vorzeichen nach Kipprichtung).'},
   {q:'Was passiert in a mit einem Stab, der EI = ∞ und EA = ∞ hat?',o:['Er bekommt Zeilen mit Unendlich','Er taucht nicht als Element auf, er koppelt nur Freiheitsgrade','Er bekommt nur Nullen in k','Man muss ihn in zwei Stäbe teilen'],c:1,w:'Ein starrer Stab verformt sich nicht, erzeugt also keine v und keine s. Er sorgt nur dafür, dass Freiheitsgrade wegfallen oder gleich sind.'},
   {q:'Wie prüfst du in der Klausur schnell, ob dein a stimmt?',o:['a muss symmetrisch sein','K = aᵀ·k·a muss symmetrisch sein und die Diagonaleinträge müssen zur physikalischen Vorstellung passen','a muss quadratisch sein','det(a) = 1'],c:1,w:'a ist meist nicht quadratisch. K dagegen ist immer symmetrisch mit positiver Diagonale. Ein Diagonaleintrag lässt sich außerdem „von Hand“ kontrollieren (z. B. 12EI/h³).'}
+ ],
+ mc3:[
+  {q:'Was beschreibt s̊?',o:['Die Schnittgrößen im endgültigen Zustand','Die Stabendkräfte bei festgehaltenen Knoten infolge Stablast','Die Knotenlasten','Die Auflagerkräfte'],c:1,w:'Zustand 0: alle Knoten festgehalten. Die Stäbe sind dann eingespannte Träger, und s̊ steht im Hilfsblatt.'},
+  {q:'Wann ist P̂ ungleich null?',o:['Bei jedem belasteten Stab','Wenn ein belasteter Stab an einem Knoten mit Verschiebungs-Freiheitsgrad hängt','Nur bei Federn','Nur bei Knotenmomenten'],c:1,w:'P̂ sind die Einfeldträger-Auflagerkräfte in Richtung von Verschiebungs-Freiheitsgraden. Bei reinen Drehfreiheitsgraden ist P̂ = 0.'},
+  {q:'Stab mit Gelenk links, rechts eingespannt. Welche Steifigkeit hat das rechte Ende gegen Verdrehen?',o:['4EI/L','3EI/L','2EI/L','12EI/L³'],c:1,w:'Anderes Ende gelenkig → 3EI/L. Anderes Ende fest → 4EI/L.'},
+  {q:'Eine Feder hängt über einem Knoten (oben befestigt). Der Knoten geht um 1 nach unten. Federverlängerung Δ?',o:['−1','+1','0','cos α'],c:1,w:'Eine hängende Feder wird gedehnt, wenn der Knoten nach unten geht.'}
+ ],
+ mc4:[
+  {q:'Wie viele Freiheitsgrade hat ein beidseitig eingespannter Träger mit vorgegebener Stützensenkung?',o:['0','1','2','3'],c:0,w:'Die Senkung ist vorgegeben und nicht unbekannt. Alles ergibt sich aus dem Festhaltezustand (Hilfsblatt Fall 17).'},
+  {q:'Was ist der schnellste Plausibilitätscheck nach einer Rahmenaufgabe?',o:['K invertieren','Σ H: Stielquerkräfte gegen Horizontallasten','det(a) berechnen','EI ändern'],c:1,w:'Waagerecht durchschneiden und die Stielquerkräfte summieren. Fehler fallen sofort auf.'},
+  {q:'Ein starrer Riegel liegt auf zwei dehnstarren Stielen. Welcher Freiheitsgrad bleibt?',o:['Riegeldrehung','Horizontalverschiebung','Vertikalverschiebung','keiner'],c:1,w:'Der Riegel kann nicht absacken und sich deshalb nicht drehen. Es bleibt die seitliche Verschiebung.'},
+  {q:'Warum steht in K für einen Fachwerkstab cos²α?',o:['Einmal für die Verlängerung, einmal für die Kraftrichtung','Aus Symmetriegründen','Wegen EA = ∞','Rundung'],c:0,w:'Projektion hin (Verschiebung → Verlängerung) und zurück (Stabkraft → Knotenrichtung).'}
+ ],
+ mc5:[
+  {q:'Wie kommt man zur Elementsteifigkeit eines „besonderen“ Stabes?',o:['k direkt mit dem Arbeitssatz','Erst f mit dem Arbeitssatz, dann k = f⁻¹','Aus dem Hilfsblatt ablesen','Mit dem Kraftgrößenverfahren für das Gesamtsystem'],c:1,w:'Kräfte aufbringen und Verformungen berechnen kannst du. Das ist f. Die Inverse liefert k.'},
+  {q:'Welche Zustandslinie gehört zu M<sub>l</sub> = 1 (VZK II) am Einfeldträger?',o:['m = x/L','m = −(1 − x/L)','m = 1','m = x(L−x)/2'],c:1,w:'M(Stabanfang) = −M<sub>l</sub> = −1, linear auf 0 am rechten Ende.'},
+  {q:'Was ändert Schubweichheit an f?',o:['Nichts','Addiert 1/(L·GA<sub>v</sub>) auf alle Einträge','Halbiert die Diagonale','Macht f unsymmetrisch'],c:1,w:'q = 1/L in beiden Zuständen, konstant → ∫q<sub>i</sub>q<sub>j</sub>/GA<sub>v</sub> = 1/(L·GA<sub>v</sub>), gleiches Vorzeichen überall.'},
+  {q:'Balken mit Mittelfeder: Was passiert für EI → 0?',o:['Federkraft = 0','Federkraft = P','Moment = PL/2','K → ∞'],c:1,w:'c<sub>B</sub> = 6EI/L³ → 0. Die Feder ist der einzige Lastweg.'}
+ ],
+ mc6:[
+  {q:'K(i,j) ist null, wenn …',o:['i = j','kein Stab die Freiheitsgrade i und j verbindet','EI = ∞','die Last null ist'],c:1,w:'Nur Stäbe, die beide Freiheitsgrade „spüren“, liefern einen Beitrag.'},
+  {q:'Ein unbelasteter Kragarm (Länge a) hängt an einem Knoten mit w und φ. Wie groß ist die Senkung am Kragarmende?',o:['w','w − a·φ','w + a·φ','φ'],c:1,w:'Starrkörper: Senkung des Knotens minus Hebel mal Drehung (gegen den Uhrzeigersinn hebt das Ende an).'},
+  {q:'Wie verteilt sich eine Horizontallast auf parallele Stiele unter einem starren Riegel?',o:['Gleichmäßig','Im Verhältnis der Quersteifigkeiten (12EI/h³ bzw. 3EI/h³)','Nach Stiellänge','Nur auf den kürzesten'],c:1,w:'Gleiche Verschiebung für alle → Kraft proportional zur Steifigkeit.'},
+  {q:'Womit ist die Torsionssteifigkeit im AWGV vergleichbar?',o:['4EI/L','GI<sub>T</sub>/L, wie EA/L beim Zugstab','12EI/L³','GI<sub>T</sub>·L'],c:1,w:'Torsion ist „Zugstab mit Drehung“: Moment = GI<sub>T</sub>/L · Verdrehwinkel.'}
  ]
 };
 Object.entries(MC).forEach(([id,qs])=>{
@@ -1191,7 +2056,15 @@ let cards=[
  ['Flexibilitätsmatrix f eines Biegestabs (VZK II)','f = [L/3EI, −L/6EI; −L/6EI, L/3EI]<br>k = f<sup>−1</sup>'],
  ['Querkraft aus Endmomenten (ohne Stablast)','Q = (M<sub>l</sub> + M<sub>r</sub>) / L'],
  ['Quersteifigkeit Stiel: beidseitig eingespannt / unten gelenkig','12EI/h³ &nbsp;/&nbsp; 3EI/h³'],
- ['Federelement im AWGV','Eigenes Element mit k = c<br>v = Federlängung, s = Federkraft']
+ ['Federelement im AWGV','Eigenes Element mit k = c<br>v = Federlängung, s = Federkraft'],
+ ['Stab mit Gelenk an einem Ende','M = 3EI/L · τ am eingespannten Ende<br>s̊ aus Hilfsblatt S. 23 (einseitig eingespannt)'],
+ ['Was ist P̂?','Auflagerkräfte der Stablast am gelenkig gelagerten Einfeldträger, als Knotenlast in Richtung der Verschiebungs-Freiheitsgrade'],
+ ['Festhaltemoment Stützensenkung Δw','M̊<sub>l</sub> = M̊<sub>r</sub> = 6EI/L² · Δw<br><small>Hilfsblatt Fall 17</small>'],
+ ['Rezept Typ B (k herleiten)','1. Einheitszustände M<sub>l</sub>=1, M<sub>r</sub>=1, N=1<br>2. f<sub>ij</sub> = ∫m<sub>i</sub>m<sub>j</sub>/EI (+∫q q/GA)<br>3. k = f⁻¹'],
+ ['Dehnstab mit linear veränderlichem A','k = E(A<sub>R</sub>−A<sub>L</sub>) / (L·ln(A<sub>R</sub>/A<sub>L</sub>))'],
+ ['Ersatzfeder Einfeldträger 2L, Last mittig','c<sub>B</sub> = 6EI/L³'],
+ ['Kopplung Verschiebung ↔ Drehung','6EI/L² (Querverschiebung 1 → Endmomente; Drehung 1 → Querkraft)'],
+ ['Gleichgewichtskontrolle horizontal','Waagerecht durch ein Geschoss schneiden: Σ Q<sub>Stiele</sub> = Σ H oberhalb, Q = ΔM/h']
 ];
 let ci=0;
 const fc=document.getElementById('fc');
@@ -1288,7 +2161,28 @@ const QZ=[
  {d:2,n:1,q:'Stiel mit h = 5 m, unten eingespannt, Kopf um u = 1 seitlich verschoben, keine Knotendrehung. Wie groß ist τ<sub>l</sub>?',a:0.2,w:'ψ = 1/h = 0,2, φ = 0 → τ = 0,2.'},
  {d:2,n:1,q:'Beidseitig eingespannter Stiel, h = 3 m, EI = 27 000 kNm². Quersteifigkeit 12EI/h³ in kN/m?',a:12000,w:'12 · 27000 / 27 = 12 000 kN/m.'},
  {d:2,n:1,q:'Rahmen, starrer Riegel, zwei eingespannte Stiele h = 4 m, EI = 6 400 kNm². K für die Riegelverschiebung in kN/m?',a:2400,w:'2 · 12 · 6400 / 64 = 2400 kN/m.'},
- {d:2,n:1,q:'Schräger Stab im 3-4-5-Dreieck (3 m nach rechts, 4 m nach unten zum Knoten K). K verschiebt sich um w = 1 nach unten (u = 0). Δu?',a:0.8,w:'Δu = 0,6·u + 0,8·w = 0,8.'}
+ {d:2,n:1,q:'Schräger Stab im 3-4-5-Dreieck (3 m nach rechts, 4 m nach unten zum Knoten K). K verschiebt sich um w = 1 nach unten (u = 0). Δu?',a:0.8,w:'Δu = 0,6·u + 0,8·w = 0,8.'},
+ {d:3,q:'Gleichlast q = 6 kN/m, L = 4 m, beidseitig eingespannt. M̊<sub>l</sub> in kNm?',n:1,a:8,w:'qL²/12 = 6·16/12 = 8.'},
+ {d:3,q:'Gleichlast q = 6 kN/m, L = 4 m, Gelenk links. M̊<sub>r</sub> in kNm?',n:1,a:-12,w:'−qL²/8 = −12 (Hilfsblatt S. 23).'},
+ {d:3,q:'Wie lautet der Lastvektor nach Lang?',o:['P = P̄ + aᵀs̊','P = P̄ + P̂ − aᵀs̊','P = K·s̊','P = s̊ − P̄'],c:1,w:'Direkte Knotenlasten + Einfeldträger-Auflagerkräfte − losgelassene Festhaltekräfte.'},
+ {d:3,q:'Schnittgrößen am Ende des AWGV?',o:['s = k·v','s = k·a·V + s̊','s = aᵀ·P','s = K⁻¹·P'],c:1,w:'Festhaltezustand plus Anteil aus den Knotenverschiebungen.'},
+ {d:3,q:'Stiel h = 4 m, unten gelenkig, EI = 6 400 kNm². Quersteifigkeit 3EI/h³ in kN/m?',n:1,a:300,w:'3·6400/64 = 300.'},
+ {d:3,q:'Bei welcher Stabrichtung ist eine Last von links auf einen Stiel „nach unten“ im Sinne der Tabelle?',o:['Stab von oben nach unten','Stab von unten nach oben','immer','nie'],c:1,w:'„Unten“ = rechts vom Stabpfeil. Pfeil nach oben → rechts = in Lastrichtung.'},
+ {d:3,q:'Federn: c = 2000 kN/m, Δ = −0,005 m. Federkraft in kN?',n:1,a:-10,w:'c·Δ = −10 kN, also Druck.'},
+ {d:4,q:'Stützensenkung Δw = 0,01 m, L = 5 m, EI = 50 000 kNm², beidseitig eingespannt. M̊ in kNm?',n:1,a:120,w:'6EI/L²·Δw = 6·50 000/25·0,01 = 120.'},
+ {d:4,q:'Stiel 3 m, beidseitig fest, EI = 9 000. Quersteifigkeit in kN/m?',n:1,a:4000,w:'12·9000/27 = 4000.'},
+ {d:4,q:'Zwei Stiele (1500 und 500 kN/m) unter starrem Riegel, H = 20 kN. Kraft im steiferen Stiel?',n:1,a:15,w:'20·1500/2000 = 15 kN.'},
+ {d:4,q:'Fachwerkstab 45° geneigt, EA/L = 2000 kN/m. Beitrag zu K<sub>ww</sub>?',n:1,a:1000,w:'2000·cos²45° = 1000.'},
+ {d:4,q:'Woran erkennst du in der Musterlösung den „τ = −½“-Trick?',o:['An Einträgen wie 1/(2L) neben −1/L in a','An negativem EI','An P̂','An einer 4×4-Matrix'],c:0,w:'Am Gelenkende wird τ = −½·τ<sub>fest</sub> eingesetzt. Das ist gleichwertig zum 3EI/L-Element.'},
+ {d:5,q:'L = 4 m, EI = 8 000 kNm². f<sub>11</sub> = L/(3EI) in 10⁻⁴ 1/kNm?',n:1,a:1.6667,w:'4/24 000 = 1,667·10⁻⁴.'},
+ {d:5,q:'Dehnstab mit A<sub>R</sub> = A<sub>L</sub>: Welche Steifigkeit muss die ln-Formel liefern?',o:['EA/L','2EA/L','EA·L','0'],c:0,w:'Grenzwert (A<sub>R</sub>−A<sub>L</sub>)/ln(A<sub>R</sub>/A<sub>L</sub>) → A.'},
+ {d:5,q:'Halbe Querschnittshöhe: Faktor für EI?',n:1,a:0.125,w:'I ~ h³ → (½)³ = 1/8.'},
+ {d:5,q:'Einfeldträger 2L mit P in der Mitte: Ersatzfedersteifigkeit c<sub>B</sub>?',o:['48EI/L³','6EI/L³','3EI/L³','12EI/L³'],c:1,w:'δ = (2L)³/(48EI) = L³/(6EI) → c = 6EI/L³.'},
+ {d:5,q:'(a b; b d)⁻¹ mit a = 4, b = 2, d = 4: Eintrag (1,1)?',n:1,a:0.3333,w:'d/(ad−b²) = 4/12 = 1/3.'},
+ {d:6,q:'Stiel 6 m, unten eingespannt, EI = 10 000. Kopf dreht um 1: Querkraft (= K für u,φ) in kN?',n:1,a:1666.67,w:'6EI/L² = 60 000/36 = 1666,7.'},
+ {d:6,q:'Kragarm 2 m unbelastet am Knoten mit w = 3 mm, φ = 0,001 (gegen Uhrzeigersinn). Senkung am Ende in mm?',n:1,a:1,w:'w − a·φ = 3 − 2 = 1 mm.'},
+ {d:6,q:'Was ist A<sup>(a)</sup> + A<sup>(i)</sup> bei Gleichgewicht (Prinzip der virtuellen Verschiebungen)?',o:['0','1','A<sup>(a)</sup>','beliebig'],c:0,w:'Gleichgewicht ⇔ Summe der virtuellen Arbeiten = 0.'},
+ {d:6,q:'Zwei gleiche Stäbe à 6 m, EA = 10 000, beidseitig am Mittelknoten. Längssteifigkeit in kN/m?',n:1,a:3333.33,w:'2·EA/L = 3333,3.'}
 ];
 let qz=null;
 function qzSetup(){
@@ -1341,11 +2235,11 @@ document.getElementById('qz-start').onclick=qzStart;
 const DAYS=[
  ['19.11.','Do','Tag 1 · Die Grundidee','Zustandsgrößen, VZK II, Elementsteifigkeit k, Bedeutung von K(i,j)','tag1'],
  ['20.11.','Fr','Tag 2 · Diskretisieren & Matrix a','Freiheitsgrade, ψ und τ, kinematische Transformationsmatrix','tag2'],
- ['21.11.','Sa','Tag 3 · Lasten, Lösen, Schnittgrößen','s̊ aus dem Hilfsblatt, P = P̄ − aᵀs̊, Federn, gelenkige Stabenden (3EI/L), erste Klausuraufgabe komplett',null],
- ['22.11.','So','Tag 4 · Typ A gegen die Uhr','Rahmen 2016, Stützensenkung 2018, Fachwerk + Feder 2020',null],
- ['23.11.','Mo','Tag 5 · Typ B: k herleiten','Flexibilität mit Arbeitssatz, Dehnstab mit ln, schubweich, Klausur 2026',null],
- ['24.11.','Di','Tag 6 · Typ C & größere Systeme','K-Einträge deuten, Kondensation, Fehler im M-Verlauf finden, Rahmen 2025, 3D',null],
- ['25.11.','Mi','Tag 7 · Probeklausur','Neue Aufgaben, Hilfsblätter + Rechner, Zeitlimit, Fehleranalyse',null],
+ ['21.11.','Sa','Tag 3 · Lasten, Lösen, Schnittgrößen','s̊ aus dem Hilfsblatt, P = P̄ − aᵀs̊, Federn, gelenkige Stabenden (3EI/L), erste Klausuraufgabe komplett','tag3'],
+ ['22.11.','So','Tag 4 · Typ A gegen die Uhr','Rahmen 2016, Stützensenkung 2018, Fachwerk + Feder 2020','tag4'],
+ ['23.11.','Mo','Tag 5 · Typ B: k herleiten','Flexibilität mit Arbeitssatz, Dehnstab mit ln, schubweich, Klausur 2026','tag5'],
+ ['24.11.','Di','Tag 6 · Typ C & größere Systeme','K-Einträge deuten, Kondensation, Fehler im M-Verlauf finden, Rahmen 2025, 3D','tag6'],
+ ['25.11.','Mi','Tag 7 · Probeklausur','Neue Aufgaben, Hilfsblätter + Rechner, Zeitlimit, Fehleranalyse','tag7'],
  ['26.11.–7.12.','','Training','Jeden Tag eine Altklausur auf Zeit, Karteikarten',null]
 ];
 let prog={};try{prog=JSON.parse(localStorage.getItem('awgv-prog')||'{}');}catch(e){}
@@ -1373,6 +2267,7 @@ function route(){
   let view=h, anchor=null;
   if(h.startsWith('t1-')){view='tag1';anchor=h;}
   if(h.startsWith('t2-')){view='tag2';anchor=h;}
+  const mm=h.match(/^t([3-7])-/);if(mm){view='tag'+mm[1];anchor=h;}
   if(!document.getElementById('v-'+view)){view='start';}
   document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
   document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+view));
