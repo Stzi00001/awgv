@@ -1535,7 +1535,26 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <p><b>Kontrolle mit K = aᵀ·k·a.</b> Die Elementsteifigkeiten ohne Δu-Zeile: k<sup>1</sup> = EI/4 · [4 2; 2 4], k<sup>2</sup> = EI/6 · [4 2; 2 4]. Ausmultipliziert:</p>
   <div class="eq"><span class="mx"><span class="op">K = EI ·</span><span class="m" data-m='[["4/4 + 4/6","2/6"],["2/6","4/6"]]'></span><span class="op">= EI ·</span><span class="m" data-m='[["1,667","0,333"],["0,333","0,667"]]'></span></span></div>
   <p>Genau das, was du gestern „physikalisch“ ausgerechnet hast. ✓ So prüfst du in der Klausur, ob dein a stimmt.</p>
-  <div class="box hb"><b class="t">Taschenrechner-Tipp</b>k für alle Stäbe als eine große Blockdiagonalmatrix eingeben (hier 4×4), a als 4×2. Dann <span class="mono">trn(a)·k·a</span>. Bei mehr als zwei Stäben ist das schneller und sicherer als Stab für Stab.</div>
+  <div class="box hb"><b class="t">🧮 So rechnest du K = aᵀ·k·a mit dem fx-991DE X</b>
+  <p><b>Idee:</b> Du gibst zwei Matrizen ein, MatA = a und MatB = k, und lässt den Rechner Trn(MatA) × MatB × MatA ausrechnen. EI klammerst du aus (EI = 1), am Ende schreibst du „· EI“ dahinter.</p>
+  <p><b>Schritt 1 – a als MatA eingeben</b> (4 Zeilen, 2 Spalten, also so wie oben in der Gleichung):</p>
+  <div class="eq"><span class="mx"><span class="op">MatA = a =</span><span class="m" data-m='[["0","0"],["1","0"],["1","0"],["0","1"]]'></span></span></div>
+  <div class="keys"><kbd>MENU</kbd><kbd>4</kbd> → <kbd>1</kbd> (MatA) → <kbd>4</kbd> Zeilen → <kbd>2</kbd> Spalten<br>
+  <kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>1</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>1</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>0</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd> → <kbd>AC</kbd></div>
+  <p><b>Schritt 2 – k als MatB eingeben.</b> Die beiden Stab-Matrizen kommen auf die Diagonale, der Rest ist 0:</p>
+  <ul><li>Stab ① (L = 4): (1/4)·[4 2; 2 4] = [1 &nbsp;0,5; 0,5 &nbsp;1]</li><li>Stab ② (L = 6): (1/6)·[4 2; 2 4] = [4/6 &nbsp;2/6; 2/6 &nbsp;4/6]</li></ul>
+  <div class="eq"><span class="mx"><span class="op">MatB = k =</span><span class="m" data-m='[["1","0,5","0","0"],["0,5","1","0","0"],["0","0","4/6","2/6"],["0","0","2/6","4/6"]]'></span></span></div>
+  <div class="keys"><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB) → <kbd>4</kbd> Zeilen → <kbd>4</kbd> Spalten, Zeile für Zeile:<br>
+  Zeile 1: <kbd>1</kbd><kbd>=</kbd><kbd>0.5</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><br>
+  Zeile 2: <kbd>0.5</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><br>
+  Zeile 3: <kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd><kbd>2</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd><br>
+  Zeile 4: <kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>2</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd><kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd> → <kbd>AC</kbd></div>
+  <p><b>Schritt 3 – rechnen:</b> Trn(MatA) × MatB × MatA</p>
+  <div class="keys"><kbd>OPTN</kbd><kbd>▼</kbd> „Transposition“ → <kbd>OPTN</kbd><kbd>3</kbd> (MatA) <kbd>)</kbd> <kbd>×</kbd> <kbd>OPTN</kbd><kbd>4</kbd> (MatB) <kbd>×</kbd> <kbd>OPTN</kbd><kbd>3</kbd> (MatA) <kbd>=</kbd></div>
+  <p><b>Schritt 4 – Ergebnis ablesen:</b> Der Rechner zeigt [1,667 &nbsp;0,333; 0,333 &nbsp;0,667]. Also K = EI · [1,667 0,333; 0,333 0,667] ✓</p>
+  <p class="small"><b>Was passiert dabei?</b> Der Rechner „sortiert“ die Stabsteifigkeiten mit a an die richtigen Freiheitsgrade und addiert sie. Bei K(1,1) addiert er 1 (Stab ①) + 4/6 (Stab ②), weil beide Stäbe am Mittelknoten hängen. Das hast du an Tag 1 von Hand gemacht.</p>
+  <p class="small"><b>Größengrenze:</b> Mehr als 4 Zeilen gehen nicht. Bei größeren Systemen rechnest du Stab für Stab und addierst (Tab „Rechner“, Abschnitt 4).</p>
+</div>
 
   <h2 id="t2-5">5. Beispiel: Rahmen mit starrem Riegel</h2>
   <p>Das ist eine leichte Variante der Klausur 2016: Zwei Stiele, links h = 4 m, rechts h = 2 m, <b>beide unten eingespannt</b>, Riegel EI = ∞, alle EA = ∞.</p>
