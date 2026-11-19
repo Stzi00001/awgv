@@ -302,7 +302,54 @@ details > div{padding:4px 14px 12px}
   <p>Ist ein Stab an einem Ende gelenkig angeschlossen (Gelenklager, Gelenk im System), ist dort M = 0. Dann ist die Verdrehung an diesem Ende kein interessanter Freiheitsgrad. Am einfachsten nimmst du das <b>verkürzte Element</b>:</p>
   <div class="eq">Gelenk links: M<sub>r</sub> = (3EI/L) · τ<sub>r</sub> &nbsp;&nbsp;&nbsp; Gelenk rechts: M<sub>l</sub> = (3EI/L) · τ<sub>l</sub></div>
   <p>In a gibt es für diesen Stab nur eine Zeile, nämlich das τ am eingespannten Ende (τ = φ + ψ wie immer). Die Festhaltemomente nimmst du dann aus dem Hilfsblatt S. 23 für den <b>einseitig</b> eingespannten Stab.</p>
-  <div class="box hb"><b class="t">So steht es in den Musterlösungen</b>Dein Prof behält manchmal die volle 2×2-Matrix und setzt am Gelenk τ = −½ · τ<sub>anderes Ende</sub> in a ein (weil dort 4τ<sub>gelenk</sub> + 2τ<sub>fest</sub> = 0). Ausmultipliziert ergibt das exakt dasselbe wie 3EI/L. Erkennst du in einer Musterlösung „1/10“ und „−1/5“ in a: Das ist dieser Trick.</div>
+  <h3 id="t3-half">Die ½-Vereinfachung aus den Musterlösungen</h3>
+  <p>Dein Prof macht es in den Musterlösungen oft anders: Er behält für jeden Stab die <b>normale</b> Matrix [4 2; 2 4]·EI/L und baut das Gelenk stattdessen in <b>a</b> ein. Dafür reicht ein einziger Satz:</p>
+  <div class="box merk"><b class="t">Die Regel</b><span style="font-size:18px">Am gelenkigen Stabende gilt <b>τ<sub>Gelenk</sub> = −½ · τ<sub>anderes Ende</sub></b></span></div>
+  <p><b>Woher kommt das?</b> Am Gelenk ist das Moment null. Mit der normalen k-Matrix:</p>
+  <div class="eq">M<sub>Gelenk</sub> = (EI/L)·(4·τ<sub>Gelenk</sub> + 2·τ<sub>fest</sub>) = 0 &nbsp;⟹&nbsp; τ<sub>Gelenk</sub> = −½·τ<sub>fest</sub></div>
+  <p>Anschaulich: Drehst du ein Ende eines Stabs, dessen anderes Ende gelenkig gelagert ist, dreht sich das Gelenkende halb so weit in die Gegenrichtung mit. Das ist dieselbe ½ wie bei der Fortleitungszahl, nur jetzt bei den Verdrehungen statt bei den Momenten.</p>
+
+  <h4>So baust du a damit auf</h4>
+  <ol class="steps">
+    <li>Zeile für das <b>feste</b> Stabende ganz normal: τ = φ + ψ.</li>
+    <li>Zeile für das <b>Gelenkende</b>: einfach <b>−½ × die Zeile darüber</b>. Die Drehung am Gelenk ist kein Freiheitsgrad, sie folgt ja aus dem anderen Ende.</li>
+    <li>k bleibt die normale Matrix (EI/L)·[4 2; 2 4].</li>
+    <li>s̊ trotzdem aus Hilfsblatt <b>S. 23</b> (einseitig eingespannt), denn am Gelenk ist M̊ = 0.</li>
+  </ol>
+
+  <h4>Beispiele aus deinen Musterlösungen</h4>
+  <table>
+    <tr><th>Klausur</th><th>Festes Ende</th><th>Gelenkende (½-Trick)</th></tr>
+    <tr><td>WS 2016/17, Träger mit Feder</td><td>τ<sub>r</sub> = −1/5</td><td>τ<sub>l</sub> = −½·(−1/5) = <b>+1/10</b></td></tr>
+    <tr><td>SS 2016, linker Stiel (Fuß gelenkig)</td><td>τ<sub>r</sub> = +1/4</td><td>τ<sub>l</sub> = <b>−1/8</b></td></tr>
+    <tr><td>SS 2017, V<sub>3</sub> = 1 (Ecke dreht)</td><td>τ = 1</td><td>τ = <b>−0,5</b> an beiden Gelenklagern</td></tr>
+  </table>
+  <p class="small">Darum stehen in diesen Musterlösungen Einträge wie „1/10“, „−1/(2L)“ oder „−0,5“ in a.</p>
+
+  <h4>Es kommt dasselbe heraus wie mit 3EI/L</h4>
+  <p>Stiel h = 4 m, Fuß gelenkig, Kopf verschoben um u = 1: a-Zeilen [−1/8; 1/4].</p>
+  <div class="eq">aᵀ k a = (EI/4)·[4·(1/64) + 2·2·(−1/8)(1/4) + 4·(1/16)] = (EI/4)·0,1875 = 0,046875 EI = 3EI/h³ ✓</div>
+  <table>
+    <tr><th></th><th>3EI/L-Element</th><th>½-Trick</th></tr>
+    <tr><td>a</td><td>eine Zeile pro Gelenkstab</td><td>zwei Zeilen, die zweite ist −½ × die erste</td></tr>
+    <tr><td>k</td><td>3EI/L (1×1)</td><td>normale [4 2; 2 4]·EI/L</td></tr>
+    <tr><td>Vorteil</td><td>weniger Zeilen, schneller von Hand</td><td>k ist immer gleich, und du findest dich in den Musterlösungen zurecht</td></tr>
+  </table>
+  <p><b>Für die Klausur:</b> Nimm, was dir leichter fällt, beides gibt volle Punkte. Wichtig ist nur, dass du die Musterlösungen lesen kannst.</p>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Mini</span><span class="ti">½-Trick anwenden</span></div>
+    <p>Riegel L = 6 m, links an einer Ecke biegesteif angeschlossen, rechts gelenkig gelagert. Die Ecke dreht sich um V = 1, nichts verschiebt sich. EI = 6 000 kNm².</p>
+    <div class="ans"><label>τ<sub>l</sub> (Ecke) =</label><input class="n" data-ans="1"><span class="fb"></span></div>
+    <div class="ans"><label>τ<sub>r</sub> (Gelenk) =</label><input class="n" data-ans="-0.5"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>l</sub> = (EI/L)(4τ<sub>l</sub> + 2τ<sub>r</sub>) [kNm] =</label><input class="n" data-ans="3000"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>r</sub> [kNm] =</label><input class="n" data-ans="0" data-abs="0.01"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>τ<sub>l</sub> = 1 (Ecke dreht), τ<sub>r</sub> = −½·1 = −0,5. EI/L = 1000.</p>
+      <p>M<sub>l</sub> = 1000·(4 − 1) = 3000 = 3EI/L ✓ · M<sub>r</sub> = 1000·(2 − 2) = 0 ✓ (Gelenk!)</p>
+    </div></details>
+  </div>
   <div class="box merk"><b class="t">Merkzahlen Steifigkeit</b>Drehsteifigkeit am Stabende: 4EI/L (anderes Ende fest) · 3EI/L (anderes Ende gelenkig).<br>Quersteifigkeit eines Stiels: 12EI/h³ (beide Enden fest) · 3EI/h³ (ein Ende gelenkig).</div>
 
   <h2 id="t3-5">5. Federn</h2>
