@@ -257,6 +257,7 @@ details > div{padding:4px 14px 12px}
     <li><a href="#t3-1">1. Die Idee: festhalten und loslassen</a></li>
     <li><a href="#t3-2">2. Festhaltekräfte s̊ aus dem Hilfsblatt</a></li>
     <li><a href="#t3-3">3. Der Lastvektor P</a></li>
+    <li><a href="#t3-p">★ Lastvektor ganz einfach</a></li>
     <li><a href="#t3-4">4. Gelenkige Stabenden (3EI/L)</a></li>
     <li><a href="#t3-5">5. Federn</a></li>
     <li><a href="#t3-6">6. Verläufe zeichnen</a></li>
@@ -297,6 +298,32 @@ details > div{padding:4px 14px 12px}
     <tr><td><b>−aᵀ·s̊</b></td><td>Die Festhaltemomente werden „losgelassen“: Ihr Gegenteil wirkt als Last auf die Knoten.</td></tr>
   </table>
   <div class="box merk"><b class="t">Warum braucht es P̂?</b>s̊ enthält nur die Momente (und N). Die Querkräfte aus der Stablast fehlen darin, weil Q in s nicht vorkommt. Kann sich ein Knoten verschieben, muss aber auch die Querkraft, die die Last dorthin schickt, als Knotenlast auftauchen. Ihren „gelenkigen“ Teil liefert P̂, den Teil aus den Einspannmomenten liefert −aᵀs̊. Zusammen ergibt das z. B. genau 3qL/8 oder 5qL/8, wie du in der Klausur von WS 2016/17 siehst.</div>
+
+  <h3 id="t3-p">★ Der Lastvektor P ganz einfach</h3>
+  <p><b>P sind die Kräfte, die an den Freiheitsgraden „anschieben“.</b> Dafür gibt es drei Quellen:</p>
+  <table>
+    <tr><th>Quelle</th><th>Was du tust</th></tr>
+    <tr><td><b>P̄</b> Last direkt auf dem Knoten</td><td>Einfach eintragen, positiv in Richtung von V.</td></tr>
+    <tr><td><b>P̂</b> Querkraft-Anteil der Stablast</td><td>Auflagerkraft des Stabs als gelenkiger Einfeldträger (z. B. qL/2, P/2). Nur bei <b>Verschiebungs</b>-Freiheitsgraden.</td></tr>
+    <tr><td><b>−aᵀs̊</b> Momenten-Anteil der Stablast</td><td>Festhaltemomente aus dem Hilfsblatt, mit a auf die Freiheitsgrade verteilt, Vorzeichen umgedreht.</td></tr>
+  </table>
+  <div class="box merk"><b class="t">Das Gedankenexperiment</b>Halte alle Knoten mit <b>Klammern</b> fest. Jeder belastete Stab drückt dann mit Momenten (s̊) und Kräften (Auflagerkräften) auf die Klammern. Jetzt lässt du die Klammern los: Was sie gehalten haben, wirkt als Last auf die Knoten, <b>mit umgekehrtem Vorzeichen</b>. Das ist P.</div>
+  <h4>Kurzregeln</h4>
+  <ul>
+    <li><b>Drehfreiheitsgrad:</b> P = Knotenmoment − (Summe der Festhaltemomente aller Stäbe an diesem Knoten)</li>
+    <li><b>Verschiebungsfreiheitsgrad:</b> P = Knotenkraft + Einfeldträger-Auflagerkräfte − aᵀs̊</li>
+  </ul>
+  <h4>Zwei Beispiele</h4>
+  <p><b>Drehung</b> (Kochrezept-Beispiel: links eingespannt, rechts Gelenklager, q = 10, L = 6): Am rechten Knoten hält die Klammer M̊<sub>r</sub> = −30. Loslassen → <b>P = +30</b>. Der Knoten dreht sich gegen den Uhrzeigersinn, wie bei einem durchhängenden Träger zu erwarten.</p>
+  <p><b>Verschiebung</b> (WS 2016/17: Feder links, rechts eingespannt, q = 10, L = 5): P̂ = qL/2 = 25. Der Momentenanteil ist −aᵀs̊ = −(−0,2)·(−31,25) = −6,25, weil die Einspannung einen Teil der Last „zu sich zieht“. <b>P = 18,75 = 3qL/8</b>.</p>
+  <div class="box hb"><b class="t">Kontrolle</b>P ist genau die Kraft bzw. das Moment, das ein <b>starres Lager</b> an diesem Freiheitsgrad aufnehmen müsste. Kennst du den Tabellenwert (3qL/8, qL²/8 …), kannst du P damit prüfen.</div>
+  <h4>Schema für mehrere Stäbe</h4>
+  <ol class="steps">
+    <li>Für jeden <b>belasteten</b> Stab: s̊ = [M̊<sub>l</sub>; M̊<sub>r</sub>] aus dem Hilfsblatt und P̂ (Auflagerkräfte) notieren. Unbelastete Stäbe: alles 0.</li>
+    <li>s̊ aller Stäbe in derselben Zeilenreihenfolge wie in a untereinander schreiben.</li>
+    <li>aᵀ·s̊ ausrechnen (Taschenrechner: Trn(MatA) × MatB mit MatB = s̊).</li>
+    <li>P = P̄ + P̂ − aᵀ·s̊</li>
+  </ol>
 
   <h2 id="t3-4">4. Gelenkige Stabenden: das 3EI/L-Element</h2>
   <p>Ist ein Stab an einem Ende gelenkig angeschlossen (Gelenklager, Gelenk im System), ist dort M = 0. Dann ist die Verdrehung an diesem Ende kein interessanter Freiheitsgrad. Am einfachsten nimmst du das <b>verkürzte Element</b>:</p>
