@@ -71,6 +71,10 @@ svg{max-width:100%;height:auto;display:block;margin:6px auto}
 .m::after{right:0;border-left:none}
 .m span{white-space:nowrap}
 .op{font-family:"Source Serif 4",serif;font-size:20px}
+.m{font-style:normal!important;font-variant-numeric:tabular-nums}
+.m.f span,.m.d span{font-style:italic}
+.mi{font-size:15px;vertical-align:middle;margin:3px 3px;padding:3px 8px;gap:1px 12px}
+.mi::before,.mi::after{width:5px;border-width:1.5px}
 /* Steps */
 .steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
 .steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
@@ -450,7 +454,7 @@ details > div{padding:4px 14px 12px}
       <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_r¹"],["τ_l³"],["τ_r³"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/2"],["1/2"]]'></span><span class="op">· u</span></span></div>
       <p><b>3) s̊:</b> Linker Stiel, Gelenk unten, Last „nach unten“ (= rechts bei Stabrichtung nach oben): S. 23 → M̊<sub>r</sub>¹ = −qh²/8 = −5·16/8 = <b>−10</b>. P̂ = qh/2 = 10 (Kopf kann sich verschieben).</p>
       <div class="eq">P = 10 − (1/4)·(−10) = 12,5 kN</div>
-      <p><b>4) K:</b> 3EI/4·(1/4)² + (EI/2)·[½ ½]·[4 2; 2 4]·[½; ½] = 0,046875 EI + 1,5 EI = <b>1,546875 EI</b> (= 3EI/h₁³ + 12EI/h₃³)</p>
+      <p><b>4) K:</b> 3EI/4·(1/4)² + (EI/2)·<span class="m mi" data-m='[["½", "½"]]'></span>·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span>·<span class="m mi" data-m='[["½"], ["½"]]'></span> = 0,046875 EI + 1,5 EI = <b>1,546875 EI</b> (= 3EI/h₁³ + 12EI/h₃³)</p>
       <p><b>5) u</b> = 12,5 / 1,546875 EI = <b>8,081/EI</b></p>
       <p><b>6) s:</b> Linker Stiel M<sub>r</sub> = (3EI/4)·(8,081/4EI) − 10 = 1,515 − 10 = <b>−8,485</b>. Rechter Stiel: τ = 4,040/EI → M<sub>l</sub> = M<sub>r</sub> = (EI/2)·6·4,040/EI = <b>12,12</b>.</p>
       <p><b>7) Verläufe:</b> Linker Stiel: Fuß 0, Kopf M(r) = −8,49, Parabel qh²/8 = 10 einhängen. Rechter Stiel: Fuß M(l) = −12,12, Kopf M(r) = +12,12. Riegel (EI = ∞) übernimmt die Eckmomente: links 8,49, rechts 12,12 (Knotengleichgewicht). Musterlösung: s¹ = −8,5; s³ = 12,12 ✓</p>
@@ -533,12 +537,12 @@ details > div{padding:4px 14px 12px}
     <div class="ans"><label>Federkraft [kN] =</label><input class="n" data-ans="0.94"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
     <details><summary>Lösungsweg</summary><div>
-      <p><b>1) Freiheitsgrade:</b> Riegel dehnstarr → beide Riegelenden und die Ecke haben dasselbe <b>u</b>. Der Stiel ist dehnstarr → die Ecke sackt nicht ab. Dazu kommt die Eckdrehung <b>φ</b>. → V = [u; φ]</p>
+      <p><b>1) Freiheitsgrade:</b> Riegel dehnstarr → beide Riegelenden und die Ecke haben dasselbe <b>u</b>. Der Stiel ist dehnstarr → die Ecke sackt nicht ab. Dazu kommt die Eckdrehung <b>φ</b>. → V = <span class="m mi" data-m='[["u"], ["φ"]]'></span></p>
       <p><b>2) Elemente und a:</b></p>
       <ul>
         <li>Linkes Feld, Gelenk links: M<sub>r</sub> = 3EI/4·τ<sub>r</sub> = 7 500·τ<sub>r</sub>, τ<sub>r</sub> = φ</li>
         <li>Rechtes Feld, Gelenk rechts: M<sub>l</sub> = 7 500·τ<sub>l</sub>, τ<sub>l</sub> = φ</li>
-        <li>Stiel (l = Fuß, r = Ecke): k = [10 000 5 000; 5 000 10 000], τ<sub>l</sub> = u/4, τ<sub>r</sub> = φ + u/4</li>
+        <li>Stiel (l = Fuß, r = Ecke): k = <span class="m mi" data-m='[["10 000", "5 000"], ["5 000", "10 000"]]'></span>, τ<sub>l</sub> = u/4, τ<sub>r</sub> = φ + u/4</li>
         <li>Zwei Federn: Δ = ±u, je 5 000</li>
       </ul>
       <p><b>3) K:</b> K<sub>11</sub> = 2·5 000 + (1/16)(10 000 + 2·5 000 + 10 000) = 10 000 + 1 875 = <b>11 875</b><br>
@@ -562,9 +566,9 @@ details > div{padding:4px 14px 12px}
     </div></details>
     <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
       <p>MatA = K (2×2): <kbd>11875</kbd><kbd>=</kbd><kbd>3750</kbd><kbd>=</kbd><kbd>3750</kbd><kbd>=</kbd><kbd>25000</kbd><kbd>=</kbd> · MatB = P (2×1): <kbd>2.5</kbd><kbd>=</kbd><kbd>2.5</kbd><kbd>=</kbd><br>
-      <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → [1,878·10⁻⁴; 7,18·10⁻⁵]</p>
+      <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <span class="m mi" data-m='[["1,878·10⁻⁴"], ["7,18·10⁻⁵"]]'></span></p>
       <p>Oder Gleichungssystem: <kbd>MENU</kbd> → Gleichung/Funkt → Lin. Gleichungssystem → 2 Unbekannte.</p>
-      <p>Stielmomente auf einen Schlag: MatC = Stiel-k (2×2) <kbd>10000</kbd><kbd>=</kbd><kbd>5000</kbd><kbd>=</kbd><kbd>5000</kbd><kbd>=</kbd><kbd>10000</kbd><kbd>=</kbd>, MatD = Stiel-a (2×2) <kbd>0.25</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0.25</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd> → <kbd>OPTN</kbd><kbd>5</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>6</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>7</kbd><kbd>=</kbd> → [1,06; 1,42], dann s̊ addieren: +2,5 / −2,5.</p>
+      <p>Stielmomente auf einen Schlag: MatC = Stiel-k (2×2) <kbd>10000</kbd><kbd>=</kbd><kbd>5000</kbd><kbd>=</kbd><kbd>5000</kbd><kbd>=</kbd><kbd>10000</kbd><kbd>=</kbd>, MatD = Stiel-a (2×2) <kbd>0.25</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0.25</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd> → <kbd>OPTN</kbd><kbd>5</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>6</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>7</kbd><kbd>=</kbd> → <span class="m mi" data-m='[["1,06"], ["1,42"]]'></span>, dann s̊ addieren: +2,5 / −2,5.</p>
     </div></details>
   </div>
 
@@ -605,7 +609,7 @@ details > div{padding:4px 14px 12px}
     <li><b>Arbeitssatz:</b> f<sub>ij</sub> = ∫ m<sub>i</sub> m<sub>j</sub>/EI dx (+ ∫ q<sub>i</sub> q<sub>j</sub>/GA<sub>v</sub> dx bei Schub) &nbsp;·&nbsp; f<sub>N</sub> = ∫ 1/EA dx</li>
     <li><b>Invertieren:</b> k = f⁻¹. Für 2×2: <span class="mx"><span class="m" data-m='[["a","b"],["b","d"]]'></span><span class="op">⁻¹ = 1/(ad − b²) ·</span><span class="m" data-m='[["d","−b"],["−b","a"]]'></span></span></li>
   </ol>
-  <p>Für den normalen Stab kommt heraus: f = (L/6EI)·[2 −1; −1 2] → k = (EI/L)·[4 2; 2 4]. Die 4 und die 2 sind also kein Zufall.</p>
+  <p>Für den normalen Stab kommt heraus: f = (L/6EI)·<span class="m mi" data-m='[["2", "−1"], ["−1", "2"]]'></span> → k = (EI/L)·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span>. Die 4 und die 2 sind also kein Zufall.</p>
   <div class="box hb"><b class="t">Hilfsblatt</b>Für die Integrale nimmst du die Koppeltafeln S. 8–10. Bei Abschnitten mit verschiedenem EI teilst du das Integral in Abschnitte und koppelst jeden Abschnitt einzeln.</div>
   <div class="box merk"><b class="t">Selbstkontrolle</b>f und k sind symmetrisch. In VZK II ist f<sub>12</sub> negativ und k<sub>12</sub> positiv. Wird ein Abschnitt weicher, werden die Einträge von k kleiner. Setzt du alle Abschnitte gleich, muss 4EI/L und 2EI/L herauskommen.</div>
 
@@ -631,12 +635,12 @@ details > div{padding:4px 14px 12px}
   <p><span class="small">∫ über die Mitte (ξ = x/L von ¼ bis ¾): ∫(1−ξ)² dξ = 13/96 und ∫ξ(1−ξ) dξ = 11/96</span></p>
   <p>Invertieren: det = (123² − 93²)/96² = 6480/96² →</p>
   <div class="eq"><span class="mx"><span class="op">k = </span><span class="m" data-m='[["2EA/3L","0","0"],["0","1,822 EI/L","1,378 EI/L"],["0","1,378 EI/L","1,822 EI/L"]]'></span></span></div>
-  <p class="small">Exakt: k<sub>Biegung</sub> = (2EI/135L)·[123 93; 93 123].</p>
+  <p class="small">Exakt: k<sub>Biegung</sub> = (2EI/135L)·<span class="m mi" data-m='[["123", "93"], ["93", "123"]]'></span>.</p>
 
   <h2 id="t5-4">4. Schubweicher Träger (WS 2017/18 Teil 2, WS 2022/23)</h2>
   <p>Bei GA<sub>v</sub> ≠ ∞ kommt zu f der Schubanteil ∫ q<sub>i</sub>q<sub>j</sub>/GA<sub>v</sub> dx = L·(1/L)(1/L)/GA<sub>v</sub> = 1/(L·GA<sub>v</sub>) dazu, auf <b>alle vier</b> Einträge mit gleichem Vorzeichen.</p>
   <p>Zahlen der Klausur: EI = 3,2·10⁷, G = E/2 = 1,5·10⁷, A<sub>v</sub> = 5/6·0,8 → GA<sub>v</sub> = 1,0·10⁷, L = 6:</p>
-  <div class="eq">f = 10⁻⁷ · [0,7917 −0,1458; −0,1458 0,7917] &nbsp;→&nbsp; k = 10⁷ · [1,3075 0,2409; 0,2409 1,3075]</div>
+  <div class="eq">f = 10⁻⁷ · <span class="m mi" data-m='[["0,7917", "−0,1458"], ["−0,1458", "0,7917"]]'></span> &nbsp;→&nbsp; k = 10⁷ · <span class="m mi" data-m='[["1,3075", "0,2409"], ["0,2409", "1,3075"]]'></span></div>
   <div class="eq">M = (1,3075 + 0,2409)·10⁷ · 3,33·10⁻³ = 51 612 kNm</div>
   <p>Statt 106 667 kNm (schubstarr) nur noch knapp die Hälfte ✓ Musterlösung.</p>
 
@@ -676,7 +680,7 @@ details > div{padding:4px 14px 12px}
       <h4>Warum ist f<sub>12</sub> negativ, k<sub>12</sub> aber positiv?</h4><p>f<sub>12</sub>: Drückst du links mit M = 1 gegen den Uhrzeigersinn, dreht sich das rechte Ende im Uhrzeigersinn, also negativ. k<sub>12</sub>: Willst du links drehen und rechts festhalten, muss das rechte Ende <i>mit</i> gegen den Uhrzeigersinn gehalten werden, also positiv. Die Inverse dreht das Vorzeichen der Nebendiagonale um.</p>
     </div></details>
     <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
-      <p>MatA (2×2): <kbd>6</kbd><kbd>÷</kbd><kbd>36000</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>72000</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>72000</kbd><kbd>=</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>36000</kbd><kbd>=</kbd> → <kbd>AC</kbd> <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>=</kbd> → [8000 4000; 4000 8000]</p>
+      <p>MatA (2×2): <kbd>6</kbd><kbd>÷</kbd><kbd>36000</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>72000</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>72000</kbd><kbd>=</kbd><kbd>6</kbd><kbd>÷</kbd><kbd>36000</kbd><kbd>=</kbd> → <kbd>AC</kbd> <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>=</kbd> → <span class="m mi" data-m='[["8000", "4000"], ["4000", "8000"]]'></span></p>
     </div></details>
   </div>
 
@@ -707,7 +711,7 @@ details > div{padding:4px 14px 12px}
       <p>Die Integrale mit ξ = x/L, Gewicht 1 außen und 8 in der Mitte:</p>
       <p>f<sub>11</sub>·EI/L = ∫₀¹(1−ξ)²dξ + 7∫<sub>¼</sub><sup>¾</sup>(1−ξ)²dξ = 1/3 + 7·13/96 = 123/96</p>
       <p>f<sub>12</sub>·EI/L = −[∫₀¹ξ(1−ξ)dξ + 7∫<sub>¼</sub><sup>¾</sup>ξ(1−ξ)dξ] = −[1/6 + 7·11/96] = −93/96</p>
-      <p>k = (96/6480)·[123 93; 93 123]·EI/L = [1,8222 1,3778; 1,3778 1,8222]·EI/L</p>
+      <p>k = (96/6480)·<span class="m mi" data-m='[["123", "93"], ["93", "123"]]'></span>·EI/L = <span class="m mi" data-m='[["1,8222", "1,3778"], ["1,3778", "1,8222"]]'></span>·EI/L</p>
       <p>Mit Koppeltafel: Teile in 3 Abschnitte, Trapez × Trapez je Abschnitt, Mittelabschnitt mit Faktor 8.</p>
     </div></details>
     <details class="why"><summary>💡 Warum ist das so?</summary><div>
@@ -716,7 +720,7 @@ details > div{padding:4px 14px 12px}
     </div></details>
     <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
       <p>Integrale direkt mit der Integraltaste: <kbd>∫▭</kbd> <kbd>(</kbd><kbd>1</kbd><kbd>−</kbd><kbd>x</kbd><kbd>)</kbd><kbd>x²</kbd> von 0,25 bis 0,75 → 0,1354 (= 13/96)</p>
-      <p>Matrix: MatA = [123 −93; −93 123] eingeben, <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>96</kbd><kbd>=</kbd> → [1,8222 1,3778; …]</p>
+      <p>Matrix: MatA = <span class="m mi" data-m='[["123", "−93"], ["−93", "123"]]'></span> eingeben, <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>96</kbd><kbd>=</kbd> → <span class="m mi" data-m='[["1,8222", "1,3778"], ["1,3778", "1,8222"]]'></span></p>
     </div></details>
   </div>
 
@@ -738,13 +742,13 @@ details > div{padding:4px 14px 12px}
 
   <div class="ex">
     <div class="h"><span class="tag">Ü 5.5</span><span class="ti">Klausur SS 2023 · Flexibilität invertieren</span></div>
-    <p>Für einen zweistöckigen Rahmen mit starren Riegeln liefert der Arbeitssatz (Musterlösung) f = (1/EI)·[18 9; 9 9] für die Horizontalverschiebungen V<sub>1</sub> (oben) und V<sub>2</sub> (Mitte). EI = 10 000 kNm². Berechne K = f⁻¹.</p>
+    <p>Für einen zweistöckigen Rahmen mit starren Riegeln liefert der Arbeitssatz (Musterlösung) f = (1/EI)·<span class="m mi" data-m='[["18", "9"], ["9", "9"]]'></span> für die Horizontalverschiebungen V<sub>1</sub> (oben) und V<sub>2</sub> (Mitte). EI = 10 000 kNm². Berechne K = f⁻¹.</p>
     <div class="ans"><label>K<sub>11</sub> [kN/m] =</label><input class="n" data-ans="1111.1"><span class="fb"></span></div>
     <div class="ans"><label>K<sub>12</sub> [kN/m] =</label><input class="n" data-ans="-1111.1"><span class="fb"></span></div>
     <div class="ans"><label>K<sub>22</sub> [kN/m] =</label><input class="n" data-ans="2222.2"><span class="fb"></span></div>
     <button class="chk-btn">Prüfen</button>
     <details><summary>Lösungsweg</summary><div>
-      <p>det = 18·9 − 9·9 = 81 → K = (EI/81)·[9 −9; −9 18] = [1111 −1111; −1111 2222] kN/m</p>
+      <p>det = 18·9 − 9·9 = 81 → K = (EI/81)·<span class="m mi" data-m='[["9", "−9"], ["−9", "18"]]'></span> = <span class="m mi" data-m='[["1111", "−1111"], ["−1111", "2222"]]'></span> kN/m</p>
       <p>Das ist genau der Hinweis auf dem Aufgabenblatt: (a b; b d)⁻¹ = 1/(ad − b²)·(d −b; −b a).</p>
     </div></details>
     <details class="why"><summary>💡 Warum ist das so?</summary><div>
@@ -929,7 +933,7 @@ details > div{padding:4px 14px 12px}
       <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l¹"],["τ_r¹"],["τ_r²"],["Δ_F"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/4"],["1/4"],["−1"]]'></span><span class="op">· u</span></span></div>
       <p><b>3)</b> Linker Stiel, Gleichlast „nach unten“ (= rechts): M̊<sub>l</sub> = +qh²/12 = +4, M̊<sub>r</sub> = −4. P̄ = 10, P̂ = qh/2 = 6.<br>
       P = 10 + 6 − [¼·4 + ¼·(−4)] = <b>16 kN</b></p>
-      <p><b>4)</b> k = diag([8000 4000; 4000 8000]; 3EI/4 = 6000; 1000)<br>
+      <p><b>4)</b> k = diag(<span class="m mi" data-m='[["8000", "4000"], ["4000", "8000"]]'></span>; 3EI/4 = 6000; 1000)<br>
       K = (1/16)(8000+4000+4000+8000) + 6000/16 + 1000 = 1500 + 375 + 1000 = <b>2875 kN/m</b><br>
       u = 16/2875 = <b>5,565 mm</b></p>
       <p><b>5)</b> Links: τ = 1,391·10⁻³ → M<sub>l</sub> = 12 000·τ + 4 = 20,70, M<sub>r</sub> = 12 000·τ − 4 = 12,70<br>
@@ -961,16 +965,16 @@ details > div{padding:4px 14px 12px}
       <p>f<sub>11</sub>·EI/L = ∫₀^½(1−ξ)² + ½∫<sub>½</sub>¹(1−ξ)² = 7/24 + ½·1/24 = 15/48 = <b>5/16</b></p>
       <p>f<sub>22</sub>·EI/L = ∫₀^½ξ² + ½∫<sub>½</sub>¹ξ² = 1/24 + ½·7/24 = 9/48 = <b>3/16</b></p>
       <p>f<sub>12</sub>·EI/L = −[∫₀^½ξ(1−ξ) + ½∫<sub>½</sub>¹ξ(1−ξ)] = −[1/12 + 1/24] = <b>−2/16</b></p>
-      <p>f = (L/16EI)·[5 −2; −2 3], det = 11 → <b>k = (16EI/11L)·[3 2; 2 5] = (EI/L)·[4,364 2,909; 2,909 7,273]</b></p>
+      <p>f = (L/16EI)·<span class="m mi" data-m='[["5", "−2"], ["−2", "3"]]'></span>, det = 11 → <b>k = (16EI/11L)·<span class="m mi" data-m='[["3", "2"], ["2", "5"]]'></span> = (EI/L)·<span class="m mi" data-m='[["4,364", "2,909"], ["2,909", "7,273"]]'></span></b></p>
       <p><b>k<sub>12</sub>:</b> Das Moment am linken Stabende, das nötig ist, um es festzuhalten, wenn das rechte Ende um τ<sub>r</sub> = 1 verdreht wird.</p>
-      <p><b>Kontrolle:</b> Mit EI überall wäre f = (L/6EI)[2 −1; −1 2] → 4 und 2. Die steifere rechte Seite macht das rechte Ende deutlich steifer (7,27 > 4), das linke nur wenig (4,36).</p>
+      <p><b>Kontrolle:</b> Mit EI überall wäre f = (L/6EI)<span class="m mi" data-m='[["2", "−1"], ["−1", "2"]]'></span> → 4 und 2. Die steifere rechte Seite macht das rechte Ende deutlich steifer (7,27 > 4), das linke nur wenig (4,36).</p>
     </div></details>
     <details class="why"><summary>💡 Warum ist das so?</summary><div>
       <h4>Warum ist k<sub>22</sub> so viel größer als k<sub>11</sub>?</h4><p>Ein Moment am rechten Ende wirkt am stärksten auf die rechte Stabhälfte (m<sub>2</sub> = ξ ist dort groß). Genau diese Hälfte ist doppelt so steif. Am linken Ende ist es umgekehrt: Das Moment wirkt vor allem auf die weiche Hälfte.</p>
     </div></details>
     <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys">
       <p>Integrale mit <kbd>∫▭</kbd>, z. B. f<sub>11</sub>: ∫₀^0,5 (1−x)² dx + 0,5·∫<sub>0,5</sub>¹ (1−x)² dx → 0,3125</p>
-      <p>Inverse: MatA = [5 −2; −2 3] → <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>16</kbd><kbd>=</kbd> → [4,364 2,909; 2,909 7,273]</p>
+      <p>Inverse: MatA = <span class="m mi" data-m='[["5", "−2"], ["−2", "3"]]'></span> → <kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>16</kbd><kbd>=</kbd> → <span class="m mi" data-m='[["4,364", "2,909"], ["2,909", "7,273"]]'></span></p>
     </div></details>
   </div>
 
@@ -1079,10 +1083,10 @@ details > div{padding:4px 14px 12px}
     <li><b>Matrix a:</b> V<sub>1</sub> = 1 dreht nur das rechte Stabende, ψ = 0 → τ<sub>l</sub> = 0, τ<sub>r</sub> = 1.
       <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l"],["τ_r"]]'></span><span class="op">=</span><span class="m" data-m='[["0"],["1"]]'></span><span class="op">· V₁</span></span></div></li>
     <li><b>Lasten:</b> Hilfsblatt S. 19, Fall 3: M̊<sub>l</sub> = qL²/12 = 30 kNm, M̊<sub>r</sub> = −30 kNm. Keine Knotenlast, P̄ = 0.
-      <div class="eq">P = 0 − [0 1] · [30; −30] = +30 kNm</div></li>
-    <li><b>Steifigkeit:</b> K = [0 1] · (EI/6)[4 2; 2 4] · [0; 1] = 4EI/6 = 0,667 EI <span class="small">(Kontrolle: 4EI/L am Knoten ✓)</span></li>
+      <div class="eq">P = 0 − <span class="m mi" data-m='[["0", "1"]]'></span> · <span class="m mi" data-m='[["30"], ["−30"]]'></span> = +30 kNm</div></li>
+    <li><b>Steifigkeit:</b> K = <span class="m mi" data-m='[["0", "1"]]'></span> · (EI/6)<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> · <span class="m mi" data-m='[["0"], ["1"]]'></span> = 4EI/6 = 0,667 EI <span class="small">(Kontrolle: 4EI/L am Knoten ✓)</span></li>
     <li><b>Lösen:</b> V<sub>1</sub> = 30 / (0,667 EI) = <b>45/EI</b> <span class="small">(positiv = gegen den Uhrzeigersinn: Der Träger hängt durch und läuft am rechten Lager wieder nach oben – passt ✓)</span></li>
-    <li><b>Schnittgrößen:</b> v = a·V = [0; 45/EI]
+    <li><b>Schnittgrößen:</b> v = a·V = <span class="m mi" data-m='[["0"], ["45/EI"]]'></span>
       <div class="eq">M<sub>l</sub> = (EI/6)(4·0 + 2·45/EI) + 30 = 15 + 30 = 45 kNm</div>
       <div class="eq">M<sub>r</sub> = (EI/6)(2·0 + 4·45/EI) − 30 = 30 − 30 = 0 ✓</div>
       <span class="small">M<sub>r</sub> = 0 am Gelenklager – Kontrolle bestanden.</span></li>
@@ -1382,7 +1386,7 @@ M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd
 <kbd>50000</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>0</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd> · <kbd>0</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
 <li><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB) → <kbd>3</kbd> Zeilen → <kbd>1</kbd> Spalte:<br>
 <kbd>0.0005</kbd><kbd>=</kbd><kbd>0.001</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>0.002</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
-<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b>[25; 0; −12]</b> = [N<sub>r</sub>; M<sub>l</sub>; M<sub>r</sub>]</li>
+<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b><span class="m mi" data-m='[["25"], ["0"], ["−12"]]'></span></b> = [N<sub>r</sub>; M<sub>l</sub>; M<sub>r</sub>]</li>
 </ol></div></details>
     <details><summary>Lösungsweg</summary><div>
       <p>EI/L = 8000/4 = 2000 kNm, EA/L = 50 000 kN/m.</p>
@@ -1435,7 +1439,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
     <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><p><b>Weg A – Matrix:</b></p><ol>
 <li><kbd>MENU</kbd><kbd>4</kbd> → <kbd>1</kbd> (MatA) → <kbd>2</kbd> → <kbd>2</kbd>: <kbd>20000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
 <li><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB) → <kbd>2</kbd> → <kbd>1</kbd>: <kbd>60</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
-<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b>[3,333·10⁻³; −1,667·10⁻³]</b></li>
+<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>x⁻¹</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b><span class="m mi" data-m='[["3,333·10⁻³"], ["−1,667·10⁻³"]]'></span></b></li>
 </ol>
 <p><b>Weg B – Gleichungssystem:</b> <kbd>MENU</kbd> → „Gleichung/Funkt“ → „Lin. Gleichungssystem“ → 2 Unbekannte → Zeile 1: <kbd>20000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>60</kbd><kbd>=</kbd>, Zeile 2: <kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> → <kbd>=</kbd> → x = 1/300, y = −1/600</p></div></details>
     <details><summary>Lösungsweg</summary><div>
@@ -1532,7 +1536,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <p><b>V<sub>1</sub> = 1:</b> Am Mittelknoten hängen das rechte Ende von Stab ① und das linke Ende von Stab ② → τ<sub>r</sub><sup>1</sup> = 1, τ<sub>l</sub><sup>2</sup> = 1.<br>
   <b>V<sub>2</sub> = 1:</b> Am rechten Knoten hängt nur das rechte Ende von Stab ② → τ<sub>r</sub><sup>2</sup> = 1.</p>
   <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l¹"],["τ_r¹"],["τ_l²"],["τ_r²"]]'></span><span class="op">=</span><span class="m" data-m='[["0","0"],["1","0"],["1","0"],["0","1"]]'></span><span class="op">·</span><span class="m d" data-m='[["V_1"],["V_2"]]'></span></span></div>
-  <p><b>Kontrolle mit K = aᵀ·k·a.</b> Die Elementsteifigkeiten ohne Δu-Zeile: k<sup>1</sup> = EI/4 · [4 2; 2 4], k<sup>2</sup> = EI/6 · [4 2; 2 4]. Ausmultipliziert:</p>
+  <p><b>Kontrolle mit K = aᵀ·k·a.</b> Die Elementsteifigkeiten ohne Δu-Zeile: k<sup>1</sup> = EI/4 · <span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span>, k<sup>2</sup> = EI/6 · <span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span>. Ausmultipliziert:</p>
   <div class="eq"><span class="mx"><span class="op">K = EI ·</span><span class="m" data-m='[["4/4 + 4/6","2/6"],["2/6","4/6"]]'></span><span class="op">= EI ·</span><span class="m" data-m='[["1,667","0,333"],["0,333","0,667"]]'></span></span></div>
   <p>Genau das, was du gestern „physikalisch“ ausgerechnet hast. ✓ So prüfst du in der Klausur, ob dein a stimmt.</p>
   <div class="box hb"><b class="t">🧮 So rechnest du K = aᵀ·k·a mit dem fx-991DE X</b>
@@ -1542,7 +1546,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <div class="keys"><kbd>MENU</kbd><kbd>4</kbd> → <kbd>1</kbd> (MatA) → <kbd>4</kbd> Zeilen → <kbd>2</kbd> Spalten<br>
   <kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>1</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>1</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd> · <kbd>0</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd> → <kbd>AC</kbd></div>
   <p><b>Schritt 2 – k als MatB eingeben.</b> Die beiden Stab-Matrizen kommen auf die Diagonale, der Rest ist 0:</p>
-  <ul><li>Stab ① (L = 4): (1/4)·[4 2; 2 4] = [1 &nbsp;0,5; 0,5 &nbsp;1]</li><li>Stab ② (L = 6): (1/6)·[4 2; 2 4] = [4/6 &nbsp;2/6; 2/6 &nbsp;4/6]</li></ul>
+  <ul><li>Stab ① (L = 4): (1/4)·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> = <span class="m mi" data-m='[["1", "0,5"], ["0,5", "1"]]'></span></li><li>Stab ② (L = 6): (1/6)·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> = <span class="m mi" data-m='[["4/6", "2/6"], ["2/6", "4/6"]]'></span></li></ul>
   <div class="eq"><span class="mx"><span class="op">MatB = k =</span><span class="m" data-m='[["1","0,5","0","0"],["0,5","1","0","0"],["0","0","4/6","2/6"],["0","0","2/6","4/6"]]'></span></span></div>
   <div class="keys"><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB) → <kbd>4</kbd> Zeilen → <kbd>4</kbd> Spalten, Zeile für Zeile:<br>
   Zeile 1: <kbd>1</kbd><kbd>=</kbd><kbd>0.5</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><br>
@@ -1551,7 +1555,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   Zeile 4: <kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>2</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd><kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=</kbd> → <kbd>AC</kbd></div>
   <p><b>Schritt 3 – rechnen:</b> Trn(MatA) × MatB × MatA</p>
   <div class="keys"><kbd>OPTN</kbd><kbd>▼</kbd> „Transposition“ → <kbd>OPTN</kbd><kbd>3</kbd> (MatA) <kbd>)</kbd> <kbd>×</kbd> <kbd>OPTN</kbd><kbd>4</kbd> (MatB) <kbd>×</kbd> <kbd>OPTN</kbd><kbd>3</kbd> (MatA) <kbd>=</kbd></div>
-  <p><b>Schritt 4 – Ergebnis ablesen:</b> Der Rechner zeigt [1,667 &nbsp;0,333; 0,333 &nbsp;0,667]. Also K = EI · [1,667 0,333; 0,333 0,667] ✓</p>
+  <p><b>Schritt 4 – Ergebnis ablesen:</b> Der Rechner zeigt <span class="m mi" data-m='[["1,667", "0,333"], ["0,333", "0,667"]]'></span>. Also K = EI · <span class="m mi" data-m='[["1,667", "0,333"], ["0,333", "0,667"]]'></span> ✓</p>
   <p class="small"><b>Was passiert dabei?</b> Der Rechner „sortiert“ die Stabsteifigkeiten mit a an die richtigen Freiheitsgrade und addiert sie. Bei K(1,1) addiert er 1 (Stab ①) + 4/6 (Stab ②), weil beide Stäbe am Mittelknoten hängen. Das hast du an Tag 1 von Hand gemacht.</p>
   <p class="small"><b>Größengrenze:</b> Mehr als 4 Zeilen gehen nicht. Bei größeren Systemen rechnest du Stab für Stab und addierst (Tab „Rechner“, Abschnitt 4).</p>
 </div>
@@ -1576,7 +1580,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <p><b>Matrix a:</b> Stiele von unten (l) nach oben (r) gerichtet. Bei u = 1 kippt jede Stielsehne im Uhrzeigersinn um ψ = 1/h, Knotendrehungen sind 0:</p>
   <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l¹"],["τ_r¹"],["τ_l²"],["τ_r²"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/4"],["1/2"],["1/2"]]'></span><span class="op">· u</span></span></div>
   <p>Der Riegel hat EI = ∞ und taucht deshalb nicht in a auf – er ist kein verformbares Element.</p>
-  <p><b>K = aᵀ·k·a</b> für Stiel ①: (EI/4) · [¼ ¼] · [4 2; 2 4] · [¼; ¼] = (EI/4) · 12/16 = <b>0,1875 EI</b>. Für Stiel ②: (EI/2) · [½ ½] · [4 2; 2 4] · [½; ½] = <b>1,5 EI</b>.</p>
+  <p><b>K = aᵀ·k·a</b> für Stiel ①: (EI/4) · <span class="m mi" data-m='[["¼", "¼"]]'></span> · <span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> · <span class="m mi" data-m='[["¼"], ["¼"]]'></span> = (EI/4) · 12/16 = <b>0,1875 EI</b>. Für Stiel ②: (EI/2) · <span class="m mi" data-m='[["½", "½"]]'></span> · <span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> · <span class="m mi" data-m='[["½"], ["½"]]'></span> = <b>1,5 EI</b>.</p>
   <div class="eq">K = 0,1875 EI + 1,5 EI = 1,6875 EI</div>
   <div class="box merk"><b class="t">Wiedererkennen!</b>0,1875 = 12/4³ und 1,5 = 12/2³. Das ist die bekannte Quersteifigkeit eines beidseitig eingespannten Stiels, <b>12EI/h³</b>. Der kurze Stiel ist 8-mal steifer und zieht fast die ganze Horizontallast. In der Originalklausur 2016 ist der linke Stiel unten <i>gelenkig</i> – dann kommt dort 3EI/h³ heraus, und K = 1,546875 EI steht genau so in der Musterlösung. Das rechnen wir an Tag 4 komplett.</div>
 
@@ -1673,7 +1677,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
 <li><kbd>MENU</kbd><kbd>4</kbd> → <kbd>1</kbd> (MatA = a) → <kbd>2</kbd> → <kbd>2</kbd>: <kbd>0.6</kbd><kbd>=</kbd><kbd>0.8</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>1</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
 <li><kbd>OPTN</kbd><kbd>1</kbd> → <kbd>2</kbd> (MatB = k) → <kbd>2</kbd> → <kbd>2</kbd>: <kbd>2000</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>0</kbd><kbd>=</kbd><kbd>2500</kbd><kbd>=</kbd> → <kbd>AC</kbd></li>
 <li><kbd>OPTN</kbd><kbd>▼</kbd> „Transposition“ <kbd>OPTN</kbd><kbd>3</kbd><kbd>)</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>3</kbd><kbd>=</kbd></li>
-<li>→ <b>[720 960; 960 3780]</b></li>
+<li>→ <b><span class="m mi" data-m='[["720", "960"], ["960", "3780"]]'></span></b></li>
 </ol></div></details>
     <details><summary>Lösungsweg</summary><div>
       <p>k = diag(10000/5; 10000/4) = diag(2000; 2500)</p>
@@ -1697,7 +1701,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
     <details class="calc"><summary>🧮 Taschenrechner (fx-991DE X)</summary><div class="keys"><ol>
 <li>MatA = k² ohne Δu (2×2): <kbd>8000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>4000</kbd><kbd>=</kbd><kbd>8000</kbd><kbd>=</kbd></li>
 <li>MatB = v² = [V<sub>1</sub>; V<sub>2</sub>] (2×1), exakt als Bruch: <kbd>1</kbd><kbd>÷</kbd><kbd>300</kbd><kbd>=</kbd><kbd>(−)</kbd><kbd>1</kbd><kbd>÷</kbd><kbd>600</kbd><kbd>=</kbd></li>
-<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b>[20; 0]</b></li>
+<li><kbd>OPTN</kbd><kbd>3</kbd><kbd>×</kbd><kbd>OPTN</kbd><kbd>4</kbd><kbd>=</kbd> → <b><span class="m mi" data-m='[["20"], ["0"]]'></span></b></li>
 </ol>
 <p class="small">Tipp: Hast du V aus Ü 1.4 noch als MatAns, kopier es direkt: <kbd>OPTN</kbd><kbd>7</kbd><kbd>=</kbd> <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>°'"</kbd> → MatB. So vermeidest du Rundungsfehler.</p></div></details>
     <details><summary>Lösungsweg</summary><div>
@@ -1792,12 +1796,12 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
 
   <h2>4. Der Trick: K Stab für Stab</h2>
   <p>K = aᵀ·k·a ist eine Summe über alle Stäbe: <b>K = Σ a<sub>p</sub>ᵀ · k<sub>p</sub> · a<sub>p</sub></b>. Dabei ist a<sub>p</sub> nur der Teil von a, der zu Stab p gehört (2 oder 3 Zeilen). Das passt immer in den Rechner.</p>
-  <p><b>Beispiel Rahmen mit starrem Riegel (Tag 2):</b> a<sub>1</sub> = [¼; ¼], a<sub>2</sub> = [½; ½], EI ausklammern.</p>
+  <p><b>Beispiel Rahmen mit starrem Riegel (Tag 2):</b> a<sub>1</sub> = <span class="m mi" data-m='[["¼"], ["¼"]]'></span>, a<sub>2</sub> = <span class="m mi" data-m='[["½"], ["½"]]'></span>, EI ausklammern.</p>
   <div class="keys"><ol>
-    <li><b>Stab ①:</b> MatA = a<sub>1</sub> (2×1): <kbd>0.25</kbd><kbd>=</kbd><kbd>0.25</kbd><kbd>=</kbd>. MatB = k<sub>1</sub>/EI = (1/4)·[4 2; 2 4] = [1 0,5; 0,5 1] (2×2).</li>
+    <li><b>Stab ①:</b> MatA = a<sub>1</sub> (2×1): <kbd>0.25</kbd><kbd>=</kbd><kbd>0.25</kbd><kbd>=</kbd>. MatB = k<sub>1</sub>/EI = (1/4)·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> = <span class="m mi" data-m='[["1", "0,5"], ["0,5", "1"]]'></span> (2×2).</li>
     <li>Rechnen: <kbd>OPTN</kbd><kbd>▼</kbd> Transposition <kbd>OPTN</kbd><kbd>3</kbd><kbd>)</kbd> <kbd>×</kbd> <kbd>OPTN</kbd><kbd>4</kbd> <kbd>×</kbd> <kbd>OPTN</kbd><kbd>3</kbd> <kbd>=</kbd> → <b>[0,1875]</b></li>
     <li>Speichern: <kbd class="s">SHIFT</kbd><kbd>RCL</kbd><kbd>x⁻¹</kbd> → MatC = 0,1875</li>
-    <li><b>Stab ②:</b> MatA und MatB über <kbd>OPTN</kbd><kbd>2</kbd> (bearbeiten) bzw. <kbd>OPTN</kbd><kbd>1</kbd> neu definieren: MatA = [0,5; 0,5], MatB = (1/2)·[4 2; 2 4] = [2 1; 1 2].</li>
+    <li><b>Stab ②:</b> MatA und MatB über <kbd>OPTN</kbd><kbd>2</kbd> (bearbeiten) bzw. <kbd>OPTN</kbd><kbd>1</kbd> neu definieren: MatA = <span class="m mi" data-m='[["0,5"], ["0,5"]]'></span>, MatB = (1/2)·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> = <span class="m mi" data-m='[["2", "1"], ["1", "2"]]'></span>.</li>
     <li>Rechnen und dazuzählen: Trn(MatA) × MatB × MatA <kbd>+</kbd> <kbd>OPTN</kbd><kbd>5</kbd> <kbd>=</kbd> → <b>[1,6875]</b> → K = 1,6875 EI ✓</li>
   </ol></div>
   <div class="box merk"><b class="t">Tipp: EI ausklammern</b>Rechne mit EI = 1 und schreib „· EI“ dahinter. Dann kommen V als „…/EI“ heraus und die EI kürzen sich in s = k·a·V wieder weg. Das spart Tipparbeit und große Zahlen.</div>
