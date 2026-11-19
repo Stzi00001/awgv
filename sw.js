@@ -1,5 +1,5 @@
 // Offline-Cache für die AWGV-App. Bei jeder inhaltlichen Änderung VERSION erhöhen.
-const VERSION = 'awgv-v11';
+const VERSION = 'awgv-v12';
 const CORE = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 

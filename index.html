@@ -195,6 +195,7 @@ details > div{padding:4px 14px 12px}
       <marker id="arK" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2433"/></marker>
 <marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker>
 <marker id="mkr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+<marker id="mkO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b7791f"/></marker>
 <marker id="mkg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
 </defs></svg>
 <header class="top"><div class="topin">
@@ -1477,7 +1478,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
     <li><a href="#t2-3">3. Das Rezept für a</a></li>
     <li><a href="#t2-4">4. Beispiel: Zweifeldträger</a></li>
     <li><a href="#t2-5">5. Beispiel: Rahmen mit starrem Riegel</a></li>
-    <li><a href="#t2-6">6. Beispiel: Schräge Stäbe (Δu)</a></li>
+    <li><a href="#t2-6">6. Schräge Stäbe</a></li>
     <li><a href="#t2-ue">Übungen</a></li>
   </ul>
 
@@ -1643,8 +1644,79 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <div class="eq">K = 0,1875 EI + 1,5 EI = 1,6875 EI</div>
   <div class="box merk"><b class="t">Wiedererkennen!</b>0,1875 = 12/4³ und 1,5 = 12/2³. Das ist die bekannte Quersteifigkeit eines beidseitig eingespannten Stiels, <b>12EI/h³</b>. Der kurze Stiel ist 8-mal steifer und zieht fast die ganze Horizontallast. In der Originalklausur 2016 ist der linke Stiel unten <i>gelenkig</i> – dann kommt dort 3EI/h³ heraus, und K = 1,546875 EI steht genau so in der Musterlösung. Das rechnen wir an Tag 4 komplett.</div>
 
-  <h2 id="t2-6">6. Beispiel: Schräge Stäbe (Δu)</h2>
-  <p>Bei Fachwerken oder Pendelstützen ist nur Δu interessant. Der Trick: <b>Verschiebung des Knotens auf die Stabachse projizieren</b>.</p>
+  <h2 id="t2-6">6. Schräge Stäbe</h2>
+  <p class="lead" style="font-size:17px">Bei einem schrägen Stab bewegt sich der Knoten meistens „schief“ zum Stab. Der Trick: <b>Zerlege die Bewegung in zwei Teile</b>, einen längs zum Stab und einen quer dazu. Jeder Teil hat eine eigene Wirkung.</p>
+
+  <svg viewBox="0 0 420 270" style="max-width:520px" role="img" aria-label="Zerlegung einer Knotenverschiebung am schrägen Stab">
+    <line x1="60" y1="40" x2="180" y2="200" stroke="#1d2433" stroke-width="4"/>
+    <circle cx="60" cy="40" r="5" fill="#fff" stroke="#1d2433" stroke-width="2"/><circle cx="180" cy="200" r="5" fill="#fff" stroke="#1d2433" stroke-width="2"/>
+    <line x1="60" y1="40" x2="180" y2="40" stroke="#5d6475" stroke-dasharray="4 3"/><line x1="180" y1="40" x2="180" y2="200" stroke="#5d6475" stroke-dasharray="4 3"/>
+    <text x="120" y="32" text-anchor="middle" font-family="Source Sans 3" font-size="14" fill="#5d6475">Δx = 3</text>
+    <text x="188" y="125" font-family="Source Sans 3" font-size="14" fill="#5d6475">Δz = 4</text>
+    <text x="100" y="135" font-family="Source Sans 3" font-size="14" fill="#1d2433" transform="rotate(53 100 135)">L = 5</text>
+    <text x="48" y="30" font-family="Source Sans 3" font-weight="700" font-size="14">A (l)</text><text x="150" y="218" font-family="Source Sans 3" font-weight="700" font-size="14">K (r)</text>
+    <line x1="182" y1="200" x2="250" y2="200" stroke="#1d2433" stroke-width="2.5" marker-end="url(#mk)"/>
+    <text x="256" y="205" font-family="Source Serif 4" font-style="italic" font-size="16">u = 1</text>
+    <line x1="182" y1="202" x2="204" y2="232" stroke="#2e8b57" stroke-width="3" marker-end="url(#mkg)"/>
+    <text x="212" y="250" font-family="Source Sans 3" font-size="14" fill="#2e8b57">längs: 0,6 → Δu = +0,6</text>
+    <line x1="184" y1="198" x2="224" y2="168" stroke="#b7791f" stroke-width="3" marker-end="url(#mkO)"/>
+    <text x="230" y="160" font-family="Source Sans 3" font-size="14" fill="#b7791f">quer: −0,8 → kippt gegen Uhrzeigersinn</text>
+    <line x1="204" y1="232" x2="248" y2="200" stroke="#2e8b57" stroke-width="1" stroke-dasharray="3 3"/><line x1="224" y1="168" x2="248" y2="200" stroke="#b7791f" stroke-width="1" stroke-dasharray="3 3"/>
+  </svg>
+  <p class="cap">Knoten K wird um 1 nach rechts geschoben. Grün: der Anteil in Stabrichtung (macht den Stab länger). Orange: der Anteil quer dazu (lässt den Stab kippen).</p>
+
+  <h3>Das Rezept in 3 Schritten</h3>
+  <ol class="steps">
+    <li><b>Richtungszahlen aus dem Dreieck</b> der Bemaßung, immer vom Stabanfang l zum Stabende r gelesen:
+      <div class="eq">c<sub>x</sub> = Δx / L &nbsp;&nbsp;&nbsp; c<sub>z</sub> = Δz / L</div>
+      Hier: von A nach K geht es 3 nach rechts und 4 nach <b>unten</b> (z nach unten ist positiv) → c<sub>x</sub> = 0,6, c<sub>z</sub> = 0,8. Du brauchst keinen Winkel, nur die Maße aus der Skizze.</li>
+    <li><b>Längsanteil → Δu</b> (Verlängerung). Bewegt sich das Stabende r um (u, w):
+      <div class="eq">Δu = c<sub>x</sub>·u + c<sub>z</sub>·w</div>
+      Bewegt sich stattdessen der Stabanfang l, kommt ein <b>Minus</b> davor (der Anfang läuft dem Ende hinterher).</li>
+    <li><b>Queranteil → ψ</b> (nur bei Biegestäben nötig, bei Fachwerkstäben nicht):
+      <div class="eq">quer = −c<sub>z</sub>·u + c<sub>x</sub>·w &nbsp;&nbsp;&nbsp; ψ = quer / L</div>
+      Wieder: bewegt sich der Anfang l, Vorzeichen umdrehen. Dann wie immer τ = φ + ψ.</li>
+  </ol>
+
+  <div class="box merk"><b class="t">Kontrolle ohne Formel: zwei Fragen an die Skizze</b>
+  <b>1. Wird der Stab länger?</b> Dann ist Δu positiv. Im Bild: K geht nach rechts, also weg von A → länger → +0,6 ✓<br>
+  <b>2. Kippt der Stab im Uhrzeigersinn?</b> Dann ist ψ positiv. Im Bild: K geht nach rechts, der Stab richtet sich flacher auf, er dreht also gegen den Uhrzeigersinn → ψ = −0,8/5 = −0,16 ✓ (die Formel liefert quer = −0,8·1 + 0 = −0,8).</div>
+
+  <div class="box warn"><b class="t">Typische Fehler</b>
+  • c<sub>x</sub> und c<sub>z</sub> vertauscht: Die Zahl, die zur <b>Bewegungsrichtung parallel</b> liegt, bestimmt den Längsanteil. Horizontale Bewegung → Δx/L, vertikale → Δz/L.<br>
+  • z-Richtung vergessen: Geht der Stab von l nach r <b>nach oben</b>, ist Δz negativ (z. B. c<sub>z</sub> = −0,8).<br>
+  • Bei einem Winkel in der Aufgabe (z. B. 30° zur Vertikalen): erst skizzieren, welche Seite des Dreiecks „waagerecht“ ist, dann cos oder sin zuordnen.</div>
+
+  <h3>Probier es selbst</h3>
+  <div class="ex">
+    <div class="h"><span class="tag">Mini</span><span class="ti">Schräger Stab, Knoten geht nach unten</span></div>
+    <p>Stab von A (l) nach K (r): 4 m nach rechts, 3 m nach unten, L = 5 m. Knoten K bewegt sich um w = 1 nach <b>unten</b> (u = 0).</p>
+    <div class="ans"><label>c<sub>x</sub> =</label><input class="n" data-ans="0.8"><span class="fb"></span></div>
+    <div class="ans"><label>c<sub>z</sub> =</label><input class="n" data-ans="0.6"><span class="fb"></span></div>
+    <div class="ans"><label>Δu =</label><input class="n" data-ans="0.6"><span class="fb"></span></div>
+    <div class="ans"><label>ψ =</label><input class="n" data-ans="0.16"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>c<sub>x</sub> = 4/5 = 0,8 · c<sub>z</sub> = 3/5 = 0,6</p>
+      <p>Δu = 0,8·0 + 0,6·1 = 0,6 → länger ✓ (K entfernt sich von A)</p>
+      <p>quer = −0,6·0 + 0,8·1 = 0,8 → ψ = 0,8/5 = <b>+0,16</b>. Anschaulich: K sackt ab, der Stab wird steiler, er dreht im Uhrzeigersinn → positiv ✓</p>
+    </div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Mini</span><span class="ti">Jetzt bewegt sich der Anfang</span></div>
+    <p>Derselbe Stab, aber jetzt bewegt sich <b>A</b> (der Anfang l) um u = 1 nach rechts, K bleibt fest.</p>
+    <div class="ans"><label>Δu =</label><input class="n" data-ans="-0.8"><span class="fb"></span></div>
+    <div class="ans"><label>ψ =</label><input class="n" data-ans="0.12"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>Δu:</b> Der Anfang bewegt sich → Vorzeichen umdrehen: Δu = −(c<sub>x</sub>·u + c<sub>z</sub>·w) = −(0,8·1 + 0) = <b>−0,8</b>. A rückt näher an K → kürzer ✓</p>
+      <p><b>ψ:</b> Querverschiebung am Anfang: quer<sub>l</sub> = −c<sub>z</sub>·u + c<sub>x</sub>·w = −0,6·1 = −0,6. Am Ende nichts: quer<sub>r</sub> = 0.<br>
+      ψ = (quer<sub>r</sub> − quer<sub>l</sub>)/L = (0 − (−0,6))/5 = <b>+0,12</b></p>
+      <p><b>Anschaulich:</b> A rutscht nach rechts, K bleibt. Der Stab wird steiler, er dreht im Uhrzeigersinn → positiv ✓</p>
+    </div></details>
+  </div>
+
+  <h3>Beispiel mit zwei Stäben (für Ü 2.3)</h3>
   <svg viewBox="0 0 360 230" role="img" aria-label="Zweistabsystem mit Knotenverschiebungen">
     <g stroke="#1d2433" stroke-width="1.5" fill="none">
       <line x1="100" y1="40" x2="220" y2="40"/><line x1="200" y1="40" x2="200" y2="40"/>
