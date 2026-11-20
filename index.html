@@ -403,8 +403,12 @@ details > div{padding:4px 14px 12px}
     <li><b>Lasten:</b> Hilfsblatt S. 23 (Gelenk links): M̊<sub>r</sub> = −qL²/8 = −31,25 kNm. P̂ = qL/2 = 25 kN (das linke Ende kann sich nach unten verschieben, die Last will genau dahin).
       <div class="eq">P = 0 + 25 − (−0,2)·(−31,25) = 25 − 6,25 = 18,75 kN</div>
       <span class="small">18,75 = 3qL/8: genau die Auflagerkraft des einseitig eingespannten Trägers ✓</span></li>
-    <li><b>Steifigkeit:</b> k = diag(c; 3EI/L) = diag(2000; 6000)
-      <div class="eq">K = 2000 · 0,866² + 6000 · 0,2² = 1500 + 240 = 1740 kN/m</div></li>
+    <li><b>Steifigkeit</b>, Stab für Stab mit der 1-FHG-Abkürzung:
+      <table><tr><th>Element</th><th>a-Eintrag α</th><th>Formel</th><th>Beitrag</th></tr>
+      <tr><td>Feder</td><td>−0,866</td><td>c·α² = 2000·0,75</td><td>1500</td></tr>
+      <tr><td>Träger (Gelenk links)</td><td>τ<sub>r</sub> = −0,2</td><td>(3EI/L)·α² = 6000·0,04</td><td>240</td></tr></table>
+      <div class="eq">K = 1500 + 240 = 1740 kN/m</div>
+      <span class="small">Die Vorzeichen der a-Einträge spielen für K keine Rolle (α²), wohl aber später für die Schnittgrößen.</span></li>
     <li><b>Lösen:</b> V = 18,75 / 1740 = <b>0,01078 m = 10,8 mm</b> nach unten</li>
     <li><b>Schnittgrößen:</b>
       <div class="eq">Federkraft = 2000 · (−0,866 · 0,01078) = −18,66 kN (Druck)</div>
@@ -457,7 +461,11 @@ details > div{padding:4px 14px 12px}
     <button class="chk-btn">Prüfen</button>
     <details><summary>Lösungsweg</summary><div>
       <p><b>a:</b> Gelenk rechts → Element M<sub>l</sub> = 3EI/L·τ<sub>l</sub>. Bei V = 1: ψ = (1 − 0)/4 = 0,25 → τ<sub>l</sub> = 0,25. Die Feder unter dem Knoten wird kürzer: Δ = −1.</p>
-      <p><b>K</b> = 1500·(−1)² + (3·8000/4)·0,25² = 1500 + 6000·0,0625 = 1500 + 375 = <b>1875 kN/m</b></p>
+      <p><b>K</b>, Stab für Stab:</p>
+      <table><tr><th>Element</th><th>α</th><th>Formel</th><th>Beitrag</th></tr>
+      <tr><td>Feder</td><td>−1</td><td>c·α² = 1500·1</td><td>1500</td></tr>
+      <tr><td>Träger (Gelenk rechts)</td><td>τ<sub>l</sub> = 0,25</td><td>(3EI/L)·α² = (3·8000/4)·0,0625 = 6000·0,0625</td><td>375</td></tr></table>
+      <p>K = 1500 + 375 = <b>1875 kN/m</b>. Kontrolle: 3EI/L³ = 3·8000/64 = 375 ✓ (Quersteifigkeit eines Kragträgers mit Gelenk)</p>
       <p><b>s̊:</b> S. 23, Gelenk rechts: M̊<sub>l</sub> = +qL²/8 = +20. <b>P̂</b> = qL/2 = 20 (rechtes Ende kann nach unten).<br>
       <b>P</b> = 20 − 0,25·20 = <b>15 kN</b> (= 3qL/8 ✓)</p>
       <p><b>V</b> = 15/1875 = 0,008 m = <b>8 mm</b></p>
@@ -529,7 +537,12 @@ details > div{padding:4px 14px 12px}
       <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_r¹"],["τ_l³"],["τ_r³"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/2"],["1/2"]]'></span><span class="op">· u</span></span></div>
       <p><b>3) s̊:</b> Linker Stiel, Gelenk unten, Last „nach unten“ (= rechts bei Stabrichtung nach oben): S. 23 → M̊<sub>r</sub>¹ = −qh²/8 = −5·16/8 = <b>−10</b>. P̂ = qh/2 = 10 (Kopf kann sich verschieben).</p>
       <div class="eq">P = 10 − (1/4)·(−10) = 12,5 kN</div>
-      <p><b>4) K:</b> 3EI/4·(1/4)² + (EI/2)·<span class="m mi" data-m='[["½", "½"]]'></span>·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span>·<span class="m mi" data-m='[["½"], ["½"]]'></span> = 0,046875 EI + 1,5 EI = <b>1,546875 EI</b> (= 3EI/h₁³ + 12EI/h₃³)</p>
+      <p><b>4) K</b>, Stab für Stab (EI ausgeklammert):</p>
+      <table><tr><th>Stab</th><th>a-Einträge</th><th>Formel</th><th>Beitrag</th></tr>
+      <tr><td>① linker Stiel, Gelenk unten (L = 4)</td><td>τ<sub>r</sub> = ¼</td><td>(3/4)·(¼)² = 3/64</td><td>0,046875 EI</td></tr>
+      <tr><td>③ rechter Stiel, fest-fest (L = 2)</td><td>τ<sub>l</sub> = τ<sub>r</sub> = ½</td><td>(1/2)·4·(¼ + ¼ + ¼) = (1/2)·3</td><td>1,5 EI</td></tr>
+      <tr><td>② Riegel</td><td colspan="2">EI = ∞ → keine Zeile in a, kein Beitrag</td><td>—</td></tr></table>
+      <p><b>K = 0,046875 EI + 1,5 EI = 1,546875 EI</b> (Kontrolle: 3EI/h₁³ + 12EI/h₃³ = 3/64 + 12/8 ✓)</p>
       <p><b>5) u</b> = 12,5 / 1,546875 EI = <b>8,081/EI</b></p>
       <p><b>6) s:</b> Linker Stiel M<sub>r</sub> = (3EI/4)·(8,081/4EI) − 10 = 1,515 − 10 = <b>−8,485</b>. Rechter Stiel: τ = 4,040/EI → M<sub>l</sub> = M<sub>r</sub> = (EI/2)·6·4,040/EI = <b>12,12</b>.</p>
       <p><b>7) Verläufe:</b> Linker Stiel: Fuß 0, Kopf M(r) = −8,49, Parabel qh²/8 = 10 einhängen. Rechter Stiel: Fuß M(l) = −12,12, Kopf M(r) = +12,12. Riegel (EI = ∞) übernimmt die Eckmomente: links 8,49, rechts 12,12 (Knotengleichgewicht). Musterlösung: s¹ = −8,5; s³ = 12,12 ✓</p>
@@ -620,9 +633,12 @@ details > div{padding:4px 14px 12px}
         <li>Stiel (l = Fuß, r = Ecke): k = <span class="m mi" data-m='[["10 000", "5 000"], ["5 000", "10 000"]]'></span>, τ<sub>l</sub> = u/4, τ<sub>r</sub> = φ + u/4</li>
         <li>Zwei Federn: Δ = ±u, je 5 000</li>
       </ul>
-      <p><b>3) K:</b> K<sub>11</sub> = 2·5 000 + (1/16)(10 000 + 2·5 000 + 10 000) = 10 000 + 1 875 = <b>11 875</b><br>
-      K<sub>12</sub> = (1/4)(5 000 + 10 000) = <b>3 750</b><br>
-      K<sub>22</sub> = 7 500 + 7 500 + 10 000 = <b>25 000</b></p>
+      <p><b>3) K</b>, Eintrag für Eintrag. Für jeden Eintrag K(i,j) nimmst du bei jedem Stab die a-Einträge der Spalte i (links) und der Spalte j (rechts) und rechnest a<sub>i</sub>ᵀ·k·a<sub>j</sub>:</p>
+      <table><tr><th>Eintrag</th><th>Stiel (k = [10 000 5 000; 5 000 10 000])</th><th>Riegel links / rechts (7 500)</th><th>Federn (2 × 5 000)</th><th>Summe</th></tr>
+      <tr><td>K<sub>11</sub> (u,u)</td><td>a(u) = [¼; ¼]: (1/16)·(10 000 + 5 000 + 5 000 + 10 000) = 1 875</td><td>u verformt die Riegel nicht → 0</td><td>5 000 + 5 000 = 10 000</td><td><b>11 875</b></td></tr>
+      <tr><td>K<sub>12</sub> (u,φ)</td><td>[¼ ¼] · k · [0; 1] = ¼·5 000 + ¼·10 000 = 3 750</td><td>0</td><td>0</td><td><b>3 750</b></td></tr>
+      <tr><td>K<sub>22</sub> (φ,φ)</td><td>[0 1] · k · [0; 1] = 10 000</td><td>7 500 + 7 500</td><td>0</td><td><b>25 000</b></td></tr></table>
+      <p>K<sub>21</sub> = K<sub>12</sub> (symmetrisch). Physikalisch: K<sub>22</sub> = 4EI/L (Stiel) + 3EI/L + 3EI/L (beide Riegel mit Gelenk am anderen Ende).</p>
       <p><b>4) Lasten:</b> s̊ linkes Feld (Gelenk links, S. 23): M̊<sub>r</sub> = −qL²/8 = −10. Stiel mit Einzellast in der Mitte („unten“ = rechts): M̊<sub>l</sub> = +PL/8 = 2,5, M̊<sub>r</sub> = −2,5. P̂<sub>u</sub> = 5/2 = 2,5 (Stielkopf-Auflagerkraft des Einfeldträgers). P̄<sub>φ</sub> = −10 (Uhrzeigersinn).<br>
       P<sub>1</sub> = 2,5 − [¼·2,5 + ¼·(−2,5)] = <b>2,5</b><br>
       P<sub>2</sub> = −10 − [(−10) + (−2,5)] = <b>2,5</b></p>
@@ -1008,9 +1024,12 @@ details > div{padding:4px 14px 12px}
       <div class="eq"><span class="mx"><span class="m d" data-m='[["τ_l¹"],["τ_r¹"],["τ_r²"],["Δ_F"]]'></span><span class="op">=</span><span class="m" data-m='[["1/4"],["1/4"],["1/4"],["−1"]]'></span><span class="op">· u</span></span></div>
       <p><b>3)</b> Linker Stiel, Gleichlast „nach unten“ (= rechts): M̊<sub>l</sub> = +qh²/12 = +4, M̊<sub>r</sub> = −4. P̄ = 10, P̂ = qh/2 = 6.<br>
       P = 10 + 6 − [¼·4 + ¼·(−4)] = <b>16 kN</b></p>
-      <p><b>4)</b> k = diag(<span class="m mi" data-m='[["8000", "4000"], ["4000", "8000"]]'></span>; 3EI/4 = 6000; 1000)<br>
-      K = (1/16)(8000+4000+4000+8000) + 6000/16 + 1000 = 1500 + 375 + 1000 = <b>2875 kN/m</b><br>
-      u = 16/2875 = <b>5,565 mm</b></p>
+      <p><b>4) K</b>, Stab für Stab:</p>
+      <table><tr><th>Element</th><th>a-Einträge</th><th>Formel</th><th>Beitrag</th></tr>
+      <tr><td>Linker Stiel, fest-fest</td><td>α = β = ¼</td><td>(8000/4)·4·(1/16 + 1/16 + 1/16)</td><td>1500</td></tr>
+      <tr><td>Rechter Stiel, Gelenk unten</td><td>τ<sub>r</sub> = ¼</td><td>(3·8000/4)·(1/16) = 6000/16</td><td>375</td></tr>
+      <tr><td>Feder</td><td>−1</td><td>1000·1</td><td>1000</td></tr></table>
+      <p>K = <b>2875 kN/m</b> · u = 16/2875 = <b>5,565 mm</b></p>
       <p><b>5)</b> Links: τ = 1,391·10⁻³ → M<sub>l</sub> = 12 000·τ + 4 = 20,70, M<sub>r</sub> = 12 000·τ − 4 = 12,70<br>
       Rechts: M<sub>r</sub> = 6000·τ = 8,35<br>
       Feder: 1000·(−u) = −5,57 kN (Druck)</p>
@@ -1648,6 +1667,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
     <li><a href="#t2-a">★ Matrix a ganz einfach</a></li>
     <li><a href="#t2-3">3. Das Rezept für a</a></li>
     <li><a href="#t2-4">4. Beispiel: Zweifeldträger</a></li>
+    <li><a href="#t2-k">★ K ganz einfach</a></li>
     <li><a href="#t2-5">5. Beispiel: Rahmen mit starrem Riegel</a></li>
     <li><a href="#t2-6">6. Schräge Stäbe</a></li>
     <li><a href="#t2-ue">Übungen</a></li>
@@ -1790,6 +1810,50 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <p class="small"><b>Was passiert dabei?</b> Der Rechner „sortiert“ die Stabsteifigkeiten mit a an die richtigen Freiheitsgrade und addiert sie. Bei K(1,1) addiert er 1 (Stab ①) + 4/6 (Stab ②), weil beide Stäbe am Mittelknoten hängen. Das hast du an Tag 1 von Hand gemacht.</p>
   <p class="small"><b>Größengrenze:</b> Mehr als 4 Zeilen gehen nicht. Bei größeren Systemen rechnest du Stab für Stab und addierst (Tab „Rechner“, Abschnitt 4).</p>
 </div>
+
+  <h2 id="t2-k">★ K ganz einfach</h2>
+  <p class="lead" style="font-size:17px"><b>K ist die „Federkonstante“ des ganzen Tragwerks.</b> Wie bei einer Feder F = c·u gilt P = K·V, nur mit mehreren Freiheitsgraden gleichzeitig.</p>
+  <table>
+    <tr><th>Eintrag</th><th>Bedeutung</th><th>Beispiel Zweifeldträger</th></tr>
+    <tr><td><b>K(i,i)</b> (Diagonale)</td><td>Wie steif ist Freiheitsgrad i? Kraft bzw. Moment, um V<sub>i</sub> = 1 zu erzeugen, alle anderen festgehalten.</td><td>K(1,1): Moment, um den Mittelknoten um 1 zu drehen</td></tr>
+    <tr><td><b>K(i,j)</b> (daneben)</td><td>Kopplung: Was muss an i gehalten werden, wenn sich j um 1 bewegt?</td><td>K(2,1): Moment am rechten Lager, wenn der Mittelknoten dreht</td></tr>
+  </table>
+  <div class="box merk"><b class="t">Das Baukasten-Bild</b>Jeder Stab hat seine eigene kleine Steifigkeit k. Die Matrix a sagt, <b>an welchen Freiheitsgraden der Stab hängt</b> und wie stark. K = aᵀ·k·a „steckt“ alle Stab-Steifigkeiten an die richtigen Stellen und addiert sie. Hängen zwei Stäbe am selben Knoten, addieren sich ihre Beiträge auf der Diagonale.</div>
+
+  <h3>Drei Wege zu K (alle liefern dasselbe)</h3>
+  <ol class="steps">
+    <li><b>Physikalisch</b> (gut für 1–2 Freiheitsgrade und für einzelne Einträge): Einheitszustand V<sub>j</sub> = 1 skizzieren, Stabendkräfte mit k ausrechnen, am Freiheitsgrad i einsammeln.</li>
+    <li><b>Stab für Stab</b> (gut von Hand): K = Σ a<sub>p</sub>ᵀ · k<sub>p</sub> · a<sub>p</sub>, mit a<sub>p</sub> = nur die Zeilen von Stab p.</li>
+    <li><b>Alles auf einmal</b> (Taschenrechner): K = aᵀ·k·a mit der großen Blockmatrix k.</li>
+  </ol>
+
+  <h3>Die Abkürzung bei einem Freiheitsgrad</h3>
+  <p>Bei nur einem Freiheitsgrad ist a eine Spalte, und K ist eine einzelne Zahl. Dann musst du nicht multiplizieren, sondern setzt pro Stab die a-Einträge in diese Formeln ein und addierst:</p>
+  <table>
+    <tr><th>Stabtyp</th><th>a-Einträge des Stabs</th><th>Beitrag zu K</th></tr>
+    <tr><td>Biegestab, beide Enden fest</td><td>τ<sub>l</sub> = α, τ<sub>r</sub> = β</td><td><b>(EI/L) · 4 · (α² + α·β + β²)</b></td></tr>
+    <tr><td>Biegestab mit Gelenk (3EI/L)</td><td>τ am festen Ende = α</td><td><b>(3EI/L) · α²</b></td></tr>
+    <tr><td>Feder, Fachwerkstab, Δu-Zeile</td><td>Δ = α</td><td><b>c · α²</b> bzw. <b>(EA/L) · α²</b></td></tr>
+  </table>
+  <p class="small">Herkunft der ersten Zeile: [α β] · [4 2; 2 4] · [α; β] = 4α² + 2αβ + 2αβ + 4β² = 4(α² + αβ + β²). Probe Stiel bei Querverschiebung: α = β = 1/h → (EI/h)·4·3/h² = 12EI/h³ ✓</p>
+
+  <h3>Ausführlich vorgerechnet: Zweifeldträger Stab für Stab</h3>
+  <p>a von oben, aufgeteilt nach Stäben, EI ausgeklammert:</p>
+  <p><b>Stab ①</b> (L = 4): a<sub>1</sub> = Zeilen τ<sub>l</sub>¹, τ<sub>r</sub>¹ = <span class="m mi" data-m='[["0", "0"], ["1", "0"]]'></span>, k<sub>1</sub> = (1/4)·<span class="m mi" data-m='[["4", "2"], ["2", "4"]]'></span> = <span class="m mi" data-m='[["1", "0,5"], ["0,5", "1"]]'></span></p>
+  <ol class="steps">
+    <li>Zuerst k<sub>1</sub> · a<sub>1</sub>: Zeile mal Spalte → <span class="m mi" data-m='[["1·0 + 0,5·1", "1·0 + 0,5·0"], ["0,5·0 + 1·1", "0,5·0 + 1·0"]]'></span> = <span class="m mi" data-m='[["0,5", "0"], ["1", "0"]]'></span></li>
+    <li>Dann a<sub>1</sub>ᵀ · (k<sub>1</sub>a<sub>1</sub>): aᵀ = <span class="m mi" data-m='[["0", "1"], ["0", "0"]]'></span> → <span class="m mi" data-m='[["0·0,5 + 1·1", "0"], ["0", "0"]]'></span> = <span class="m mi" data-m='[["1", "0"], ["0", "0"]]'></span></li>
+    <li>Bedeutung: Stab ① liefert nur zu K(1,1) etwas, nämlich 4EI/L<sub>1</sub> = 1 · EI. Er hängt nur am Mittelknoten (V<sub>1</sub>), nicht am rechten Lager.</li>
+  </ol>
+  <p><b>Stab ②</b> (L = 6): a<sub>2</sub> = Zeilen τ<sub>l</sub>², τ<sub>r</sub>² = <span class="m mi" data-m='[["1", "0"], ["0", "1"]]'></span>. Das ist die Einheitsmatrix, also ist der Beitrag einfach k<sub>2</sub> = <span class="m mi" data-m='[["4/6", "2/6"], ["2/6", "4/6"]]'></span> = <span class="m mi" data-m='[["0,667", "0,333"], ["0,333", "0,667"]]'></span>.</p>
+  <p><b>Summe:</b></p>
+  <div class="eq"><span class="mx"><span class="op">K = EI · (</span><span class="m" data-m='[["1", "0"], ["0", "0"]]'></span><span class="op">+</span><span class="m" data-m='[["0,667", "0,333"], ["0,333", "0,667"]]'></span><span class="op">) = EI ·</span><span class="m" data-m='[["1,667", "0,333"], ["0,333", "0,667"]]'></span></span></div>
+  <div class="box hb"><b class="t">So liest du das Ergebnis</b>K(1,1) = 1,667 EI: Beide Stäbe hängen am Mittelknoten, ihre 4EI/L addieren sich. K(1,2) = 0,333 EI = 2EI/L<sub>2</sub>: Nur Stab ② verbindet die beiden Knoten (Fortleitung). K(2,2) = 0,667 EI: Nur Stab ② hängt am rechten Lager.</div>
+  <div class="box warn"><b class="t">Typische Fehler bei K</b>
+  • aᵀ·k·a in falscher Reihenfolge multipliziert. Immer zuerst k·a, dann aᵀ davor.<br>
+  • Stab vergessen, der am Knoten hängt. Auf der Diagonale müssen <b>alle</b> Stäbe des Knotens auftauchen.<br>
+  • K nicht symmetrisch → irgendwo ist ein Rechenfehler.<br>
+  • Starre Stäbe (EI = ∞) haben keine Zeilen in a, sie tauchen in K also nicht auf.</div>
 
   <h2 id="t2-5">5. Beispiel: Rahmen mit starrem Riegel</h2>
   <p>Das ist eine leichte Variante der Klausur 2016: Zwei Stiele, links h = 4 m, rechts h = 2 m, <b>beide unten eingespannt</b>, Riegel EI = ∞, alle EA = ∞.</p>
