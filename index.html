@@ -1302,7 +1302,7 @@ M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd
 <!-- ===================== MERKZETTEL ===================== -->
 <section class="view" id="v-merkzettel">
   <h1>Merkzettel</h1>
-  <p class="lead">Das steht <b>nicht</b> in den Hilfsblättern – und du darfst nichts dazuschreiben. Diese fünf Punkte musst du am 8.12. auswendig können. Alles andere findest du in den Hilfsblättern.</p>
+  <p class="lead">Das steht <b>nicht</b> in den Hilfsblättern – und du darfst nichts dazuschreiben. Diese Punkte musst du am 8.12. auswendig können. Alles andere findest du in den Hilfsblättern.</p>
 
   <div class="card">
     <h3 style="margin-top:0">① Elementsteifigkeitsmatrix (VZK II)</h3>
@@ -1331,7 +1331,7 @@ M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd
     <ol class="steps">
       <li><b>Diskretisieren:</b> Knoten, Stäbe, Freiheitsgrade <i>V</i> festlegen</li>
       <li><b>Kinematik:</b> <i>v = a · V</i> – Spalte j von a = Stabverformungen bei V<sub>j</sub> = 1</li>
-      <li><b>Lasten:</b> <i>P = P̄ − a<sup>T</sup> · s̊</i> &nbsp;(s̊ aus Hilfsblatt S. 19–20)</li>
+      <li><b>Lasten:</b> <i>P = P̄ + P̂ − a<sup>T</sup> · s̊</i> &nbsp;(s̊ aus Hilfsblatt S. 19–20, Gelenk S. 23)</li>
       <li><b>Steifigkeit:</b> <i>K = a<sup>T</sup> · k · a</i></li>
       <li><b>Lösen:</b> <i>V = K<sup>−1</sup> · P</i></li>
       <li><b>Schnittgrößen:</b> <i>s = k · a · V + s̊</i> → Verläufe zeichnen</li>
@@ -1341,6 +1341,68 @@ M<sub>r</sub>: <kbd>4</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>×</kbd><kbd>ALPHA</kbd
   <div class="card">
     <h3 style="margin-top:0">⑤ Bedeutung eines Eintrags K(i,j)</h3>
     <p><b>K(i,j) ist die Kraft (bzw. das Moment) am Freiheitsgrad i, wenn man den Freiheitsgrad j um 1 verschiebt bzw. verdreht und alle anderen Freiheitsgrade festhält.</b> Genauso bei k: Spalte j = Stabendkräfte bei Einheitsverformung j.</p>
+  </div>
+
+  <div class="card" id="mz-notizen">
+    <h3 style="margin-top:0">⑥ Notizen aus deinen Fragen</h3>
+
+    <h4>Werte in Matrix a</h4>
+    <table>
+      <tr><th>Situation</th><th>Wert in a</th></tr>
+      <tr><td>Knoten dreht φ = 1 → τ an <b>diesem</b> Stabende (τ<sub>l</sub> oder τ<sub>r</sub>, egal welches)</td><td><b>+1</b></td></tr>
+      <tr><td>Stabende fest eingespannt (Fuß)</td><td><b>0</b> – kein ½-Trick</td></tr>
+      <tr><td>Stabende Gelenk (½-Trick, volles k)</td><td><b>−½ · τ am festen Ende</b></td></tr>
+      <tr><td>Verschiebung quer zum Stab: ψ = (quer<sub>r</sub> − quer<sub>l</sub>)/L</td><td>τ<sub>l</sub> = τ<sub>r</sub> = <b>ψ</b> (bei beiden Enden gleich!)</td></tr>
+      <tr><td>Stab kippt im Uhrzeigersinn um 1/L</td><td><b>+1/L</b></td></tr>
+      <tr><td>Feder wird <b>länger</b> (Zug)</td><td><b>+1</b></td></tr>
+      <tr><td>Feder wird <b>kürzer</b> (Druck)</td><td><b>−1</b></td></tr>
+      <tr><td>Verschiebung nur längs eines dehnstarren Stabs</td><td><b>0</b></td></tr>
+    </table>
+    <p class="small">Nie u = 1 und φ = 1 gleichzeitig: jede Spalte = <b>ein</b> Freiheitsgrad = 1, alle anderen 0.</p>
+
+    <h4>Matrix k</h4>
+    <ul>
+      <li>k hat <b>dieselben Zeilen wie a</b>, in derselben Reihenfolge.</li>
+      <li>Jeder Stab = 2×2-Block <b>[4EI/L 2EI/L; 2EI/L 4EI/L]</b> auf der Diagonale, jede Feder = eine Zahl <b>c</b>. Rest ist 0.</li>
+      <li>Mit ½-Trick trotzdem den <b>vollen</b> Block nehmen – das Gelenk steckt schon in a.</li>
+      <li>EI ausgeklammert? Dann auch die Feder durch EI (bzw. EI/L) teilen!</li>
+      <li>Kurzschreibweise: <b>k = diag(k¹, k², k³, c<sub>A</sub>, c<sub>C</sub>)</b></li>
+    </ul>
+
+    <h4>K schnell und im Taschenrechner</h4>
+    <ul>
+      <li>K = Σ aᵢᵀ·kᵢ·aᵢ – Stab für Stab rechnen und addieren.</li>
+      <li>Feder: <b>c · a²</b> (Vorzeichen fällt weg). Gelenkstab: <b>3EI/L · τ<sub>fest</sub>²</b>.</li>
+      <li>Rechner kann max. 4×4 → Zeilen in <b>Pakete zu 4</b> teilen, jedes Paket Trn(MatA)×MatB×MatA, Ergebnis in MatD speichern, nächstes Paket + MatD.</li>
+      <li>Ein Stab darf <b>nie</b> auf zwei Pakete verteilt werden (sonst fehlen die 2EI/L-Einträge).</li>
+      <li>Physikalisch: Spalte j von K = was ich an allen Freiheitsgraden festhalten muss, wenn nur V<sub>j</sub> = 1. Kontrolle: K<sub>12</sub> = Querkraft des Stiels bei φ = 1 = (M<sub>l</sub>+M<sub>r</sub>)/h.</li>
+    </ul>
+
+    <h4>s̊ (Volleinspannmomente)</h4>
+    <ul>
+      <li>s̊ = Stabendmomente bei <b>festgehaltenen</b> Knoten, gleiche Zeilen wie a. Stäbe ohne Last und Federn: 0.</li>
+      <li>Vorzeichen: Am Stab von l nach r gehen. Zeigt die Last auf deine <b>rechte Seite</b> (wie „nach unten“ beim Riegel l→r) → <b>M̊<sub>l</sub> = +, M̊<sub>r</sub> = −</b>. Andere Seite → beide umdrehen.</li>
+      <li>Kontrolle: Stützmomente in der Momentenlinie (−M̊<sub>l</sub>, +M̊<sub>r</sub>) müssen negativ sein.</li>
+      <li>Gelenkstab: Gelenk-Tabelle (qL²/8, 3PL/16), am Gelenk s̊ = 0 – auch mit ½-Trick.</li>
+      <li>s̊ enthält nur <b>Momente</b>, keine Querkräfte → deshalb gibt es P̂.</li>
+    </ul>
+
+    <h4>Lastvektor P = P̄ + P̂ − aᵀs̊</h4>
+    <ul>
+      <li><b>P̄</b>: Last direkt am Knoten in Richtung des Freiheitsgrads. φ gegen Uhrzeiger +, u nach rechts +.</li>
+      <li><b>P̂</b>: <b>nur bei Verschiebungen (u, w), nie bei φ.</b> Last auf einem Stab, quer dazu, dessen Ende sich verschiebt → Einfeldträger-Auflagerkraft am Knoten (Einzellast mittig: P/2). Der Anteil, der ins feste Auflager geht, gehört nicht in P.</li>
+      <li><b>aᵀs̊</b>: s̊ als Spalte neben a schreiben, jede a-Spalte zeilenweise mit s̊ multiplizieren und addieren → eine Zahl pro Freiheitsgrad. Nur Zeilen mit s̊ ≠ 0 rechnen.</li>
+      <li>Minus vor aᵀs̊: actio = reactio (Stab drückt auf die Sperre, beim Loslassen wirkt es umgekehrt auf den Knoten).</li>
+      <li>aᵀs̊ bei u = (M̊<sub>l</sub>+M̊<sub>r</sub>)/L = nur der Momenten-Anteil der Querkraft; P̂ = Last-Anteil.</li>
+    </ul>
+
+    <h4>Endgrößen</h4>
+    <ul>
+      <li><b>s = k·a·V + s̊</b> (Verformungsanteil + festgehaltener Zustand).</li>
+      <li>V in <b>m</b> und rad einsetzen, nicht mm.</li>
+      <li>Federkraft = c · (a-Zeile · V). Zusammengefasste Federn am Ende wieder aufteilen.</li>
+      <li>Knotenkontrolle: Summe der Endmomente am Knoten = Knotenmoment.</li>
+    </ul>
   </div>
 
   <div class="box hb"><b class="t">Was du in den Hilfsblättern nachschlägst</b>
