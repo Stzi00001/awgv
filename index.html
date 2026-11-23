@@ -684,6 +684,7 @@ details > div{padding:4px 14px 12px}
   <p class="lead">Bei einigen Klausuraufgaben ist der Stab „besonders“: veränderlicher Querschnitt, geschwächt, schubweich. Dann musst du k selbst bestimmen. Das Rezept ist immer gleich und nutzt den Arbeitssatz, den du schon kannst.</p>
 
   <ul class="toc">
+    <li><a href="#t5-0">0. Der allgemeine Weg (Übersicht mit Formeln)</a></li>
     <li><a href="#t5-easy">★ Ganz einfach: Steifigkeit herleiten in 4 Schritten</a></li>
     <li><a href="#t5-1">1. Warum f, und was bedeuten die Zahlen?</a></li>
     <li><a href="#t5-2">2. Dehnstab mit veränderlichem A</a></li>
@@ -692,6 +693,53 @@ details > div{padding:4px 14px 12px}
     <li><a href="#t5-5">5. Ersatzfedern und Grenzfälle</a></li>
     <li><a href="#t5-ue">Übungen</a></li>
   </ul>
+
+  <h2 id="t5-0">0. Der allgemeine Weg (Übersicht mit Formeln)</h2>
+  <p>Egal ob veränderlicher Querschnitt, Abschnitte oder Schub – du gehst <b>immer gleich</b> vor. Gesucht ist die Elementsteifigkeit k in s = k · v:</p>
+  <div class="eq"><span class="mx"><span class="m f" data-m='[["N_r"],["M_l"],["M_r"]]'></span><span class="op">=</span><span class="m" data-m='[["k_N","0","0"],["0","k_11","k_12"],["0","k_12","k_22"]]'></span><span class="op">·</span><span class="m d" data-m='[["Δu"],["τ_l"],["τ_r"]]'></span></span></div>
+
+  <ol class="steps">
+    <li><b>Grundsystem wählen</b> (statisch bestimmt): Einfeldträger, links gelenkig, rechts verschieblich gelagert.</li>
+    <li><b>Einheitszustände aufbringen</b> und Zustandslinien aufschreiben (VZK I, x von l nach r):
+      <table>
+        <tr><th>Zustand</th><th>Normalkraft</th><th>Moment</th><th>Querkraft</th></tr>
+        <tr><td>N = 1</td><td>n = 1</td><td>0</td><td>0</td></tr>
+        <tr><td>M<sub>l</sub> = 1</td><td>0</td><td>m<sub>1</sub>(x) = −(1 − x/L) &nbsp;<span class="small">(−1 → 0)</span></td><td>q<sub>1</sub> = 1/L</td></tr>
+        <tr><td>M<sub>r</sub> = 1</td><td>0</td><td>m<sub>2</sub>(x) = x/L &nbsp;<span class="small">(0 → +1)</span></td><td>q<sub>2</sub> = 1/L</td></tr>
+      </table>
+    </li>
+    <li><b>Flexibilitäten mit dem Arbeitssatz</b> („Verformung i durch Kraft j = 1“):
+      <div class="eq">f<sub>N</sub> = ∫₀ᴸ n·n / EA(x) dx = ∫₀ᴸ dx / EA(x)</div>
+      <div class="eq">f<sub>ij</sub> = ∫₀ᴸ m<sub>i</sub>·m<sub>j</sub> / EI(x) dx &nbsp;+&nbsp; ∫₀ᴸ q<sub>i</sub>·q<sub>j</sub> / GA<sub>v</sub> dx</div>
+      <p class="small">Den Schubterm nur, wenn GA<sub>v</sub> ≠ ∞. Er ist immer 1/(L·GA<sub>v</sub>), auf f<sub>11</sub>, f<sub>12</sub> und f<sub>22</sub>.</p>
+    </li>
+    <li><b>Integrale ausrechnen:</b>
+      <div class="small" style="margin-top:4px">– EI/EA <b>abschnittsweise konstant</b> → Koppeltafel (Hilfsblatt S. 8–10), jeden Abschnitt durch sein eigenes EI teilen<br>– EI/EA <b>stetig veränderlich</b> → echtes Integral (z. B. ∫ 1/x dx = ln x)</div>
+    </li>
+    <li><b>Invertieren:</b>
+      <div class="eq">k<sub>N</sub> = 1 / f<sub>N</sub></div>
+      <div class="eq"><span class="mx"><span class="m" data-m='[["k_11","k_12"],["k_12","k_22"]]'></span><span class="op">= 1/(f₁₁·f₂₂ − f₁₂²) ·</span><span class="m" data-m='[["f_22","−f_12"],["−f_12","f_11"]]'></span></span></div>
+      <p class="small">Im Rechner: MatA = [f<sub>11</sub> f<sub>12</sub>; f<sub>12</sub> f<sub>22</sub>] → <b>MatA x⁻¹ =</b></p>
+    </li>
+    <li><b>Zusammensetzen</b> zur 3×3-Matrix k (oben) und <b>kontrollieren</b>:
+      <div class="small" style="margin-top:4px">– k symmetrisch, k<sub>11</sub>, k<sub>22</sub>, k<sub>12</sub> positiv (f<sub>12</sub> negativ)<br>– Grenzfall „alles normal“ → EA/L, 4EI/L, 2EI/L<br>– Weicher geworden → Einträge kleiner</div>
+    </li>
+  </ol>
+
+  <table>
+    <tr><th>Vergleichswerte: normaler Stab (EI, EA konstant)</th><th>f</th><th>k</th></tr>
+    <tr><td>Normalkraft</td><td>L/EA</td><td>EA/L</td></tr>
+    <tr><td>Diagonale (11, 22)</td><td>L/(3EI)</td><td>4EI/L</td></tr>
+    <tr><td>Kopplung (12)</td><td>−L/(6EI)</td><td>2EI/L</td></tr>
+  </table>
+
+  <table>
+    <tr><th>Klausurfall</th><th>Was ist anders?</th><th>Wo im Weg?</th></tr>
+    <tr><td>veränderlicher Querschnitt (SS 2018, WS 23/24)</td><td>A(x) linear</td><td>Schritt 3/4: echtes Integral ∫dx/EA(x)</td></tr>
+    <tr><td>Abschnitte (SS 2026)</td><td>EI, EA stückweise anders</td><td>Schritt 4: Koppeltafel pro Abschnitt</td></tr>
+    <tr><td>schubweich (WS 17/18, WS 22/23)</td><td>GA<sub>v</sub> endlich</td><td>Schritt 3: +1/(L·GA<sub>v</sub>)</td></tr>
+    <tr><td>Ersatzfeder (SS 2020)</td><td>Balken als Feder</td><td>nur 1 Zahl: Durchbiegung unter P = 1 → c = 1/δ</td></tr>
+  </table>
 
   <h2 id="t5-easy">★ Ganz einfach: Steifigkeit herleiten in 4 Schritten</h2>
   <div class="box merk"><b class="t">Die Idee in einem Satz</b>Steifigkeit k = „wie viel Kraft für 1 Verformung“. Flexibilität f = „wie viel Verformung durch 1 Kraft“. Also ist <b>k = 1/f</b> – bei Matrizen: <b>k = f⁻¹</b>. Und f kannst du mit dem <b>Arbeitssatz</b> ausrechnen, den du schon kannst.</div>
