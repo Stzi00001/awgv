@@ -684,6 +684,7 @@ details > div{padding:4px 14px 12px}
   <p class="lead">Bei einigen Klausuraufgaben ist der Stab „besonders“: veränderlicher Querschnitt, geschwächt, schubweich. Dann musst du k selbst bestimmen. Das Rezept ist immer gleich und nutzt den Arbeitssatz, den du schon kannst.</p>
 
   <ul class="toc">
+    <li><a href="#t5-easy">★ Ganz einfach: Steifigkeit herleiten in 4 Schritten</a></li>
     <li><a href="#t5-1">1. Das Rezept: erst f, dann k = f⁻¹</a></li>
     <li><a href="#t5-2">2. Dehnstab mit veränderlichem A</a></li>
     <li><a href="#t5-3">3. Biegestab mit Abschnitten</a></li>
@@ -691,6 +692,60 @@ details > div{padding:4px 14px 12px}
     <li><a href="#t5-5">5. Ersatzfedern und Grenzfälle</a></li>
     <li><a href="#t5-ue">Übungen</a></li>
   </ul>
+
+  <h2 id="t5-easy">★ Ganz einfach: Steifigkeit herleiten in 4 Schritten</h2>
+  <div class="box merk"><b class="t">Die Idee in einem Satz</b>Steifigkeit k = „wie viel Kraft für 1 Verformung“. Flexibilität f = „wie viel Verformung durch 1 Kraft“. Also ist <b>k = 1/f</b> – bei Matrizen: <b>k = f⁻¹</b>. Und f kannst du mit dem <b>Arbeitssatz</b> ausrechnen, den du schon kannst.</div>
+  <p>Warum der Umweg über f? „Ich drücke mit Kraft 1 und schaue, wie weit es sich bewegt“ ist genau das, was der Arbeitssatz (δ = ∫ M·m̄/EI dx) kann. Umgekehrt („Verformung 1 erzwingen, Kraft messen“) ginge nur über ein statisch unbestimmtes System – viel mehr Arbeit.</p>
+
+  <h3>Fall A: Dehnstab (nur eine Zahl)</h3>
+  <ol class="steps">
+    <li><b>Kraft N = 1</b> anbringen</li>
+    <li><b>Verlängerung</b> = f = ∫ 1/EA dx. Bei Abschnitten einfach <b>addieren</b>: f = Σ L<sub>i</sub>/EA<sub>i</sub> (wie Federn hintereinander)</li>
+    <li><b>k = 1/f</b></li>
+  </ol>
+  <p>Beispiel SS 2026: f = (L/2)/EA + (L/2)/(EA/2) = 0,5L/EA + 1,0L/EA = 1,5 L/EA → <b>k = 2EA/(3L)</b>. Kontrolle: Ein Stück ist weicher → k kleiner als EA/L ✓</p>
+
+  <h3>Fall B: Biegestab (2×2-Matrix)</h3>
+  <ol class="steps">
+    <li><b>Einfeldträger</b> (gelenkig–gelenkig) zeichnen. Zwei Lastfälle: <b>M<sub>l</sub> = 1</b> am linken Ende, <b>M<sub>r</sub> = 1</b> am rechten Ende.</li>
+    <li><b>Momentenlinien</b> (Dreiecke):<br>m<sub>1</sub> (aus M<sub>l</sub> = 1): <b>−1 links → 0 rechts</b><br>m<sub>2</sub> (aus M<sub>r</sub> = 1): <b>0 links → +1 rechts</b><br><span class="small">(VZK II → Momentenlinie: M(l) = −M<sub>l</sub>, M(r) = +M<sub>r</sub>)</span></li>
+    <li><b>Koppeln</b> (Koppeltafel Hilfsblatt S. 8–10):<br>f<sub>11</sub> = m<sub>1</sub> mit m<sub>1</sub> · f<sub>12</sub> = m<sub>1</sub> mit m<sub>2</sub> · f<sub>22</sub> = m<sub>2</sub> mit m<sub>2</sub></li>
+    <li><b>Invertieren:</b> k = f⁻¹ (Rechner: MatA = f, dann <b>MatA x⁻¹ =</b>)</li>
+  </ol>
+
+  <p><b>Durchgerechnet für den normalen Stab (EI konstant):</b></p>
+  <table>
+    <tr><th>Eintrag</th><th>Koppeln</th><th>Ergebnis</th><th>Bedeutung</th></tr>
+    <tr><td>f<sub>11</sub></td><td>Dreieck × gleiches Dreieck: L/3 · (−1)(−1)</td><td><b>L/(3EI)</b></td><td>Verdrehung links, wenn links M = 1</td></tr>
+    <tr><td>f<sub>12</sub></td><td>Dreiecke gegenläufig: L/6 · (−1)(+1)</td><td><b>−L/(6EI)</b></td><td>Verdrehung links, wenn rechts M = 1</td></tr>
+    <tr><td>f<sub>22</sub></td><td>wie f<sub>11</sub></td><td><b>L/(3EI)</b></td><td>Verdrehung rechts, wenn rechts M = 1</td></tr>
+  </table>
+  <p>Invertieren: det = (L/3EI)² − (L/6EI)² = L²/(12 EI²)</p>
+  <div class="eq">k<sub>11</sub> = f<sub>22</sub>/det = <b>4EI/L</b> &nbsp;&nbsp; k<sub>12</sub> = −f<sub>12</sub>/det = <b>2EI/L</b></div>
+  <p>Da kommen also die 4 und die 2 her ✓. <b>In der Klausur ist alles gleich – nur das Koppeln wird etwas länger</b>, weil EI abschnittsweise anders ist oder ein Schubanteil dazukommt.</p>
+
+  <h3>Fall C: Biegestab mit Abschnitten (SS 2026) – abschnittsweise koppeln</h3>
+  <p>Teile die Dreiecke an den Abschnittsgrenzen in <b>Trapeze</b>. Werte der Dreiecke an den Stellen 0, ¼, ¾, 1:</p>
+  <table>
+    <tr><th>Stelle</th><th>0</th><th>¼ L</th><th>¾ L</th><th>L</th></tr>
+    <tr><td>m<sub>1</sub></td><td>−1</td><td>−0,75</td><td>−0,25</td><td>0</td></tr>
+    <tr><td>m<sub>2</sub></td><td>0</td><td>0,25</td><td>0,75</td><td>1</td></tr>
+  </table>
+  <p>Trapez × Trapez (Koppeltafel): <b>ℓ/6 · [a·(2c + d) + b·(c + 2d)]</b> mit a→b und c→d den Randwerten. Jeden Abschnitt durch <b>sein</b> EI teilen (Mitte: EI/8 → mal 8):</p>
+  <table>
+    <tr><th>Abschnitt</th><th>Länge ℓ</th><th>Faktor</th><th>f<sub>11</sub>-Anteil · L/EI</th><th>f<sub>12</sub>-Anteil · L/EI</th></tr>
+    <tr><td>links</td><td>L/4</td><td>1</td><td>0,1927</td><td>−0,0260</td></tr>
+    <tr><td>Mitte</td><td>L/2</td><td>8</td><td>8 · 0,1354 = 1,0833</td><td>8 · (−0,1146) = −0,9167</td></tr>
+    <tr><td>rechts</td><td>L/4</td><td>1</td><td>0,0052</td><td>−0,0260</td></tr>
+    <tr><td colspan="3"><b>Summe</b></td><td><b>1,28125</b></td><td><b>−0,96875</b></td></tr>
+  </table>
+  <p>Rechner: MatA = [1,28125 −0,96875; −0,96875 1,28125] → <b>MatA x⁻¹ =</b> → <b>k = EI/L · [1,822 1,378; 1,378 1,822]</b> ✓</p>
+  <div class="box merk"><b class="t">Plausibel?</b>Die Mitte ist weicher → 1,822 &lt; 4 und 1,378 &lt; 2 ✓. Setzt du überall Faktor 1, muss wieder 4 und 2 herauskommen.</div>
+
+  <h3>Fall D: Schubweich – nur ein Zusatz</h3>
+  <p>In beiden Lastfällen ist die Querkraft konstant <b>1/L</b> (gleiches Vorzeichen). Koppeln: L · (1/L) · (1/L) / GA<sub>v</sub> = <b>1/(L·GA<sub>v</sub>)</b>. Diese Zahl kommt auf <b>alle vier</b> f-Einträge drauf, dann wie immer invertieren.</p>
+
+  <div class="box hb"><b class="t">Rezept zum Auswendiglernen</b>① Einfeldträger + Einheitsmoment links/rechts → ② Dreiecke −1→0 und 0→1 → ③ mit Koppeltafel f<sub>11</sub>, f<sub>12</sub>, f<sub>22</sub> (abschnittsweise, jeweils durch eigenes EI; Schub: +1/(L·GA)) → ④ k = f⁻¹ im Rechner. Dehnstab: f = Σ L<sub>i</sub>/EA<sub>i</sub>, k = 1/f.</div>
 
   <h2 id="t5-1">1. Das Rezept: erst f, dann k = f⁻¹</h2>
   <p>Kräfte aufbringen und Verformungen messen ist leicht, das kannst du mit dem Arbeitssatz. Das Gegenteil, Verformungen erzwingen und Kräfte messen, ist schwer. Also gehst du über die <b>Flexibilitätsmatrix f</b>:</p>
