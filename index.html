@@ -102,6 +102,13 @@ details.calc summary{color:#6b4fbb}
 .qz-opt.ok{border-color:var(--ok);background:var(--disp-soft)}
 .qz-opt.bad{border-color:var(--bad);background:var(--force-soft)}
 .qz-why{margin-top:10px;padding:10px 12px;background:#faf8f3;border-radius:8px;font-size:15px}
+.sp-chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.sp-chip,.sp-mode{background:#fff;color:var(--ink);border:1.5px solid var(--line);font-weight:500;padding:8px 14px;border-radius:999px}
+.sp-chip.on,.sp-mode.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sp-best{font-size:12px;opacity:.8}
+.sp-hud{display:flex;justify-content:space-between;font-size:18px;font-weight:600;margin:6px 2px 10px}
+.sp-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sp-opts .qz-opt{margin:0;text-align:center;font-size:18px;padding:12px}
 .qz-big{font-size:42px;font-weight:700;font-family:"Source Serif 4",serif}
 .ex-list{display:grid;gap:10px}
 .exi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
@@ -212,6 +219,7 @@ details > div{padding:4px 14px 12px}
     <a href="#tag6">Tag 6</a>
     <a href="#tag7">Tag 7</a>
     <a href="#quiz">Quiz</a>
+    <a href="#spiel">🎮 Spiel</a>
     <a href="#klausuren">Klausuren</a>
     <a href="#rechner">Rechner</a>
     <a href="#karten">Karteikarten</a>
@@ -2295,6 +2303,12 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
   <div id="qz-end" style="display:none"></div>
 </section>
 
+<section class="view" id="v-spiel">
+  <h1>🎮 AWGV-Trainer</h1>
+  <p class="lead">Kurze Fragen mit Skizze – τ-Werte, Federn, Freiheitsgrade, Vorzeichen, schräge Stäbe. Jede Frage wird neu zufällig erzeugt. Sammle Punkte, bau Serien 🔥 auf und knack deinen Rekord.</p>
+  <div id="sp-root"></div>
+</section>
+
 <!-- ===================== KLAUSUREN ===================== -->
 <section class="view" id="v-klausuren">
   <h1>Welche Klausuraufgabe kann ich schon?</h1>
@@ -2900,6 +2914,245 @@ renderDays();renderExams();qzSetup();
   const done=Object.values(prog).filter(Boolean).length;
   document.getElementById('count').innerHTML='<div><b>'+days+'</b><span>Tage bis zur Klausur</span></div><div style="background:#2e8b57"><b>'+done+' / 8</b><span>Etappen erledigt</span></div>';
 })();
+
+/* ---------- Spiel: AWGV-Trainer ---------- */
+(()=>{
+const K='#111',G='#2e8b57',R='#c0392b',B='#2563eb',F='Source Sans 3, sans-serif';
+const rnd=n=>Math.floor(Math.random()*n), pick=a=>a[rnd(a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+/* --- Zeichenhelfer --- */
+const ln=(x1,y1,x2,y2,c=K,w=3.5,d)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:''}/>`;
+const tx=(x,y,t,c=K,fs=14,a='middle',it)=>`<text x="${x}" y="${y}" fill="${c}" font-size="${fs}" font-family="${F}" text-anchor="${a}"${it?' font-style="italic"':''}>${t}</text>`;
+const hat=(x1,y1,x2,y2,dx,dy,n)=>{let o='';for(let i=0;i<=n;i++){const t=i/n,x=x1+(x2-x1)*t,y=y1+(y2-y1)*t;o+=ln(x,y,x+dx,y+dy,K,1);}return o;};
+const wallV=(x,y,s)=>ln(x,y-24,x,y+24,K,2)+hat(x,y-22,x,y+22,9*s,9,5);
+const wallH=(x,y,s)=>ln(x-24,y,x+24,y,K,2)+hat(x-20,y,x+24,y,-9,9*s,5);
+const pinS=(x,y)=>`<path d="M${x},${y} L${x-11},${y+17} L${x+11},${y+17} Z" fill="#fff" stroke="${K}" stroke-width="1.6"/>`+ln(x-16,y+17,x+16,y+17,K,2)+hat(x-12,y+17,x+16,y+17,-7,8,4);
+const rollS=(x,y)=>`<path d="M${x},${y} L${x-11},${y+15} L${x+11},${y+15} Z" fill="#fff" stroke="${K}" stroke-width="1.6"/>`+ln(x-15,y+19,x+15,y+19,K,1.6)+ln(x-15,y+23,x+15,y+23,K,1.2)+hat(x-11,y+23,x+15,y+23,-6,7,3);
+const hinge=(x,y)=>`<circle cx="${x}" cy="${y}" r="5" fill="#fff" stroke="${K}" stroke-width="1.8"/>`;
+const node=(x,y)=>`<circle cx="${x}" cy="${y}" r="4" fill="#fff" stroke="${K}" stroke-width="1.8"/>`;
+const mk=c=>c===G?'mkg':c===R?'mkr':'mk';
+const arr=(x1,y1,x2,y2,c=G,w=2.2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="${w}" marker-end="url(#${mk(c)})"/>`;
+const arc=(x,y,r,ccw,c=G)=>ccw?`<path d="M${x+r},${y-6} A${r},${r} 0 0,0 ${x-r},${y-6}" fill="none" stroke="${c}" stroke-width="2.4" marker-end="url(#${mk(c)})"/>`:`<path d="M${x-r},${y-6} A${r},${r} 0 0,1 ${x+r},${y-6}" fill="none" stroke="${c}" stroke-width="2.4" marker-end="url(#${mk(c)})"/>`;
+const zig=(x1,y1,x2,y2,n=7,w=7)=>{const L=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/L,uy=(y2-y1)/L,px=-uy,py=ux,pts=[[x1,y1]],a=L*.18,b=L*.82;pts.push([x1+ux*a,y1+uy*a]);for(let i=1;i<=n;i++){const t=a+(b-a)*(i-.5)/n,s=(i%2?1:-1)*w;pts.push([x1+ux*t+px*s,y1+uy*t+py*s]);}pts.push([x1+ux*b,y1+uy*b],[x2,y2]);return `<polyline points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="${K}" stroke-width="1.8"/>`;};
+const svg=(b,h=180)=>`<svg viewBox="0 0 320 ${h}" style="width:100%;max-width:440px;display:block;margin:6px auto">${b}</svg>`;
+/* Stabrichtung l→r als kleiner Pfeil + Beschriftung */
+const dirLab=(ax,ay,bx,by,lAtA)=>{const [lx,ly,rx,ry]=lAtA?[ax,ay,bx,by]:[bx,by,ax,ay];const L=Math.hypot(rx-lx,ry-ly),ux=(rx-lx)/L,uy=(ry-ly)/L;
+  const [qx,qy]=Math.abs(ux)>=Math.abs(uy)?[0,-1]:[-1,0];const mx=(lx+rx)/2,my=(ly+ry)/2;
+  let o=qx?arr(mx+60,my-uy*26*-1*-1-26*Math.sign(uy),mx+60,my+26*Math.sign(uy),K,1.6):arr(mx-ux*26,my-30,mx+ux*26,my-30,K,1.6);
+  o+=tx(lx+ux*50+qx*18,ly+uy*50+qy*18+5,'l',B,18,'middle',1);
+  o+=tx(rx-ux*50+qx*18,ry-uy*50+qy*18+5,'r',B,18,'middle',1);
+  return o;};
+const fr=s=>s.replace('1/2','½');
+const sgn=v=>v>0?'+':v<0?'−':'';
+
+/* ===== Kategorie: τ-Werte ===== */
+function genTau(){
+  const typ=pick(['rot','rot','rotcw','hinge','hinge','quer','quer','stiel','stiel']);
+  if(typ==='quer'||typ==='stiel'){
+    const L=pick([3,4,5,6]),lA=Math.random()<.5;
+    let b='',ps,ask=pick(['l','r']),txt;
+    if(typ==='quer'){
+      const ax=50,bx=270,y=90,movR=Math.random()<.5,down=Math.random()<.5;
+      const fx=movR?bx:ax, ox=movR?ax:bx, dy=down?34:-34;
+      b+=ln(ax,y,bx,y,'#999',1.4,'5 4');
+      b+=ln(ox,y,fx,y+dy,'#999',1.2)+`<path d="M${ox},${y} C${(ox+fx)/2},${y} ${(ox+fx)/2},${y+dy} ${fx},${y+dy}" fill="none" stroke="${K}" stroke-width="3.5"/>`;
+      b+=(movR?wallV(ax,y,-1):wallV(bx,y,1));
+      b+=node(fx,y+dy)+arr(fx+(movR?16:-16),y,fx+(movR?16:-16),y+dy*0.85,G)+tx(fx+(movR?30:-30),y+dy/2+5,'1',G,15);
+      b+=tx(160,170,'L = '+L+' m',K,13);
+      b+=dirLab(ax,y,bx,y,lA);
+      ps=(movR===down)?1:-1; // rechtes Ende runter / linkes Ende hoch → Uhrzeiger
+      txt=`Das ${movR?'rechte':'linke'} Ende verschiebt sich um 1 nach ${down?'unten':'oben'} (ohne sich zu drehen). Wie groß ist <b>τ<sub>${ask}</sub></b>?`;
+    }else{
+      const x=150,yb=160,yt=40,right=Math.random()<.5,dx=right?40:-40;
+      b+=ln(x,yb,x,yt,'#999',1.4,'5 4')+ln(x,yb,x+dx,yt,'#999',1.2)+`<path d="M${x},${yb} C${x},${(yb+yt)/2} ${x+dx},${(yb+yt)/2} ${x+dx},${yt}" fill="none" stroke="${K}" stroke-width="3.5"/>`+wallH(x,yb,1)+node(x+dx,yt);
+      b+=arr(x,yt-14,x+dx*0.9,yt-14,G)+tx(x+dx/2,yt-20,'1',G,15);
+      b+=tx(250,105,'h = '+L+' m',K,13);
+      b+=dirLab(x,yb,x,yt,lA);
+      ps=right?1:-1;
+      txt=`Der Stielkopf verschiebt sich um 1 nach ${right?'rechts':'links'} (ohne sich zu drehen). Wie groß ist <b>τ<sub>${ask}</sub></b>?`;
+    }
+    const ans=(ps>0?'+':'−')+'1/'+L;
+    const opts=shuffle(['+1/'+L,'−1/'+L,'0','+1','−1']);
+    return {cat:'τ',q:txt,svg:svg(b),opts,ans,why:`Die Knoten drehen sich nicht (φ = 0), also ist τ = φ + ψ = ψ – an <b>beiden</b> Enden gleich. Die Sehne dreht sich <b>${ps>0?'im':'gegen den'}</b> Uhrzeigersinn → ψ = ${ans}. Ob du von l oder r schaust, ist egal.`};
+  }
+  const vert=Math.random()<.4, lA=Math.random()<.5, rotA=Math.random()<.5, ccw=typ!=='rotcw'?(typ==='hinge'?Math.random()<.7:true):false;
+  let ax,ay,bx,by;if(vert){ax=150;ay=160;bx=150;by=40;}else{ax=55;ay=95;bx=265;by=95;}
+  let b=ln(ax,ay,bx,by,K,3.5);
+  const [rx,ry,ox,oy]=rotA?[ax,ay,bx,by]:[bx,by,ax,ay];
+  // anderes Ende
+  if(typ==='hinge'){b+= (vert? (oy>ry? pinS(ox,oy):hinge(ox,oy)+ln(ox-18,oy-12,ox+18,oy-12,K,2)+hat(ox-14,oy-12,ox+18,oy-12,-7,-8,4)) : pinS(ox,oy));}
+  else{b+= vert?(oy>ry?wallH(ox,oy,1):wallH(ox,oy-1,-1)):(ox<rx?wallV(ox,oy,-1):wallV(ox,oy,1));}
+  b+=node(rx,ry)+arc(rx,ry,17,ccw,G)+tx(rx+(vert?24:0),ry+(vert?5:-30),'Knoten dreht 1',G,12,vert?'start':'middle');
+  b+=dirLab(ax,ay,bx,by,lA);
+  const rotEnd=(rotA===lA)?'l':'r', othEnd=rotEnd==='l'?'r':'l';
+  let ask=typ==='hinge'?(Math.random()<.75?othEnd:rotEnd):pick([rotEnd,rotEnd,othEnd]);
+  const v=ccw?1:-1;
+  let ans,why;
+  if(ask===rotEnd){ans=v>0?'+1':'−1';why=`Am drehenden Knoten ist τ = φ = ${ans} (${ccw?'gegen':'im'} Uhrzeigersinn). Ob dieses Ende l oder r heißt, ändert den Wert <b>nicht</b> – nur die Zeile in a.`;}
+  else if(typ==='hinge'){ans=v>0?'−½':'+½';why=`½-Trick: Am Gelenkende ist τ = −½ · τ am festen Ende = −½ · (${v>0?'+1':'−1'}) = ${ans}.`;}
+  else{ans='0';why='Das andere Ende ist eingespannt und dreht sich nicht → τ = 0.';}
+  const txt=`Der Knoten dreht sich um 1 <b>${ccw?'gegen den':'im'}</b> Uhrzeigersinn${typ==='hinge'?', das andere Ende ist ein <b>Gelenk</b> (½-Trick)':''}. Wie groß ist <b>τ<sub>${ask}</sub></b>?`;
+  return {cat:'τ',q:txt,svg:svg(b),opts:shuffle(['+1','−1','0','+½','−½']),ans,why};
+}
+
+/* ===== Kategorie: Feder ===== */
+function genFeder(){
+  const o=pick(['L','R','U','O']); // Wand links/rechts/unten/oben
+  const mv=pick(['re','li','ru','ho']);
+  let b='',wx,wy,nx,ny;
+  if(o==='L'){wx=70;wy=90;nx=230;ny=90;b+=wallV(wx,wy,-1);}
+  if(o==='R'){wx=250;wy=90;nx=90;ny=90;b+=wallV(wx,wy,1);}
+  if(o==='U'){wx=160;wy=160;nx=160;ny=45;b+=wallH(wx,wy,1);}
+  if(o==='O'){wx=160;wy=25;nx=160;ny=140;b+=wallH(wx,wy,-1);}
+  b+=zig(wx,wy,nx,ny)+node(nx,ny);
+  const m={re:[1,0],li:[-1,0],ru:[0,1],ho:[0,-1]}[mv];
+  b+=arr(nx+m[0]*8,ny+m[1]*8,nx+m[0]*42,ny+m[1]*42,G)+tx(nx+m[0]*50+(m[1]?14:0),ny+m[1]*50+(m[0]?-8:4),'1',G,15);
+  const d=[nx-wx,ny-wy],L=Math.hypot(...d),e=(d[0]*m[0]+d[1]*m[1])/L;
+  const ans=e>0?'+1 (länger)':e<0?'−1 (kürzer)':'0 (unverändert)';
+  const why=e===0?'Der Knoten bewegt sich <b>quer</b> zur Feder – ihre Länge ändert sich (für kleine Verschiebungen) nicht → 0.':e>0?'Der Knoten bewegt sich <b>von der Wand weg</b> → die Feder wird gedehnt (Zug) → +1.':'Der Knoten bewegt sich <b>zur Wand hin</b> → die Feder wird zusammengedrückt (Druck) → −1.';
+  return {cat:'Feder',q:`Der Knoten verschiebt sich um 1 nach <b>${{re:'rechts',li:'links',ru:'unten',ho:'oben'}[mv]}</b>. Welcher Wert steht in a für die Feder?`,svg:svg(b),opts:['+1 (länger)','−1 (kürzer)','0 (unverändert)'],ans,why};
+}
+
+/* ===== Kategorie: Freiheitsgrade ===== */
+const FHG=[
+ ()=>({b:wallV(50,90,-1)+ln(50,90,270,90)+node(270,90)+tx(160,140,'EA = ∞, EI endlich'),n:2,w:'Freies Ende: w und φ. u fällt weg, weil EA = ∞ (Stab kann nicht länger werden).'}),
+ ()=>({b:wallV(50,90,-1)+ln(50,90,270,90)+node(270,90)+tx(160,140,'EA endlich, EI endlich'),n:3,w:'Freies Ende: u, w und φ. EA ist endlich, also zählt auch u.'}),
+ ()=>({b:ln(40,80,280,80)+pinS(40,80)+rollS(160,80)+rollS(280,80)+tx(160,150,'Durchlaufträger, EA = ∞'),n:3,w:'An jedem Lager kann sich der Träger drehen: 3 Drehungen. Verschiebungen sind alle gesperrt.'}),
+ ()=>({b:wallV(40,90,-1)+ln(40,90,280,90)+wallV(280,90,1)+node(160,90)+tx(160,140,'beidseitig eingespannt, Knoten in der Mitte, EA = ∞'),n:2,w:'Der Mittelknoten kann sich senken (w) und drehen (φ). u fällt wegen EA = ∞ weg.'}),
+ ()=>({b:ln(80,150,80,50)+ln(80,50,240,50)+ln(240,50,240,150)+wallH(80,150,1)+wallH(240,150,1)+node(80,50)+node(240,50)+tx(160,95,'alle EA = ∞',K,13),n:3,w:'Zwei Eckdrehungen φ₁, φ₂ und eine gemeinsame Horizontalverschiebung u des Riegels = 3.'}),
+ ()=>({b:ln(80,150,80,50)+ln(80,50,240,50,K,6)+ln(240,50,240,150)+wallH(80,150,1)+wallH(240,150,1)+tx(160,40,'Riegel EI = ∞',K,13)+tx(160,95,'alle EA = ∞',K,13),n:1,w:'Der starre Riegel kann sich nicht drehen (die Stiele sind dehnstarr), also bleibt nur die Verschiebung u = 1 FHG.'}),
+ ()=>({b:ln(80,150,80,50)+ln(80,50,240,50)+ln(240,50,240,150)+wallH(80,150,1)+pinS(240,150)+node(80,50)+node(240,50)+tx(160,95,'alle EA = ∞',K,13),n:3,w:'φ₁, φ₂ und u. Die Drehung am Gelenkfuß zählst du <b>nicht</b> mit – die steckt im ½-Trick bzw. in 3EI/L.'}),
+ ()=>({b:ln(160,120,60,40,K,2.5)+ln(160,120,160,40,K,2.5)+ln(160,120,260,40,K,2.5)+[60,160,260].map(x=>hinge(x,40)+ln(x-16,33,x+16,33,K,2)+hat(x-12,33,x+16,33,-7,-8,4)).join('')+hinge(160,120)+tx(160,165,'Fachwerk, Stäbe gelenkig'),n:2,w:'Fachwerkknoten: nur Verschiebungen u und w. Drehungen gibt es nicht, weil alles gelenkig ist.'}),
+ ()=>({b:wallV(50,80,-1)+ln(50,80,250,80)+node(250,80)+zig(250,84,250,150)+ln(234,150,266,150,K,2)+hat(238,150,266,150,-7,8,4)+tx(150,130,'EA = ∞'),n:2,w:'Freies Ende mit Feder: w und φ. Die Feder hält nur, sie nimmt keinen FHG weg.'}),
+ ()=>({b:ln(50,80,270,80)+pinS(50,80)+rollS(270,80)+tx(160,150,'Einfeldträger, EA = ∞'),n:2,w:'Beide Enden können sich drehen: φ_l und φ_r. (Mit ½-Trick bzw. 3EI/L kannst du einen davon „wegkürzen“.)'}),
+ ()=>({b:ln(70,150,70,50)+ln(70,50,250,50)+wallH(70,150,1)+node(70,50)+rollS(250,50)+tx(160,110,'alle EA = ∞',K,13),n:2,w:'Ecke: φ. Der Riegel kann sich auf dem Rollenlager waagerecht verschieben: u. Rollenende dreht frei (Gelenk) → zählt nicht. = 2.'})
+];
+function genFHG(){const s=pick(FHG)();return {cat:'FHG',q:'Wie viele Freiheitsgrade hat das System (Gelenkdrehungen nicht mitgezählt)?',svg:svg(s.b),opts:['1','2','3','4','5'],ans:String(s.n),why:s.w};}
+
+/* ===== Kategorie: Vorzeichen s̊ ===== */
+function genS0(){
+  const vert=Math.random()<.45,lA=Math.random()<.5;
+  let ax,ay,bx,by,b='';
+  if(vert){ax=150;ay=160;bx=150;by=35;b+=wallH(ax,ay,1)+wallH(bx,by,-1);}else{ax=55;ay=100;bx=265;by=100;b+=wallV(ax,ay,-1)+wallV(bx,by,1);}
+  b+=ln(ax,ay,bx,by);
+  const ld=vert?pick([[1,0],[-1,0]]):pick([[0,1],[0,-1]]);
+  const gl=Math.random()<.5;
+  if(vert){const x0=ld[0]>0?ax-42:ax+42;
+    if(gl){for(let i=0;i<=4;i++){const y=by+20+i*(ay-by-40)/4;b+=arr(x0,y,x0+ld[0]*32,y,R,1.6);}b+=ln(x0,by+20,x0,ay-20,R,1.4);}
+    else b+=arr(x0-ld[0]*8,(ay+by)/2,x0+ld[0]*34,(ay+by)/2,R,2.2);
+  }else{const y0=ld[1]>0?ay-44:ay+44;
+    if(gl){for(let i=0;i<=5;i++){const x=ax+20+i*(bx-ax-40)/5;b+=arr(x,y0,x,y0+ld[1]*34,R,1.6);}b+=ln(ax+20,y0,bx-20,y0,R,1.4);}
+    else b+=arr((ax+bx)/2,y0-ld[1]*8,(ax+bx)/2,y0+ld[1]*36,R,2.2);
+  }
+  b+=dirLab(ax,ay,bx,by,lA);
+  // Laufrichtung l→r
+  const [lx,ly,rx,ry]=lA?[ax,ay,bx,by]:[bx,by,ax,ay];const dx=rx-lx,dy=ry-ly;const right=[-dy,dx];const dot=right[0]*ld[0]+right[1]*ld[1];
+  const ask=pick(['l','r']);const sL=dot>0?1:-1;const v=ask==='l'?sL:-sL;
+  return {cat:'s̊',q:`Beide Enden eingespannt, ${gl?'Gleichlast':'Einzellast in der Mitte'}. Welches Vorzeichen hat <b>M̊<sub>${ask}</sub></b> (VZK II)?`,svg:svg(b),opts:['+','−'],ans:v>0?'+':'−',
+    why:`Geh von l nach r: Die Last zeigt auf deine <b>${dot>0?'rechte':'linke'}</b> Seite → M̊<sub>l</sub> = ${dot>0?'+':'−'}, M̊<sub>r</sub> = ${dot>0?'−':'+'}.`};
+}
+
+/* ===== Kategorie: Lastvektor P̄ ===== */
+function genP(){
+  const ld=pick(['mccw','mcw','fr','fl','fd','fu']);const dof=pick(['u','w','φ','φ',ld[0]==='m'?'φ':(ld==='fr'||ld==='fl'?'u':'w')]);
+  const val=pick([5,10,20]);let b=ln(60,100,260,100)+wallV(60,100,-1)+node(260,100);
+  if(ld==='mccw'||ld==='mcw')b+=arc(260,100,22,ld==='mccw',R)+tx(260,62,val+' kNm',R,13);
+  if(ld==='fr')b+=arr(212,78,252,78,R)+tx(220,70,val+' kN',R,13);
+  if(ld==='fl')b+=arr(300,78,268,78,R)+tx(290,70,val+' kN',R,13);
+  if(ld==='fd')b+=arr(260,40,260,92,R)+tx(290,55,val+' kN',R,13);
+  if(ld==='fu')b+=arr(260,160,260,108,R)+tx(290,150,val+' kN',R,13);
+  b+=tx(20,22,'u → rechts, w ↓ unten, φ ↺ gegen Uhr',G,12,'start');
+  const map={mccw:['φ',1],mcw:['φ',-1],fr:['u',1],fl:['u',-1],fd:['w',1],fu:['w',-1]};
+  const [d,s]=map[ld];const v=d===dof?s:0;const ans=v>0?'+'+val:v<0?'−'+val:'0';
+  return {cat:'P̄',q:`Welcher Wert steht in <b>P̄</b> beim Freiheitsgrad <b>${dof}</b>?`,svg:svg(b),opts:['+'+val,'−'+val,'0'],ans,
+    why:v===0?`Die Last wirkt in Richtung ${d}, nicht ${dof} → 0.`:`Die Last zeigt ${s>0?'in':'gegen die'} positive Richtung von ${d} → ${ans}.`};
+}
+
+/* ===== Kategorie: schräge Stäbe ===== */
+function genSchraeg(){
+  const [ex,ez]=pick([[3,4],[4,3],[3,-4],[4,-3]]);const sc=24;
+  const lx=90,lz=ez>0?35:135, rx=lx+ex*sc, rz=lz+ez*sc;
+  let b=ln(lx,lz,rx,rz)+node(lx,lz)+node(rx,rz);
+  b+=ln(lx,Math.max(lz,rz)+18,rx,Math.max(lz,rz)+18,K,1)+tx((lx+rx)/2,Math.max(lz,rz)+33,ex+' m',K,13);
+  b+=ln(rx+22,lz,rx+22,rz,K,1)+tx(rx+38,(lz+rz)/2+4,Math.abs(ez)+' m',K,13);
+  {const L5=Math.hypot(rx-lx,rz-lz),vx=(rx-lx)/L5,vz=(rz-lz)/L5;b+=tx(lx-vx*20-vz*14,lz-vz*20+vx*14+5,'l',B,17,'middle',1)+tx(rx+vx*20-vz*14,rz+vz*20+vx*14+5,'r',B,17,'middle',1);}
+  const end=pick(['l','r']),mv=pick(['re','li','ru','ho']);const m={re:[1,0],li:[-1,0],ru:[0,1],ho:[0,-1]}[mv];
+  const [px,pz]=end==='l'?[lx,lz]:[rx,rz];
+  b+=arr(px+m[0]*8,pz+m[1]*8,px+m[0]*36,pz+m[1]*36,G);
+  const cx=ex/5,cz=ez/5,s=end==='r'?1:-1;const du=s*(cx*m[0]+cz*m[1]);
+  const f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1).replace('.',',');
+  return {cat:'schräg',q:`Das <b>${end}</b>-Ende verschiebt sich um 1 nach <b>${{re:'rechts',li:'links',ru:'unten',ho:'oben'}[mv]}</b>. Wie groß ist Δu (Verlängerung)?`,svg:svg(b),
+    opts:shuffle(['+0,6','−0,6','+0,8','−0,8']),ans:f(du),
+    why:`c<sub>x</sub> = Δx/L = ${f(cx)}, c<sub>z</sub> = Δz/L = ${f(cz)} (z nach unten!). Δu = c<sub>x</sub>·(u<sub>r</sub>−u<sub>l</sub>) + c<sub>z</sub>·(w<sub>r</sub>−w<sub>l</sub>) = ${f(du)}. Check: Der Stab wird ${du>0?'länger':'kürzer'} ✓`};
+}
+
+/* ===== Kategorie: Steifigkeit wählen ===== */
+const ST=[
+ ['Ein Stabende wird um 1 gedreht, das andere Ende ist eingespannt. Welches Moment brauchst du am gedrehten Ende?','4EI/L','Volle Einspannung am anderen Ende → 4EI/L.'],
+ ['Ein Stabende wird um 1 gedreht, das andere Ende ist eingespannt. Welches Moment entsteht am <b>eingespannten</b> Ende?','2EI/L','Der „Übertrag“ ist die Hälfte: 2EI/L.'],
+ ['Ein Stabende wird um 1 gedreht, das andere Ende ist ein <b>Gelenk</b>. Welches Moment am gedrehten Ende?','3EI/L','Das Gelenk gibt nach → weicher → 3EI/L.'],
+ ['Stielkopf um 1 seitlich verschoben, unten eingespannt, oben drehfest (starrer Riegel). Querkraft?','12EI/h³','Beide Enden drehfest → 12EI/h³ (Quersteifigkeit).'],
+ ['Stielkopf um 1 seitlich verschoben, unten <b>Gelenk</b>, oben drehfest. Querkraft?','3EI/h³','Ein Ende gelenkig → 3EI/h³.'],
+ ['Stab quer um 1 verschoben, beide Enden drehfest. Welches Endmoment entsteht?','6EI/h²','(4+2)·EI/L·(1/L) = 6EI/L² – die Kopplungszahl.'],
+ ['Fachwerkstab wird um 1 verlängert. Normalkraft?','EA/L','Dehnstab: N = EA/L · Δu.'],
+ ['Feder wird um 1 zusammengedrückt. Betrag der Kraft?','c','Feder: F = c · Δ.']
+];
+function genSt(){const [q,a,w]=pick(ST);const pool=['4EI/L','2EI/L','3EI/L','12EI/h³','3EI/h³','6EI/h²','EA/L','c'].filter(x=>x!==a);return {cat:'Steifigkeit',q,svg:'',opts:shuffle([a,...shuffle(pool).slice(0,3)]),ans:a,why:w};}
+
+const CATS={'Alles gemischt':null,'τ-Werte':genTau,'Federn':genFeder,'Freiheitsgrade':genFHG,'Vorzeichen s̊':genS0,'Lastvektor P̄':genP,'Schräge Stäbe':genSchraeg,'Steifigkeit':genSt};
+const ALL=[genTau,genTau,genFeder,genFHG,genS0,genP,genSchraeg,genSt];
+
+/* --- Spielablauf --- */
+const root=document.getElementById('sp-root');if(!root)return;
+let best={};try{best=JSON.parse(localStorage.getItem('awgv-spiel')||'{}');}catch(e){}
+let st=null;
+function menu(){
+  const cats=Object.keys(CATS);
+  root.innerHTML=`<div class="sp-menu">
+   <div class="small">Was willst du üben?</div>
+   <div class="sp-chips">${cats.map((c,i)=>`<button class="sp-chip${i===0?' on':''}" data-c="${c}">${c}${best[c]?` <span class="sp-best">🏆 ${best[c]}</span>`:''}</button>`).join('')}</div>
+   <div class="small" style="margin-top:12px">Modus</div>
+   <div class="sp-chips"><button class="sp-mode on" data-m="runde">🎯 Runde (10 Fragen)</button><button class="sp-mode" data-m="survival">❤️ Überleben (3 Leben)</button></div>
+   <button id="sp-go" style="margin-top:16px">Los geht's ▶</button></div>`;
+  let cat=cats[0],mode='runde';
+  root.querySelectorAll('.sp-chip').forEach(b=>b.onclick=()=>{root.querySelectorAll('.sp-chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');cat=b.dataset.c;});
+  root.querySelectorAll('.sp-mode').forEach(b=>b.onclick=()=>{root.querySelectorAll('.sp-mode').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m;});
+  root.querySelector('#sp-go').onclick=()=>start(cat,mode);
+}
+function start(cat,mode){st={cat,mode,i:0,pts:0,streak:0,maxs:0,lives:3,ok:0,n:0,stats:{}};next();}
+function gen(){const g=CATS[st.cat]||pick(ALL);return g();}
+function hud(){return `<div class="sp-hud"><span>${st.mode==='survival'?'❤️'.repeat(st.lives)+'🤍'.repeat(3-st.lives):'Frage '+(st.i+1)+' / 10'}</span><span>⭐ ${st.pts}</span><span>${st.streak>=2?'🔥 '+st.streak:''}</span></div>`;}
+function next(){
+  if((st.mode==='runde'&&st.i>=10)||(st.mode==='survival'&&st.lives<=0))return end();
+  const q=gen();st.q=q;
+  root.innerHTML=hud()+`<div class="qz-card sp-card"><div class="qz-meta">${q.cat}</div>${q.svg}<div class="qz-q">${q.q}</div><div class="sp-opts">${q.opts.map(o=>`<button class="qz-opt sp-opt">${o}</button>`).join('')}</div><div id="sp-fb"></div></div>`;
+  root.querySelectorAll('.sp-opt').forEach(b=>b.onclick=()=>answer(b));
+}
+function answer(btn){
+  const q=st.q,ok=btn.textContent===q.ans;st.n++;
+  const s=st.stats[q.cat]||(st.stats[q.cat]=[0,0]);s[1]++;
+  root.querySelectorAll('.sp-opt').forEach(b=>{b.disabled=true;if(b.textContent===q.ans)b.classList.add('ok');});
+  if(ok){st.streak++;st.maxs=Math.max(st.maxs,st.streak);const g=10+Math.min(st.streak-1,5)*2;st.pts+=g;st.ok++;s[0]++;}
+  else{btn.classList.add('bad');st.streak=0;if(st.mode==='survival')st.lives--;}
+  const msgs=ok?['Richtig! 💪','Stark! ✅','Sitzt! 🎯','Genau so! 👌']:['Knapp daneben.','Noch nicht ganz.','Fast!'];
+  root.querySelector('#sp-fb').innerHTML=`<div class="qz-why"><b style="color:${ok?'var(--ok)':'var(--bad)'}">${pick(msgs)}</b> ${ok&&st.streak>=3?'🔥 Serie '+st.streak+'! ':''}<br>${q.why}</div><button id="sp-next" style="margin-top:10px">Weiter ▶</button>`;
+  root.querySelector('.sp-hud').outerHTML=hud();
+  st.i++;root.querySelector('#sp-next').onclick=next;
+  root.querySelector('#sp-next').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function end(){
+  const key=st.cat+(st.mode==='survival'?' ❤️':'');const rec=!best[st.cat]||st.pts>best[st.cat];
+  if(rec){best[st.cat]=st.pts;try{localStorage.setItem('awgv-spiel',JSON.stringify(best));}catch(e){}}
+  const pct=st.n?Math.round(100*st.ok/st.n):0;
+  const badge=pct>=90?'🥇 Klausurreif!':pct>=70?'🥈 Gut dabei!':pct>=50?'🥉 Weiter üben!':'📚 Nochmal den Merkzettel anschauen';
+  root.innerHTML=`<div class="qz-card" style="text-align:center"><div class="qz-big">⭐ ${st.pts}</div><div>${st.ok} von ${st.n} richtig (${pct} %) · längste Serie 🔥 ${st.maxs}</div><p style="font-size:20px;margin:10px 0">${badge}${rec?'<br>🏆 Neuer Rekord!':''}</p>
+   <table style="margin:10px auto;max-width:360px">${Object.entries(st.stats).map(([c,[a,n]])=>`<tr><td>${c}</td><td>${a} / ${n}</td><td>${a===n?'✅':'🔁'}</td></tr>`).join('')}</table>
+   <button id="sp-again">Nochmal</button> <button id="sp-menu" style="background:#fff;color:var(--ink);border:1.5px solid var(--line)">Anderes Thema</button></div>`;
+  root.querySelector('#sp-again').onclick=()=>start(st.cat,st.mode);root.querySelector('#sp-menu').onclick=menu;
+}
+menu();
+})();
+
 
 /* ---------- Routing ---------- */
 function route(){
