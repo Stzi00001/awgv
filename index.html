@@ -106,7 +106,10 @@ details.calc summary{color:#6b4fbb}
 .sp-chip,.sp-mode{background:#fff;color:var(--ink);border:1.5px solid var(--line);font-weight:500;padding:8px 14px;border-radius:999px}
 .sp-chip.on,.sp-mode.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .sp-best{font-size:12px;opacity:.8}
-.sp-hud{display:flex;justify-content:space-between;font-size:18px;font-weight:600;margin:6px 2px 10px}
+.sp-hud{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:18px;font-weight:600;margin:6px 2px 10px}
+.sp-back{background:#fff;color:var(--ink);border:1.5px solid var(--line);padding:6px 12px;font-size:15px}
+.sp-num{display:flex;gap:8px;align-items:center;margin:8px 0}
+.sp-num input{flex:1;min-width:0;font:inherit;font-size:20px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line)}
 .sp-opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .sp-opts .qz-opt{margin:0;text-align:center;font-size:18px;padding:12px}
 .qz-big{font-size:42px;font-weight:700;font-family:"Source Serif 4",serif}
@@ -2305,7 +2308,7 @@ K(1,2): <kbd>2</kbd><kbd>×</kbd><kbd>12000</kbd><kbd>÷</kbd><kbd>6</kbd><kbd>=
 
 <section class="view" id="v-spiel">
   <h1>🎮 AWGV-Trainer</h1>
-  <p class="lead">Kurze Fragen mit Skizze – τ-Werte, Federn, Freiheitsgrade, Vorzeichen, schräge Stäbe. Jede Frage wird neu zufällig erzeugt. Sammle Punkte, bau Serien 🔥 auf und knack deinen Rekord.</p>
+  <p class="lead"><b>Grundlagen:</b> kurze Fragen mit Skizze zum Antippen. <b>Profi:</b> Klausur-Varianten mit neuen Zahlen – selbst rechnen und Ergebnis eintippen. Jede Frage wird neu zufällig erzeugt. Sammle Punkte, bau Serien 🔥 auf und knack deinen Rekord.</p>
   <div id="sp-root"></div>
 </section>
 
@@ -3099,55 +3102,214 @@ const ST=[
 ];
 function genSt(){const [q,a,w]=pick(ST);const pool=['4EI/L','2EI/L','3EI/L','12EI/h³','3EI/h³','6EI/h²','EA/L','c'].filter(x=>x!==a);return {cat:'Steifigkeit',q,svg:'',opts:shuffle([a,...shuffle(pool).slice(0,3)]),ans:a,why:w};}
 
-const CATS={'Alles gemischt':null,'τ-Werte':genTau,'Federn':genFeder,'Freiheitsgrade':genFHG,'Vorzeichen s̊':genS0,'Lastvektor P̄':genP,'Schräge Stäbe':genSchraeg,'Steifigkeit':genSt};
-const ALL=[genTau,genTau,genFeder,genFHG,genS0,genP,genSchraeg,genSt];
+/* ===== weitere Grundlagen ===== */
+function genDehnB(){
+  const vert=Math.random()<.4,lA=Math.random()<.5;let ax,ay,bx,by;if(vert){ax=150;ay=160;bx=150;by=45;}else{ax=60;ay=95;bx=260;by=95;}
+  const endA=Math.random()<.5;const [mx,my]=endA?[ax,ay]:[bx,by];const [fx,fy]=endA?[bx,by]:[ax,ay];
+  let b=ln(ax,ay,bx,by,K,6)+node(mx,my)+(vert?(fy>my?wallH(fx,fy,1):wallH(fx,fy,-1)):(fx<mx?wallV(fx,fy,-1):wallV(fx,fy,1)));
+  const mv=pick(['re','li','ru','ho']);const m={re:[1,0],li:[-1,0],ru:[0,1],ho:[0,-1]}[mv];
+  b+=arr(mx+m[0]*8,my+m[1]*8,mx+m[0]*40,my+m[1]*40,G)+tx(mx+m[0]*48+(m[1]?12:0),my+m[1]*48+(m[0]?-8:4),'1',G,15);
+  b+=dirLab(ax,ay,bx,by,lA);
+  const [lx,ly,rx,ry]=lA?[ax,ay,bx,by]:[bx,by,ax,ay];const L=Math.hypot(rx-lx,ry-ly),c=[(rx-lx)/L,(ry-ly)/L];
+  const movingIsR=((mx===rx)&&(my===ry));const du=(movingIsR?1:-1)*(c[0]*m[0]+c[1]*m[1]);
+  const ans=du>0?'+1':du<0?'−1':'0';
+  return {cat:'Dehnstab',q:`Dehnstab (EA endlich). Der Knoten verschiebt sich um 1 nach <b>${{re:'rechts',li:'links',ru:'unten',ho:'oben'}[mv]}</b>. Wie groß ist <b>Δu</b> (Verlängerung)?`,svg:svg(b),opts:['+1','−1','0'],ans,
+   why:du===0?'Die Bewegung ist quer zum Stab → keine Längenänderung → Δu = 0.':`Der Knoten bewegt sich ${du>0?'vom anderen Ende weg → Stab wird länger':'zum anderen Ende hin → Stab wird kürzer'} → Δu = ${ans}. (Formel: Δu = Verschiebung des r-Endes − Verschiebung des l-Endes, jeweils in Stabrichtung l→r.)`};
+}
+function genMLinie(){
+  const v=pick([2.5,4,6.8,9.46,12,15.3]),s=pick([1,-1]),end=pick(['l','r']);const M=s*v;
+  const ord=end==='l'?-M:M;const f=x=>(x>0?'+':x<0?'−':'')+String(Math.abs(x)).replace('.',',');
+  return {cat:'Momentenlinie',q:`Ein Stab hat das Stabendmoment <b>M<sub>${end}</sub> = ${f(M)} kNm</b> (VZK II). Welchen Wert trägst du in der <b>Momentenlinie</b> am ${end==='l'?'Stabanfang':'Stabende'} an?`,svg:'',opts:shuffle([f(M),f(-M)]),ans:f(ord),
+   why:`Regel: <b>M(Anfang) = −M<sub>l</sub></b>, <b>M(Ende) = +M<sub>r</sub></b>. Hier also ${end==='l'?'−('+f(M)+')':'+('+f(M)+')'} = ${f(ord)}.`};
+}
+function genZug(){
+  const t=pick(['N','F','du']);const s=pick([1,-1]);const v=pick([0.94,2.5,3.75,6.43,12]);const f=x=>(x>0?'+':'−')+String(Math.abs(x)).replace('.',',');
+  const q=t==='N'?`Das AWGV liefert für einen Fachwerkstab <b>N = ${f(s*v)} kN</b>. Zug oder Druck?`:t==='F'?`Eine Feder hat in a den Wert ${s>0?'+1':'−1'} und u > 0. Die Federkraft ist ${f(s*v)} kN. Wird die Feder gezogen oder gedrückt?`:`Für einen Stab ergibt sich <b>Δu = ${f(s*v)}·10⁻³ m</b>. Zug oder Druck?`;
+  return {cat:'Zug/Druck',q,svg:'',opts:['Zug','Druck'],ans:s>0?'Zug':'Druck',why:s>0?'Positiv = Verlängerung = Zug.':'Negativ = Verkürzung = Druck.'};
+}
 
+/* ===== Profi: Rechenaufgaben (Zahlen eingeben) ===== */
+const de=(v,d=3)=>{const r=Number(v.toPrecision(Math.abs(v)>=1000?5:4));return (Math.abs(r)>=100?r.toFixed(1):Math.abs(r)>=1?r.toFixed(Math.min(d,3)):r.toPrecision(3)).replace(/\.?0+$/,'').replace('.',',').replace('-','−');};
+const sup=n=>String(n).replace(/[0-9]/g,c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[c]);
+const E=v=>{if(v>=1e4&&v%Math.pow(10,Math.floor(Math.log10(v)))===0){const e=Math.floor(Math.log10(v));const m=v/Math.pow(10,e);return (m===1?'':m+'·')+'10'+sup(e);}return String(v).replace(/\B(?=(\d{3})+(?!\d))/g,' ');};
+const N=(cat,q,svgS,val,unit,why)=>({cat,q,svg:svgS,num:val,unit,why,pro:1});
+
+function pDehn(){
+  const L1=pick([2,3,4]),L2=pick([2,3,4]),EA1=pick([2e5,3e5,5e5]),fc=pick([2,4]),EA2=EA1/fc;const f=L1/EA1+L2/EA2,k=1/f;
+  const s1=50,s2=50+L1*27,s3=s2+L2*27;
+  const b=wallV(s1,95,-1)+`<rect x="${s1}" y="84" width="${s2-s1}" height="22" fill="#e8eef8" stroke="${K}" stroke-width="1.6"/><rect x="${s2}" y="90" width="${s3-s2}" height="10" fill="#e8eef8" stroke="${K}" stroke-width="1.6"/>`+arr(s3+4,95,s3+40,95,R)+tx(s3+30,85,'F',R,15)+
+   tx((s1+s2)/2,130,'L₁ = '+L1+' m',K,13)+tx((s1+s2)/2,72,'EA',K,13)+tx((s2+s3)/2,130,'L₂ = '+L2+' m',K,13)+tx((s2+s3)/2,72,'EA/'+fc,K,13);
+  return N('Dehnstab',`Dehnstab aus zwei Abschnitten, EA = ${E(EA1)} kN. Wie groß ist die Steifigkeit <b>k = F/Δu</b>?`,svg(b,150),k,'kN/m',
+   `Abschnitte hintereinander → Flexibilitäten addieren: f = L₁/EA + L₂/(EA/${fc}) = ${de(L1/EA1*1e6)}·10⁻⁶ + ${de(L2/EA2*1e6)}·10⁻⁶ = ${de(f*1e6)}·10⁻⁶ m/kN → k = 1/f = <b>${de(k)} kN/m</b>. Kontrolle: kleiner als EA/(L₁+L₂) = ${de(EA1/(L1+L2))} ✓`);
+}
+function pFeder(){
+  const t=pick(['krag','efm','eing','kragF']);const EI=pick([5000,10000,20000]),L=pick([2,3,4,6]),P=pick([5,10,20]),cF=pick([500,1000,2000]);
+  let c,form,b='';const y=80;
+  if(t==='krag'){c=3*EI/L**3;form='3EI/L³';b=wallV(50,y,-1)+ln(50,y,250,y)+arr(250,y-45,250,y-8,R);}
+  if(t==='efm'){c=48*EI/L**3;form='48EI/L³';b=pinS(50,y)+rollS(270,y)+ln(50,y,270,y)+arr(160,y-45,160,y-8,R);}
+  if(t==='eing'){c=192*EI/L**3;form='192EI/L³';b=wallV(50,y,-1)+wallV(270,y,1)+ln(50,y,270,y)+arr(160,y-45,160,y-8,R);}
+  if(t==='kragF'){c=3*EI/L**3+cF;form='3EI/L³ + c';b=wallV(50,y,-1)+ln(50,y,250,y)+arr(250,y-45,250,y-8,R)+zig(250,y+4,250,y+60)+ln(234,y+60,266,y+60,K,2)+hat(238,y+60,266,y+60,-7,8,4)+tx(275,y+40,'c = '+cF,K,12,'start');}
+  b+=tx(t==='krag'||t==='kragF'?262:175,y-30,'P = '+P+' kN',R,13,'start')+tx(150,165,'EI = '+E(EI)+' kNm², L = '+L+' m'+(t==='efm'||t==='eing'?' (Spannweite)':''),K,13);
+  return N('Ersatzfeder',`Wie groß ist die Durchbiegung <b>w</b> am Lastpunkt?`,svg(b,180),P/c*1000,'mm',
+   `Ersatzfeder c = ${form} = <b>${de(c)} kN/m</b>${t==='kragF'?' (Balken und Feder parallel → addieren)':''}. w = P/c = ${P}/${de(c)} = <b>${de(P/c*1000)} mm</b>. Merke: Kragarm 3, Einfeldträger 48, beidseitig eingespannt 192 (·EI/L³).`);
+}
+function pStock(){
+  const n=pick([3,3,4]);const H=pick([10,20,30]);const st=[];for(let i=0;i<n;i++)st.push({h:pick([3,4,6]),g:Math.random()<.3});
+  const ks=st.map(s=>(s.g?3:12)/s.h**3),S=ks.reduce((a,b)=>a+b,0);const ask=rnd(n);
+  const x0=50,dx=220/(n-1),yt=30;let b=ln(x0,yt,x0+220,yt,K,6)+arr(5,yt,x0-6,yt,R)+tx(18,yt-8,H+' kN',R,12);
+  st.forEach((s,i)=>{const x=x0+i*dx,yb=yt+s.h*20;b+=ln(x,yt,x,yb,i===ask?B:K,i===ask?4:3)+(s.g?pinS(x,yb):wallH(x,yb,1))+tx(x+(i===n-1?-8:8),(yt+yb)/2,'h='+s.h,K,12,i===n-1?'end':'start');if(i===ask)b+=tx(x,yt+16,'?',B,16);});
+  b+=tx(160,yt-10,'Riegel EI = ∞, alle EA = ∞',K,12);
+  return N('Stockwerk',`Welche Querkraft bekommt der <b>blaue Stiel</b>? (Last verteilt sich nach Steifigkeit)`,svg(b,190),H*ks[ask]/S,'kN',
+   `Quersteifigkeit je Stiel: eingespannt 12EI/h³, unten Gelenk 3EI/h³ → ${st.map((s,i)=>(s.g?'3':'12')+'/'+s.h+'³ = '+de(ks[i])).join(', ')} (·EI). Summe = ${de(S)}·EI. Anteil blauer Stiel: ${H} · ${de(ks[ask])}/${de(S)} = <b>${de(H*ks[ask]/S)} kN</b>.`);
+}
+function pFach(){
+  const EA=pick([5000,10000,20000]),vert=Math.random()<.5,hor=Math.random()<.5,P=pick([5,10,20]),dir=pick(['w','w','u']);
+  const nx=160,ny=140,s=25;let b='';const bars=[[0.6,0.8,5,nx-75,ny-100],[-0.6,0.8,5,nx+75,ny-100]];
+  if(vert)bars.push([0,1,4,nx,ny-100]);if(hor)bars.push([1,0,3,nx-75,ny]);
+  bars.forEach(([cx,cz,L,sx,sy])=>{b+=ln(sx,sy,nx,ny,K,2.6)+hinge(sx,sy)+(sy<ny?ln(sx-14,sy-8,sx+14,sy-8,K,2)+hat(sx-10,sy-8,sx+14,sy-8,-7,-8,4):ln(sx-8,sy-14,sx-8,sy+14,K,2)+hat(sx-8,sy-10,sx-8,sy+14,-8,-7,4));});
+  b+=hinge(nx,ny)+(dir==='w'?arr(nx,ny+6,nx,ny+34,R)+tx(nx+10,ny+30,P+' kN',R,12,'start'):arr(nx+6,ny,nx+40,ny,R)+tx(nx+44,ny-6,P+' kN',R,12,'start'));
+  b+=tx(8,150,'EA = '+E(EA)+' kN',K,12,'start')+tx(8,166,'Diagonalen 5 m (3 : 4)',K,12,'start')+(vert?tx(8,182,'senkrecht 4 m',K,12,'start'):'')+(hor?tx(214,182,'waagerecht 3 m',K,12,'start'):'');
+  const Kk=bars.reduce((a,[cx,cz,L])=>a+EA/L*(dir==='w'?cz*cz:cx*cx),0);
+  return N('Fachwerk',`Wie groß ist die Verschiebung <b>${dir}</b> des Knotens?`,svg(b,190),P/Kk*1000,'mm',
+   `K<sub>${dir==='w'?'22':'11'}</sub> = Σ EA/L · c<sub>${dir==='w'?'z':'x'}</sub>² = ${bars.map(([cx,cz,L])=>de(EA/L)+'·'+de((dir==='w'?cz:cx)**2)).join(' + ')} = <b>${de(Kk)} kN/m</b>. K₁₂ = 0 (Symmetrie). ${dir} = ${P}/${de(Kk)} = <b>${de(P/Kk*1000)} mm</b>.`);
+}
+function pS0(){
+  const t=pick(['qff','qgl','qgr','pff','pgl','pgr']);const L=pick([4,5,6]),q=pick([5,10,20]),P=pick([10,20,40]);const ask=pick(['l','r']);
+  let Ml=0,Mr=0,why;
+  if(t==='qff'){Ml=q*L*L/12;Mr=-Ml;why='beidseitig eingespannt, Gleichlast: qL²/12';}
+  if(t==='qgl'){Mr=-q*L*L/8;why='links Gelenk, Gleichlast: qL²/8 am festen Ende';}
+  if(t==='qgr'){Ml=q*L*L/8;why='rechts Gelenk, Gleichlast: qL²/8 am festen Ende';}
+  if(t==='pff'){Ml=P*L/8;Mr=-Ml;why='beidseitig eingespannt, Einzellast mittig: PL/8';}
+  if(t==='pgl'){Mr=-3*P*L/16;why='links Gelenk, Einzellast mittig: 3PL/16 am festen Ende';}
+  if(t==='pgr'){Ml=3*P*L/16;why='rechts Gelenk, Einzellast mittig: 3PL/16 am festen Ende';}
+  const y=100;let b=ln(50,y,270,y)+(t.endsWith('gl')?pinS(50,y):wallV(50,y,-1))+(t.endsWith('gr')?pinS(270,y):wallV(270,y,1));
+  if(t[0]==='q'){for(let i=0;i<=6;i++){const x=60+i*200/6;b+=arr(x,y-40,x,y-6,R,1.5);}b+=ln(60,y-40,260,y-40,R,1.4)+tx(160,y-48,'q = '+q+' kN/m',R,13);}
+  else b+=arr(160,y-46,160,y-6,R,2.2)+tx(175,y-36,'P = '+P+' kN',R,13,'start');
+  b+=tx(160,y+50,'L = '+L+' m',K,13)+tx(66,y+24,'l',B,17,'middle',1)+tx(254,y+24,'r',B,17,'middle',1);
+  const v=ask==='l'?Ml:Mr;
+  return N('s̊-Wert',`Wie groß ist <b>M̊<sub>${ask}</sub></b> (VZK II, mit Vorzeichen)?`,svg(b,170),v,'kNm',
+   `${why}. Last zeigt (l→r gehend) auf deine rechte Seite → M̊<sub>l</sub> = +, M̊<sub>r</sub> = −; am Gelenk ist M̊ = 0. → M̊<sub>${ask}</sub> = <b>${de(v)} kNm</b>.`);
+}
+function pPhat(){
+  const h=pick([3,4,6]),H=pick([6,8,10,12]),a=1+rnd(h-1),right=Math.random()<.75;const x=140,yt=30,yb=yt+h*24;
+  let b=ln(x-90,yt,x+90,yt,K,4)+ln(x,yt,x,yb)+wallH(x,yb,1)+arr(x+100,yt,x+135,yt,G)+tx(x+118,yt-8,'u',G,14,'middle',1);
+  const ya=yb-a*24;b+=right?arr(x-48,ya,x-6,ya,R)+tx(x-52,ya-6,H+' kN',R,12,'end'):arr(x+48,ya,x+6,ya,R)+tx(x+52,ya-6,H+' kN',R,12,'start');
+  b+=ln(x+30,ya,x+30,yb,K,1)+tx(x+36,(ya+yb)/2+4,'a = '+a+' m',K,12,'start')+tx(x+70,(yt+yb)/2,'h = '+h+' m',K,12,'start');
+  const v=(right?1:-1)*H*a/h;
+  return N('P̂',`Riegel ist dehnstarr, FHG u = Riegelverschiebung. Wie groß ist <b>P̂</b> für u?`,svg(b,Math.max(140,yb+28)),v,'kN',
+   `Stiel als Einfeldträger zwischen Fuß und Kopf: Das obere Lager bekommt H·a/h = ${H}·${a}/${h} = ${de(Math.abs(v))} kN, ${right?'in':'gegen die'} u-Richtung → <b>P̂ = ${de(v)} kN</b>. (Der Rest geht direkt ins Fundament.)`);
+}
+function pKphi(){
+  const EI=pick([5000,10000]);const parts=[];const nx=130,ny=60;let b='';let S=0,txt=[];
+  const Lr=pick([3,4,5,6]),gr=Math.random()<.4;b+=ln(nx,ny,nx+Lr*25,ny)+(gr?pinS(nx+Lr*25,ny):wallV(nx+Lr*25,ny,1))+tx(nx+Lr*12.5,ny-10,Lr+' m',K,12);S+=(gr?3:4)*EI/Lr;txt.push((gr?3:4)+'EI/'+Lr);
+  if(Math.random()<.7){const Ll=pick([2,3,4]),gl=Math.random()<.4;b+=ln(nx-Ll*25,ny,nx,ny)+(gl?pinS(nx-Ll*25,ny):wallV(nx-Ll*25,ny,-1))+tx(nx-Ll*12.5,ny-10,Ll+' m',K,12);S+=(gl?3:4)*EI/Ll;txt.push((gl?3:4)+'EI/'+Ll);}
+  const h=pick([3,4]),gh=Math.random()<.4;b+=ln(nx,ny,nx,ny+h*25)+(gh?pinS(nx,ny+h*25):wallH(nx,ny+h*25,1))+tx(nx+8,ny+h*12.5,h+' m',K,12,'start');S+=(gh?3:4)*EI/h;txt.push((gh?3:4)+'EI/'+h);
+  b+=node(nx,ny)+arc(nx,ny,16,true,G)+tx(250,165,'EI = '+E(EI)+' kNm²',K,12);
+  return N('K für φ',`Der Eckknoten dreht sich um φ = 1 (alle Stäbe EA = ∞, keine Verschiebung). Wie groß ist <b>K<sub>φφ</sub></b>?`,svg(b,195),S,'kNm',
+   `Jeder Stab am Knoten: anderes Ende eingespannt → 4EI/L, Gelenk → 3EI/L. K = ${txt.join(' + ')} = <b>${de(S)} kNm</b>.`);
+}
+function pRahmenU(){
+  const EI=pick([5000,10000,20000]),H=pick([5,10,20]),c=pick([0,0,1000,2000,5000]);const st=[{h:pick([3,4]),g:Math.random()<.4},{h:pick([3,4]),g:Math.random()<.4}];
+  const ks=st.map(s=>(s.g?3:12)*EI/s.h**3),S=ks[0]+ks[1]+c;let b='';const yt=40;
+  b+=ln(80,yt,240,yt,K,6)+arr(25,yt,74,yt,R)+tx(40,yt-8,H+' kN',R,12);
+  st.forEach((s,i)=>{const x=i?240:80,yb=yt+s.h*28;b+=ln(x,yt,x,yb)+(s.g?pinS(x,yb):wallH(x,yb,1))+tx(x+(i?-8:8),(yt+yb)/2,'h = '+s.h,K,12,i?'end':'start');});
+  if(c){b+=zig(240,yt,300,yt,6,6)+ln(300,yt-14,300,yt+14,K,2)+hat(300,yt-12,300,yt+14,8,8,3)+tx(272,yt-12,'c = '+E(c),K,11);}
+  b+=tx(160,yt-14,'Riegel EI = ∞',K,12)+tx(160,yt+90,'EI = '+E(EI),K,12);
+  return N('Rahmen',`Wie groß ist die Riegelverschiebung <b>u</b>?`,svg(b,175),H/S*1000,'mm',
+   `K = ${st.map((s,i)=>(s.g?'3':'12')+'EI/'+s.h+'³ = '+de(ks[i])).join(' + ')}${c?' + c = '+E(c):''} → K = <b>${de(S)} kN/m</b>. u = ${H}/${de(S)} = <b>${de(H/S*1000)} mm</b>.`);
+}
+function pK12(){
+  const h=pick([3,4,5,6]),EI=pick([5000,10000]),g=Math.random()<.35;const v=(g?3:6)*EI/h**2;
+  let b=ln(100,40,240,40)+ln(100,40,100,40+h*22)+(g?pinS(100,40+h*22):wallH(100,40+h*22,1))+node(100,40)+arc(100,40,15,true,G)+arr(250,40,285,40,G)+tx(268,32,'u',G,14,'middle',1)+tx(78,30,'φ',G,14,'middle',1)+tx(110,40+h*11,'h = '+h+' m',K,12,'start')+tx(200,150,'EI = '+E(EI),K,12);
+  return N('Kopplung K₁₂',`Stiel unten ${g?'<b>gelenkig</b>':'eingespannt'}. Wie groß ist der <b>Betrag</b> von K₁₂ (Kopplung u ↔ φ) aus diesem Stiel?`,svg(b,Math.max(150,62+h*22)),v,'kN',
+   g?`Stiel mit Gelenkfuß: φ = 1 oben erzeugt M = 3EI/h, Querkraft = M/h → <b>3EI/h² = ${de(v)}</b>.`:`Stiel beidseitig fest: φ = 1 oben erzeugt 4EI/h oben + 2EI/h unten → Querkraft (4+2)EI/h² = <b>6EI/h² = ${de(v)}</b>.`);
+}
+function pSchub(){
+  const L=pick([2,3,4,6]),EI=pick([1e4,2e4,3.2e7]),GA=EI>1e6?1e7:pick([1e4,2e4,5e4]);const fs=1/(L*GA),f11=L/(3*EI)+fs,f12=-L/(6*EI)+fs,det=f11*f11-f12*f12,k11=f11/det;
+  return N('Schub',`Schubweicher Stab: L = ${L} m, EI = ${E(EI)} kNm², GA<sub>v</sub> = ${E(GA)} kN. Wie groß ist <b>k₁₁</b>?`,'',k11,'kNm',
+   `f₁₁ = L/3EI + 1/(L·GA) = ${f11.toExponential(3).replace('.',',')}, f₁₂ = −L/6EI + 1/(L·GA) = ${f12.toExponential(3).replace('.',',')}. k₁₁ = f₁₁/(f₁₁² − f₁₂²) = <b>${de(k11)}</b> (ohne Schub: 4EI/L = ${de(4*EI/L)}).`);
+}
+function pKnoten(){
+  const M1=pick([-9.46,-6,-4.5,3.2,5,7.5]),M2=pick([0.54,1.5,-2,2.8,-3.6]),K_=pick([10,-10,5,-5,0,20]);const M3=K_-M1-M2;
+  const kt=K_===0?'kein Knotenmoment':K_>0?`Knotenmoment ${Math.abs(K_)} kNm <b>gegen</b> den Uhrzeigersinn`:`Knotenmoment ${Math.abs(K_)} kNm <b>im</b> Uhrzeigersinn`;
+  return N('Knoten-GG',`An einem Knoten treffen 3 Stäbe. Zwei Stabendmomente (VZK II) sind bekannt: <b>${de(M1)}</b> und <b>${de(M2)}</b> kNm. Am Knoten wirkt ${kt}. Wie groß ist das dritte Stabendmoment?`,'',M3,'kNm',
+   `Knotengleichgewicht: Summe der Stabendmomente am Knoten = Knotenmoment (gegen Uhr +): ${de(M1)} + ${de(M2)} + M₃ = ${de(K_)} → <b>M₃ = ${de(M3)} kNm</b>.`);
+}
+function pSumQ(){
+  const h=pick([3,4]),n=3,H=pick([10,20,30]);const ms=[];for(let i=0;i<n;i++){ms.push([pick([4,6.5,8,10.2,12]),-pick([3,5.5,7,9.8,11])]);}
+  const Q=ms.map(([o,u])=>(o-u)/h),S=Q.reduce((a,b)=>a+b,0);
+  const rows=ms.map(([o,u],i)=>`Stiel ${i+1}: oben ${de(o)}, unten ${de(u)}`).join('<br>');
+  return N('Σ Q',`Stockwerk mit 3 Stielen (h = ${h} m), Momentenlinie (VZK I, Ordinaten mit Vorzeichen):<br>${rows}<br>Wie groß ist <b>Σ Q</b> der Stiele?`,'',S,'kN',
+   `Q = (M<sub>oben</sub> − M<sub>unten</sub>)/h je Stiel: ${Q.map(de).join(' + ')} = <b>${de(S)} kN</b>. Vergleich mit der Last oberhalb des Schnitts → ist Σ Q ≠ H, stimmt das Gleichgewicht nicht.`);
+}
+function pV(){
+  const a=pick([8000,11875,12000,20000]),d=pick([15000,25000,30000]),c=pick([0,2000,3750,-3000]),P1=pick([2.5,5,10]),P2=pick([0,2.5,-5,10]);const det=a*d-c*c,u=(d*P1-c*P2)/det,ph=(a*P2-c*P1)/det;const ask=pick(['V₁','V₂']);
+  return N('V lösen',`K = [${de(a)} ${de(c)}; ${de(c)} ${de(d)}], P = [${de(P1)}; ${de(P2)}]. Berechne <b>${ask}</b> (am besten mit MatA⁻¹ × MatB).`,'',ask==='V₁'?u:ph,'m bzw. rad',
+   `det = ${de(a)}·${de(d)} − ${de(c)}² = ${de(det)}. V₁ = (K₂₂P₁ − K₁₂P₂)/det = ${u.toExponential(3).replace('.',',')}, V₂ = (K₁₁P₂ − K₁₂P₁)/det = ${ph.toExponential(3).replace('.',',')}.`);
+}
+function pStabN(){
+  const [cx,cz]=pick([[0.6,0.8],[-0.6,0.8],[0.6,-0.8],[0.8,0.6],[-0.8,-0.6],[1,0],[0,1]]);const L=(cx&&cz)?5:pick([3,4]);const EA=pick([5000,10000,20000]),u=pick([0.5,1.048,2,-1]),w=pick([1,3.906,-2,2.5]);
+  const v=EA/L*(cx*u+cz*w)/1000;
+  return N('Stabkraft',`Fachwerkstab vom Lager zum Knoten mit c<sub>x</sub> = ${de(cx)}, c<sub>z</sub> = ${de(cz)}, L = ${L} m, EA = ${E(EA)} kN. Der Knoten verschiebt sich um u = ${de(u)} mm, w = ${de(w)} mm. Wie groß ist <b>N</b>?`,'',v,'kN',
+   `Δu = c<sub>x</sub>·u + c<sub>z</sub>·w = ${de(cx)}·${de(u)} + ${de(cz)}·${de(w)} = ${de(cx*u+cz*w)} mm. N = EA/L·Δu = ${de(EA/L)}·${de((cx*u+cz*w)/1000)} = <b>${de(v)} kN</b> (${v>0?'Zug':'Druck'}).`);
+}
+const BASIS={'Grundlagen gemischt':null,'τ-Werte':genTau,'Federn':genFeder,'Dehnstab':genDehnB,'Freiheitsgrade':genFHG,'Vorzeichen s̊':genS0,'Lastvektor P̄':genP,'Schräge Stäbe':genSchraeg,'Steifigkeit':genSt,'Momentenlinie':genMLinie,'Zug/Druck':genZug};
+const PROFI={'Profi gemischt':null,'Dehnstab-Abschnitte':pDehn,'Ersatzfeder':pFeder,'Stockwerk-Lastanteil':pStock,'Rahmen u':pRahmenU,'Fachwerkknoten':pFach,'Stabkraft N':pStabN,'s̊ ausrechnen':pS0,'P̂ ausrechnen':pPhat,'K für Drehung':pKphi,'Kopplung K₁₂':pK12,'Knotengleichgewicht':pKnoten,'Σ Q Kontrolle':pSumQ,'V lösen (Rechner)':pV,'Schubweicher Stab':pSchub};
+const ALLB=[genTau,genTau,genFeder,genDehnB,genFHG,genS0,genP,genSchraeg,genSt,genMLinie,genZug];
+const ALLP=Object.values(PROFI).filter(Boolean);
 /* --- Spielablauf --- */
 const root=document.getElementById('sp-root');if(!root)return;
 let best={};try{best=JSON.parse(localStorage.getItem('awgv-spiel')||'{}');}catch(e){}
-let st=null;
+let st=null,sel={cat:'Grundlagen gemischt',mode:'runde'};
+const chip=c=>`<button class="sp-chip${sel.cat===c?' on':''}" data-c="${c}">${c}${best[c]?` <span class="sp-best">🏆 ${best[c]}</span>`:''}</button>`;
 function menu(){
-  const cats=Object.keys(CATS);
   root.innerHTML=`<div class="sp-menu">
-   <div class="small">Was willst du üben?</div>
-   <div class="sp-chips">${cats.map((c,i)=>`<button class="sp-chip${i===0?' on':''}" data-c="${c}">${c}${best[c]?` <span class="sp-best">🏆 ${best[c]}</span>`:''}</button>`).join('')}</div>
+   <h3 style="margin:4px 0">🟢 Grundlagen <span class="small">(antippen)</span></h3><div class="sp-chips">${Object.keys(BASIS).map(chip).join('')}</div>
+   <h3 style="margin:14px 0 4px">🔴 Profi – selbst rechnen <span class="small">(Zahl eintippen, Klausur-Varianten)</span></h3><div class="sp-chips">${Object.keys(PROFI).map(chip).join('')}</div>
    <div class="small" style="margin-top:12px">Modus</div>
-   <div class="sp-chips"><button class="sp-mode on" data-m="runde">🎯 Runde (10 Fragen)</button><button class="sp-mode" data-m="survival">❤️ Überleben (3 Leben)</button></div>
+   <div class="sp-chips"><button class="sp-mode${sel.mode==='runde'?' on':''}" data-m="runde">🎯 Runde (10 Fragen)</button><button class="sp-mode${sel.mode==='survival'?' on':''}" data-m="survival">❤️ Überleben (3 Leben)</button></div>
    <button id="sp-go" style="margin-top:16px">Los geht's ▶</button></div>`;
-  let cat=cats[0],mode='runde';
-  root.querySelectorAll('.sp-chip').forEach(b=>b.onclick=()=>{root.querySelectorAll('.sp-chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');cat=b.dataset.c;});
-  root.querySelectorAll('.sp-mode').forEach(b=>b.onclick=()=>{root.querySelectorAll('.sp-mode').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m;});
-  root.querySelector('#sp-go').onclick=()=>start(cat,mode);
+  root.querySelectorAll('.sp-chip').forEach(b=>b.onclick=()=>{root.querySelectorAll('.sp-chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');sel.cat=b.dataset.c;});
+  root.querySelectorAll('.sp-mode').forEach(b=>b.onclick=()=>{root.querySelectorAll('.sp-mode').forEach(x=>x.classList.remove('on'));b.classList.add('on');sel.mode=b.dataset.m;});
+  root.querySelector('#sp-go').onclick=()=>start(sel.cat,sel.mode);
 }
-function start(cat,mode){st={cat,mode,i:0,pts:0,streak:0,maxs:0,lives:3,ok:0,n:0,stats:{}};next();}
-function gen(){const g=CATS[st.cat]||pick(ALL);return g();}
-function hud(){return `<div class="sp-hud"><span>${st.mode==='survival'?'❤️'.repeat(st.lives)+'🤍'.repeat(3-st.lives):'Frage '+(st.i+1)+' / 10'}</span><span>⭐ ${st.pts}</span><span>${st.streak>=2?'🔥 '+st.streak:''}</span></div>`;}
+function start(cat,mode){st={cat,mode,i:0,pts:0,streak:0,maxs:0,lives:3,ok:0,n:0,stats:{},hist:[]};next();}
+function gen(){const c=st.cat;if(c in BASIS)return (BASIS[c]||pick(ALLB))();return (PROFI[c]||pick(ALLP))();}
+function hud(){return `<div class="sp-hud"><button class="sp-back">← Menü</button><span>${st.mode==='survival'?'❤️'.repeat(Math.max(st.lives,0))+'🤍'.repeat(3-Math.max(st.lives,0)):'Frage '+Math.min(st.i+1,10)+' / 10'}</span><span>⭐ ${st.pts}</span><span>${st.streak>=2?'🔥 '+st.streak:''}</span></div>`;}
+function bindHud(){root.querySelector('.sp-back').onclick=menu;}
+const parseNum=t=>{t=String(t).trim().replace(/\s/g,'').replace(/−/g,'-').replace(/,/g,'.').replace(/(?:[·x*×]10\^?\(?(-?\d+)\)?)/,'e$1').replace(/E/,'e');return t===''?NaN:Number(t);};
 function next(){
   if((st.mode==='runde'&&st.i>=10)||(st.mode==='survival'&&st.lives<=0))return end();
   const q=gen();st.q=q;
-  root.innerHTML=hud()+`<div class="qz-card sp-card"><div class="qz-meta">${q.cat}</div>${q.svg}<div class="qz-q">${q.q}</div><div class="sp-opts">${q.opts.map(o=>`<button class="qz-opt sp-opt">${o}</button>`).join('')}</div><div id="sp-fb"></div></div>`;
-  root.querySelectorAll('.sp-opt').forEach(b=>b.onclick=()=>answer(b));
+  const body=q.num!==undefined?`<div class="sp-num"><input id="sp-in" inputmode="decimal" autocomplete="off" placeholder="Ergebnis"><span>${q.unit}</span><button id="sp-chk">Prüfen</button></div><div class="small">Komma oder Punkt, z. B. 1,878e-4 oder 1,878·10^-4</div>`:`<div class="sp-opts">${q.opts.map(o=>`<button class="qz-opt sp-opt">${o}</button>`).join('')}</div>`;
+  root.innerHTML=hud()+`<div class="qz-card sp-card"><div class="qz-meta">${q.cat}${q.pro?' · Profi':''}</div>${q.svg}<div class="qz-q">${q.q}</div>${body}<div id="sp-fb"></div></div>`;
+  bindHud();
+  if(q.num!==undefined){const go=()=>answer(null);root.querySelector('#sp-chk').onclick=go;root.querySelector('#sp-in').onkeydown=e=>{if(e.key==='Enter')go();};}
+  else root.querySelectorAll('.sp-opt').forEach(b=>b.onclick=()=>answer(b));
 }
 function answer(btn){
-  const q=st.q,ok=btn.textContent===q.ans;st.n++;
-  const s=st.stats[q.cat]||(st.stats[q.cat]=[0,0]);s[1]++;
-  root.querySelectorAll('.sp-opt').forEach(b=>{b.disabled=true;if(b.textContent===q.ans)b.classList.add('ok');});
-  if(ok){st.streak++;st.maxs=Math.max(st.maxs,st.streak);const g=10+Math.min(st.streak-1,5)*2;st.pts+=g;st.ok++;s[0]++;}
-  else{btn.classList.add('bad');st.streak=0;if(st.mode==='survival')st.lives--;}
-  const msgs=ok?['Richtig! 💪','Stark! ✅','Sitzt! 🎯','Genau so! 👌']:['Knapp daneben.','Noch nicht ganz.','Fast!'];
-  root.querySelector('#sp-fb').innerHTML=`<div class="qz-why"><b style="color:${ok?'var(--ok)':'var(--bad)'}">${pick(msgs)}</b> ${ok&&st.streak>=3?'🔥 Serie '+st.streak+'! ':''}<br>${q.why}</div><button id="sp-next" style="margin-top:10px">Weiter ▶</button>`;
-  root.querySelector('.sp-hud').outerHTML=hud();
-  st.i++;root.querySelector('#sp-next').onclick=next;
+  const q=st.q;let ok;
+  if(q.num!==undefined){const x=parseNum(root.querySelector('#sp-in').value);if(isNaN(x)){root.querySelector('#sp-in').focus();return;}
+    ok=Math.abs(x-q.num)<=Math.max(Math.abs(q.num)*0.015,q.num===0?0.01:0);root.querySelector('#sp-in').disabled=true;root.querySelector('#sp-chk').disabled=true;}
+  else{ok=btn.textContent===q.ans;root.querySelectorAll('.sp-opt').forEach(b=>{b.disabled=true;if(b.textContent===q.ans)b.classList.add('ok');});if(!ok)btn.classList.add('bad');}
+  st.n++;const s=st.stats[q.cat]||(st.stats[q.cat]=[0,0]);s[1]++;
+  if(ok){st.streak++;st.maxs=Math.max(st.maxs,st.streak);st.pts+=(q.pro?20:10)+Math.min(st.streak-1,5)*2;st.ok++;s[0]++;}
+  else{st.streak=0;if(st.mode==='survival')st.lives--;}
+  const msgs=ok?['Richtig! 💪','Stark! ✅','Sitzt! 🎯','Genau so! 👌','Klausurreif! 🏗️']:['Knapp daneben.','Noch nicht ganz.','Fast!'];
+  const sol=q.num!==undefined?`<br>Lösung: <b>${de(q.num)} ${q.unit}</b>`:'';
+  root.querySelector('#sp-fb').innerHTML=`<div class="qz-why"><b style="color:${ok?'var(--ok)':'var(--bad)'}">${pick(msgs)}</b> ${ok&&st.streak>=3?'🔥 Serie '+st.streak+'! ':''}${sol}<br>${q.why}</div><button id="sp-next" style="margin-top:10px">Weiter ▶</button>`;
+  st.i++;root.querySelector('.sp-hud').outerHTML=hud();bindHud();
+  root.querySelector('#sp-next').onclick=next;
   root.querySelector('#sp-next').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function end(){
-  const key=st.cat+(st.mode==='survival'?' ❤️':'');const rec=!best[st.cat]||st.pts>best[st.cat];
-  if(rec){best[st.cat]=st.pts;try{localStorage.setItem('awgv-spiel',JSON.stringify(best));}catch(e){}}
+  const rec=!best[st.cat]||st.pts>best[st.cat];
+  if(rec&&st.pts>0){best[st.cat]=st.pts;try{localStorage.setItem('awgv-spiel',JSON.stringify(best));}catch(e){}}
   const pct=st.n?Math.round(100*st.ok/st.n):0;
   const badge=pct>=90?'🥇 Klausurreif!':pct>=70?'🥈 Gut dabei!':pct>=50?'🥉 Weiter üben!':'📚 Nochmal den Merkzettel anschauen';
-  root.innerHTML=`<div class="qz-card" style="text-align:center"><div class="qz-big">⭐ ${st.pts}</div><div>${st.ok} von ${st.n} richtig (${pct} %) · längste Serie 🔥 ${st.maxs}</div><p style="font-size:20px;margin:10px 0">${badge}${rec?'<br>🏆 Neuer Rekord!':''}</p>
+  root.innerHTML=`<div class="qz-card" style="text-align:center"><div class="qz-big">⭐ ${st.pts}</div><div>${st.ok} von ${st.n} richtig (${pct} %) · längste Serie 🔥 ${st.maxs}</div><p style="font-size:20px;margin:10px 0">${badge}${rec&&st.pts>0?'<br>🏆 Neuer Rekord!':''}</p>
    <table style="margin:10px auto;max-width:360px">${Object.entries(st.stats).map(([c,[a,n]])=>`<tr><td>${c}</td><td>${a} / ${n}</td><td>${a===n?'✅':'🔁'}</td></tr>`).join('')}</table>
-   <button id="sp-again">Nochmal</button> <button id="sp-menu" style="background:#fff;color:var(--ink);border:1.5px solid var(--line)">Anderes Thema</button></div>`;
+   <button id="sp-again">Nochmal</button> <button id="sp-menu" style="background:#fff;color:var(--ink);border:1.5px solid var(--line)">← Zurück zum Menü</button></div>`;
   root.querySelector('#sp-again').onclick=()=>start(st.cat,st.mode);root.querySelector('#sp-menu').onclick=menu;
 }
 menu();
