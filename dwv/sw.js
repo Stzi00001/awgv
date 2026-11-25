@@ -1,5 +1,5 @@
 // Offline-Cache für die Drehwinkel-App. Bei jeder inhaltlichen Änderung VERSION erhöhen.
-const VERSION = 'dwv-v1';
+const VERSION = 'dwv-v2';
 const CORE = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 
