@@ -6,3 +6,7 @@ Lernplattform zum **Allgemeinen Weggrößenverfahren** (Baustatik, htw saar) –
 Danach startet die App im Vollbild und funktioniert auch offline.
 
 Update-Hinweis: Bei inhaltlichen Änderungen `VERSION` in `sw.js` erhöhen.
+
+## Trägerroste in 7 Tagen
+
+Zweite App (Aufgabe 4, Trägerroste) im Unterordner `traegerrost/`: https://stzi00001.github.io/awgv/traegerrost/ – genauso über Safari → Teilen → „Zum Home-Bildschirm“ installieren. Update-Hinweis: `VERSION` in `traegerrost/sw.js` erhöhen.

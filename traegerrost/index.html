@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Trägerrost">
+<meta name="theme-color" content="#f6f4ef">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Trägerroste in 7 Tagen – Baustatik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,wght@0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: ruhiges Lernheft, wie die AWGV-Plattform
+   IDEA: Aufgabenblatt + Musterlösung von Prof. Lang
+   PICTURE: Grundriss-Skizzen der Trägerroste, Verläufe als Diagramme
+   COLOUR/TYPE: Source Serif/Sans; rot = Kraftgrößen, grün = Weggrößen, blau = Merksätze
+   LAYOUT: eine Spalte, Tabs, Übungen mit Prüf-Knopf */
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#1d2433; --muted:#5d6475; --line:#e2ded4;
+  --accent:#1f5f8b; --accent-soft:#e3eef6;
+  --force:#c0392b; --force-soft:#fbeae7;
+  --disp:#2e8b57; --disp-soft:#e6f4ec;
+  --warn:#b7791f; --warn-soft:#fdf3e1;
+  --ok:#2e8b57; --bad:#c0392b; --tor:#6b4fbb; --tor-soft:#f1eefc;
+  --r:12px;
+}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+html{scroll-padding-top:110px}
+a{color:var(--accent)}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,244,239,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.topin{max-width:860px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:"Source Serif 4",serif;font-weight:600;font-size:19px;margin-right:auto}
+.brand small{display:block;font:400 13px "Source Sans 3";color:var(--muted)}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;max-width:100%;padding-bottom:2px}
+nav.tabs a{flex:none;white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 11px;border-radius:999px;font-size:15px;border:1px solid var(--line);background:#fff}
+nav.tabs a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+main{max-width:860px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+section.view{display:none}
+section.view.on{display:block}
+h1{font-family:"Source Serif 4",serif;font-weight:600;font-size:30px;line-height:1.2;margin:8px 0 6px}
+h2{font-family:"Source Serif 4",serif;font-weight:600;font-size:23px;margin:34px 0 8px;padding-top:6px}
+h3{font-size:18px;margin:22px 0 6px}
+p{margin:8px 0}
+.lead{color:var(--muted);font-size:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:14px 0}
+.box{border-radius:var(--r);padding:14px 16px;margin:14px 0;border-left:5px solid}
+.box b.t{display:block;margin-bottom:4px}
+.merk{background:var(--accent-soft);border-color:var(--accent)} .merk b.t{color:var(--accent)}
+.warn{background:var(--warn-soft);border-color:var(--warn)} .warn b.t{color:var(--warn)}
+.hb{background:var(--tor-soft);border-color:var(--tor)} .hb b.t{color:var(--tor)}
+.f{color:var(--force);font-weight:600}
+.d{color:var(--disp);font-weight:600}
+.t{color:var(--tor);font-weight:600}
+.mono{font-family:"JetBrains Mono",monospace;font-size:.92em}
+.eq{font-family:"Source Serif 4",serif;font-style:italic;font-size:19px;text-align:center;margin:12px 0;overflow-x:auto}
+.eq .up{font-style:normal}
+sub,sup{font-size:.7em}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:16px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere;hyphens:auto}
+th{background:#faf8f3;font-weight:600}
+td.n,th.n{text-align:right;white-space:nowrap}
+.scroll{overflow-x:auto}
+svg{max-width:100%;height:auto;display:block;margin:6px auto}
+.cap{font-size:14px;color:var(--muted);text-align:center;margin-top:2px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
+.ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px;flex-wrap:wrap}
+.ex .tag{background:var(--ink);color:#fff;border-radius:6px;padding:1px 8px;font-size:13px;font-weight:700}
+.ex .ti{font-weight:700}
+.ans{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.ans label{min-width:150px;flex:1 1 220px}
+input.n{font:inherit;font-size:16px;width:120px;padding:7px 8px;border:1.5px solid var(--line);border-radius:8px;background:#fdfcf9}
+input.n.ok{border-color:var(--ok);background:var(--disp-soft)}
+input.n.bad{border-color:var(--bad);background:var(--force-soft)}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;padding:8px 14px;font-weight:600;min-height:40px}
+button.ghost{background:#fff;color:var(--ink)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.fb{font-size:15px;margin-left:4px}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+details{margin:10px 0;border:1px solid var(--line);border-radius:10px;background:#fbfaf6}
+details summary{cursor:pointer;padding:9px 13px;font-weight:600;color:var(--accent)}
+details > div{padding:4px 14px 12px}
+.mc{margin:12px 0;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+.mc .q{font-weight:600;margin-bottom:8px}
+.mc button{display:block;width:100%;text-align:left;margin:6px 0;background:#fdfcf9;color:var(--ink);border:1.5px solid var(--line);font-weight:400}
+.mc button.ok{border-color:var(--ok);background:var(--disp-soft)}
+.mc button.bad{border-color:var(--bad);background:var(--force-soft)}
+.mc .why{display:none;font-size:15px;color:var(--muted);margin-top:4px}
+.mc.done .why{display:block}
+.days{display:grid;gap:10px}
+.day{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.day .dt{font-weight:700;font-size:14px;color:var(--muted);text-align:center;line-height:1.2;min-width:52px}
+.day .dt b{display:block;font-size:20px;color:var(--ink)}
+.day .tt{font-weight:600}
+.day .ds{font-size:15px;color:var(--muted)}
+.day a.go{font-size:14px;text-decoration:none;border:1.5px solid var(--ink);border-radius:999px;padding:4px 11px;color:var(--ink);white-space:nowrap}
+.day.done{background:var(--disp-soft);border-color:#bfe0cc}
+.chk{width:22px;height:22px;accent-color:var(--ok)}
+.count{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.count div{background:var(--ink);color:#fff;border-radius:var(--r);padding:10px 16px}
+.count b{font-size:26px;display:block;line-height:1.1}
+.count span{font-size:14px;opacity:.85}
+.bars div.row{display:grid;grid-template-columns:11em minmax(0,1fr) 3.5em;gap:8px;align-items:center;margin:6px 0;font-size:15px}
+.bars .bar{height:16px;border-radius:4px;background:var(--accent)}
+.bars .num{text-align:right;font-weight:600}
+.fc-wrap{perspective:1000px;margin:16px auto;max-width:520px}
+.fc{position:relative;height:270px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip{transform:rotateY(180deg)}
+.fc .side{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:center;text-align:center;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.fc .front{background:#fff;font-size:20px;font-weight:600}
+.fc .back{background:var(--ink);color:#fff;transform:rotateY(180deg);font-size:17px}
+.fc-nav{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap}
+.small{font-size:14px;color:var(--muted)}
+.chat{background:var(--ink);color:#fff;border-radius:var(--r);padding:14px 18px;margin:22px 0}
+.chat b{color:#9fd3ff}
+.toc{columns:2;font-size:15px;padding-left:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:13px;font-weight:600;background:var(--accent-soft);color:var(--accent);margin:1px 2px;white-space:nowrap}
+.pill.k{background:var(--force-soft);color:var(--force)}
+.pill.p{background:var(--tor-soft);color:var(--tor)}
+.pill.v{background:var(--disp-soft);color:var(--disp)}
+.pill.s{background:var(--warn-soft);color:var(--warn)}
+@media (max-width:600px){.toc{columns:1}h1{font-size:26px}.eq{font-size:17px}.two{grid-template-columns:1fr}
+  .bars div.row{grid-template-columns:8em minmax(0,1fr) 3em}
+  table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:6.5em}.stack td::before{content:attr(data-l);float:inline-start;width:6em;margin-inline-start:-6.5em;font-weight:600;color:var(--muted)}}
+@media (min-width:768px){
+  .topin,main{max-width:1000px}
+  html,body{font-size:18px}
+  nav.tabs a{padding:9px 15px;font-size:16px}
+  input.n{width:140px;padding:10px}
+  .mc button{padding:12px 14px}
+  .fc{height:320px}
+}
+@media (prefers-reduced-motion:reduce){.fc{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2433"/></marker>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+      <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+      <marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b4fbb"/></marker>
+    </defs>
+</svg>
+<header class="top"><div class="topin">
+  <div class="brand">Trägerroste in 7 Tagen<small>Baustatik III · Aufgabe 4 · Klausur 8.12.</small></div>
+  <nav class="tabs" id="tabs">
+    <a href="#start">Plan</a>
+    <a href="#klausuren">Klausuren</a>
+    <a href="#merkzettel">Merkzettel</a>
+    <a href="#tag1">Tag 1</a>
+    <a href="#tag2">Tag 2</a>
+    <a href="#tag3">Tag 3</a>
+    <a href="#tag4">Tag 4</a>
+    <a href="#tag5">Tag 5</a>
+    <a href="#tag6">Tag 6</a>
+    <a href="#tag7">Tag 7</a>
+    <a href="#karten">Karten</a>
+  </nav>
+</div></header>
+
+<main>
+
+<!-- ===================== START ===================== -->
+<section class="view" id="v-start">
+  <h1>Dein Plan für Aufgabe 4</h1>
+  <p class="lead">Aufgabe 4 ist in 21 von 22 Altklausuren ein Trägerrost: 45–55 Minuten, rund 27 % der Punkte. Sieben Lerntage, danach Training mit Altklausuren. Jeden Tag ca. 1–1,5 h, damit daneben das AWGV weiterläuft.</p>
+  <div class="count" id="count"></div>
+  <div class="days" id="days"></div>
+
+  <h2>So läuft jeder Lerntag</h2>
+  <ol class="steps">
+    <li><b>Lesen &amp; skizzieren (≈ 25 min).</b> Jede Skizze selbst zeichnen. Trägerroste sind Zeichenaufgaben: Doppelpfeile, Verläufe, Verformungsfiguren.</li>
+    <li><b>Rechnen (≈ 40 min).</b> Übungen auf Papier, dann hier eintippen und prüfen. Lösungsweg erst aufklappen, wenn du festhängst.</li>
+    <li><b>Im Chat besprechen (≈ 10 min).</b> Foto deiner Rechnung schicken, ich korrigiere.</li>
+    <li><b>Karteikarten (≈ 5 min).</b> Der Merkzettel steht so nicht in den Hilfsblättern.</li>
+  </ol>
+
+  <h2>Was in Aufgabe 4 drankommt</h2>
+  <div class="bars" id="bars"></div>
+  <p class="small">Auszählung aus allen 22 Klausuren in deinem Drive-Ordner „Baustatik 3 / Klausuren“ (SS 2016 bis SS 2026). Details im Tab „Klausuren“.</p>
+
+  <div class="box merk"><b class="t">Das typische Klausur-Gerüst</b>
+  <b>1)</b> Profilwerte I<sub>y</sub>, I<sub>T</sub> (Bredt) → <b>2)</b> Auflager &amp; Schnittgrößen nach KGV (meist 1-fach unbestimmt, X<sub>1</sub> wird empfohlen) → <b>3)</b> Verläufe M<sub>y</sub>, V<sub>z</sub>, M<sub>t</sub> zeichnen → <b>4)</b> Durchbiegung oder Verdrehung (Reduktionssatz) → <b>5)</b> Zusatzfrage „Was passiert, wenn GI<sub>T</sub> → 0?“</div>
+</section>
+
+<!-- ===================== KLAUSUREN ===================== -->
+<section class="view" id="v-klausuren">
+  <h1>Alle Aufgaben 4 im Überblick</h1>
+  <p class="lead">Ich habe die Aufgabe 4 aus jeder Klausur mit Ergebnissen gelesen. Die Ergebnisse stammen aus den Lösungsblättern von Prof. Lang. Wo es geht, habe ich sie nachgerechnet.</p>
+  <div class="scroll">
+  <table class="stack">
+    <thead><tr><th>Klausur</th><th>System</th><th>Teilaufgaben</th><th>Ergebnisse</th></tr></thead>
+    <tbody id="extab"></tbody>
+  </table>
+  </div>
+  <p class="small"><span class="pill p">Profil</span> Profilwerte · <span class="pill k">KGV</span> statisch unbestimmt · <span class="pill v">Verf.</span> Durchbiegung/Verdrehung · <span class="pill s">Sym.</span> Symmetrie/Antimetrie · <span class="pill">GI<sub>T</sub></span> Zusatzfrage Torsionssteifigkeit</p>
+
+
+  <h2 id="ss26">SS 2026 selbst gelöst</h2>
+  <p class="lead">Für diese Klausur liegt keine Lösung im Ordner. Ich habe sie von Hand mit dem KGV gerechnet und mit einer Steifigkeitsrechnung des ganzen Systems geprüft. Beide Wege ergeben dieselben Zahlen.</p>
+  <div class="card">
+  <svg viewBox="0 0 560 250" role="img" aria-label="Grundriss SS 2026">
+    <g font-family="Source Sans 3" font-size="15">
+      <line x1="60" y1="70" x2="510" y2="70" stroke="#1d2433" stroke-width="5"/>
+      <line x1="260" y1="70" x2="260" y2="190" stroke="#1d2433" stroke-width="5"/>
+      <line x1="110" y1="190" x2="460" y2="190" stroke="#1d2433" stroke-width="5"/>
+      <path d="M60,72 l-10,16 h20z" fill="none" stroke="#1d2433" stroke-width="2"/><path d="M46,40 v32 M74,40 v32 M46,72 h28" stroke="#1d2433" stroke-width="2.5" fill="none"/>
+      <path d="M110,192 l-10,16 h20z" fill="none" stroke="#1d2433" stroke-width="2"/><path d="M460,192 l-10,16 h20z" fill="none" stroke="#1d2433" stroke-width="2"/>
+      <circle cx="510" cy="70" r="8" fill="none" stroke="#c0392b" stroke-width="2"/><path d="M504,64 l12,12 M516,64 l-12,12" stroke="#c0392b" stroke-width="2"/>
+      <text x="488" y="50" fill="#c0392b">60 kN</text>
+      <rect x="260" y="180" width="200" height="4" fill="#c0392b" opacity=".5"/><text x="320" y="173" fill="#c0392b">q = 20 kN/m</text>
+      <g fill="#1d2433"><text x="30" y="100">A (Gabel)</text><text x="266" y="58">B</text><text x="520" y="92">C</text><text x="266" y="212">E</text><text x="92" y="232">D</text><text x="468" y="232">F</text></g>
+      <g fill="#5d6475"><text x="150" y="90">4 m</text><text x="380" y="90">5 m</text><text x="268" y="135">4 m</text><text x="175" y="210">3 m</text><text x="350" y="210">4 m</text></g>
+    </g>
+  </svg>
+  <p class="cap">Von oben. A–B–C und D–E–F sind parallel, B–E steht senkrecht dazu. EI = 10 000 kNm², GI<sub>T</sub> = 15 000 kNm² → EI/GI<sub>T</sub> = 0,667.</p>
+  </div>
+  <p><b>1) Unbestimmtheit:</b> a = 2 + 1 + 1 = 4, s = 5, k = 6 → n = 1. X<sub>1</sub> = Torsionsmoment am Gabellager A.</p>
+  <p><b>Zustand 0</b> (A gelenkig). Achse D–F: A·4 = 60·4 → A = 60. Achse durch D quer dazu: F·7 = 60·8 + 80·5 + 60·1 → F = 134,29. ΣF<sub>z</sub>: D = −54,29 kN.</p>
+  <table>
+    <tr><th>Stab</th><th>M<sub>y,0</sub></th><th>M<sub>t,0</sub></th><th>M<sub>y,1</sub></th><th>M<sub>t,1</sub></th></tr>
+    <tr><td>A–B</td><td>0 → 240</td><td>0</td><td>0 → −1</td><td>−1</td></tr>
+    <tr><td>B–C</td><td>−300 → 0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>B–E</td><td>0</td><td class="t">540</td><td>1 → 0</td><td>−1</td></tr>
+    <tr><td>D–E</td><td>0 → −162,86</td><td>0</td><td>0 → 6/7</td><td>0</td></tr>
+    <tr><td>E–F (q)</td><td>377,14 → 0, Stich 40</td><td>0</td><td>−1/7 → 0</td><td>0</td></tr>
+  </table>
+  <p class="small">Zustand 1 (Moment 1 an A um die Achse A–B): A = −1/4, D = 2/7, F = −1/28. An B wird das Torsionsmoment 1 aus A–B zum Biegemoment 1 in B–E (Eckregel). Zustand 0 deckt sich mit deinen Notizen im Klausur-PDF (A = 60, D = −54,29, F = 134,29, M<sub>t</sub> = 540).</p>
+  <div class="scroll"><table>
+    <tr><th>Stab</th><th class="n">EI·δ<sub>10</sub></th><th class="n">EI·δ<sub>11</sub></th></tr>
+    <tr><td>A–B</td><td class="n">⅓·240·(−1)·4 = −320,0</td><td class="n">1,333 + 1·4·0,667 = 4,000</td></tr>
+    <tr><td>B–E</td><td class="n">540·(−1)·4·0,667 = −1 440,0</td><td class="n">1,333 + 2,667 = 4,000</td></tr>
+    <tr><td>D–E</td><td class="n">⅓·(−162,86)·(6/7)·3 = −139,6</td><td class="n">0,735</td></tr>
+    <tr><td>E–F</td><td class="n">⅓·(377,14 + 40)·(−1/7)·4 = −79,5</td><td class="n">0,027</td></tr>
+    <tr><th>Summe</th><th class="n">−1 979,0</th><th class="n">8,762</th></tr>
+  </table></div>
+  <div class="eq" style="font-size:22px">X<sub>1</sub> = 1 979,0 / 8,762 = 225,87 kNm</div>
+  <p><b>Auflager:</b> A = 60 − 225,87/4 = <b>3,53 kN</b> · D = −54,29 + 225,87·2/7 = <b>10,25 kN</b> · F = 134,29 − 225,87/28 = <b>126,22 kN</b>. Kontrolle: 3,53 + 10,25 + 126,22 = 140 = 60 + 20·4 ✓. Torsionsmoment im Gabellager A: <b>225,87 kNm</b>.</p>
+  <p><b>2) Endgültige Schnittgrößen:</b></p>
+  <table>
+    <tr><th>Stab</th><th>M<sub>y</sub> [kNm]</th><th>V<sub>z</sub> [kN]</th><th>M<sub>t</sub> [kNm]</th></tr>
+    <tr><td>A–B</td><td>0 → 14,13</td><td>3,53</td><td>225,87</td></tr>
+    <tr><td>B–C</td><td>−300 → 0</td><td>60</td><td>0</td></tr>
+    <tr><td>B–E</td><td>225,87 → 0</td><td>−56,47</td><td>314,13</td></tr>
+    <tr><td>D–E</td><td>0 → 30,75</td><td>10,25</td><td>0</td></tr>
+    <tr><td>E–F</td><td>344,88 → 0 (Feldmitte 212,4)</td><td>−46,22 → −126,22</td><td>0</td></tr>
+  </table>
+  <p>Kontrollen: An B springt M<sub>y</sub> von 14,13 auf −300, der Sprung 314,13 ist das M<sub>t</sub> in B–E ✓. An E springt M<sub>y</sub> von 30,75 auf 344,88, wieder 314,13 ✓. M<sub>t</sub> = 225,87 in A–B wird an B zum M<sub>y</sub> = 225,87 in B–E ✓.</p>
+  <p><b>3) Verdrehung der Stabachse in C:</b> Reduktionssatz mit einem geschickten virtuellen System: Gabellager A behalten, D weglassen (A-Gabel + F ist statisch bestimmt). Ein Moment 1 um die Achse an C läuft dann nur als Torsion durch B–C und A–B ins Gabellager: M̄<sub>t</sub> = 1 in A–B und B–C, sonst alles null.</p>
+  <div class="eq">GI<sub>T</sub>·φ<sub>C</sub> = 225,87·1·4 + 0·1·5 &nbsp;⟹&nbsp; φ<sub>C</sub> = 903,5 / 15 000 = 0,0602 rad = 3,45°</div>
+  <p>Anschaulich: B–C ist torsionsfrei, also dreht sich C genauso wie B. Und B dreht sich um die Verdrillung von A–B.</p>
+  <p><b>4) GI<sub>T</sub> → 0:</b> Im Hauptsystem ist M<sub>t,0</sub> = 540 kNm in B–E. Das Kragmoment 300 kNm aus der 60-kN-Last kann an B nur als Torsion in B–E weitergeleitet werden. Ohne Torsionssteifigkeit geht das nicht: <b>Das System wird kinematisch</b> (Fall C von Tag 6).</p>
+
+  <h2>Was daraus folgt</h2>
+  <ul>
+    <li><b>Die Methode ist immer dieselbe.</b> Lager lösen, Hauptsystem rechnen, X<sub>1</sub> = 1, δ<sub>10</sub> und δ<sub>11</sub> mit Biege- <i>und</i> Torsionsanteil, überlagern. Das trainierst du an Tag 4.</li>
+    <li><b>Systeme wiederholen sich.</b> WS 22/23, WS 23/24 und die Musterklausur 2016 haben dasselbe System. WS 21/22 und WS 24/25 sind identisch. SS 2016 und SS 2025 auch (nur anderes Profil).</li>
+    <li><b>Es gibt fast immer einen Hinweis, welches X<sub>1</sub></b> du nehmen sollst. Meist das Torsionseinspannmoment am Gabellager.</li>
+    <li><b>Die Zusatzfrage zu GI<sub>T</sub> → 0</b> hat genau drei mögliche Antworten (Tag 6). Sichere Punkte.</li>
+  </ul>
+</section>
+
+<!-- ===================== MERKZETTEL ===================== -->
+<section class="view" id="v-merkzettel">
+  <h1>Merkzettel Trägerrost</h1>
+  <p class="lead">In den Hilfsblättern stehen die Koppeltafeln (S. 8–9) und der Arbeitssatz (S. 7). Zum Trägerrost steht dort nichts. Diese sieben Punkte musst du auswendig können.</p>
+
+  <div class="card"><h3 style="margin-top:0">① Was ist ein Trägerrost?</h3>
+  <p>Ebenes Stabsystem in der x-y-Ebene, Lasten nur in z-Richtung. Pro Stab nur <span class="f">V<sub>z</sub>, M<sub>y</sub>, M<sub>t</sub></span>, pro Knoten nur <span class="d">w, φ<sub>x</sub>, φ<sub>y</sub></span>. N, V<sub>y</sub>, M<sub>z</sub> sind null.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">② Statische Unbestimmtheit</h3>
+  <div class="eq">n = a + 3·s − 3·k − r</div>
+  <p>a = Auflagerreaktionen (Gelenklager 1, Gabellager 2, Einspannung 3) · s = Stäbe · k = Knoten · r = Gelenkbedingungen (z. B. Biegemomentengelenk: 1).</p></div>
+
+  <div class="card"><h3 style="margin-top:0">③ Lagerarten</h3>
+  <p><b>Gelenklager:</b> nur Kraft in z. <b>Gabellager:</b> Kraft in z + Torsionsmoment um die Stabachse. <b>Einspannung:</b> Kraft in z + beide Momente.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">④ Eckregel</h3>
+  <p>An einer unbelasteten 90°-Ecke wird das <span class="f">Biegemoment</span> des einen Stabes zum <span class="t">Torsionsmoment</span> des anderen. V<sub>z</sub> geht unverändert durch.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">⑤ Arbeitssatz mit Torsion</h3>
+  <div class="eq">EI·δ<sub>ik</sub> = ∫ M<sub>i</sub>·M<sub>k</sub> dx + <span class="up">(EI/GI<sub>T</sub>)</span>·∫ M<sub>t,i</sub>·M<sub>t,k</sub> dx</div>
+  <p>Verformung im unbestimmten System (Reduktionssatz): <b>endgültige</b> Schnittgrößen × virtuelle 1 an <b>irgendeinem</b> statisch bestimmten System.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">⑥ Bredt und Profilwerte</h3>
+  <div class="eq">I<sub>T</sub> = 4·A<sub>m</sub>² / ∮ ds/t &nbsp;&nbsp;&nbsp; W<sub>T</sub> = 2·A<sub>m</sub>·t<sub>min</sub> &nbsp;&nbsp;&nbsp; G = E / (2(1+ν))</div>
+  <p>A<sub>m</sub> = von der <b>Mittellinie</b> umschlossene Fläche. Quadratrohr (Mittellinie b<sub>m</sub>): I<sub>T</sub> = t·b<sub>m</sub>³, I<sub>y</sub> ≈ ⅔·t·b<sub>m</sub>³.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">⑦ Symmetrie / Antimetrie in der Achse</h3>
+  <table>
+    <tr><th></th><th>symmetrische Last</th><th>antimetrische Last</th></tr>
+    <tr><td>null in der Achse</td><td>V<sub>z</sub> = 0, M<sub>t</sub> = 0</td><td>M<sub>y</sub> = 0, w = 0</td></tr>
+    <tr><td>Ersatzlager</td><td>in z verschiebliche Einspannung</td><td>Gabellager</td></tr>
+  </table></div>
+
+  <div class="box hb"><b class="t">Was du in den Hilfsblättern nachschlägst</b>
+  S. 7: Arbeitssatz · S. 8–9: Koppeltafeln ∫M·M̄ (z. B. ⅓, ⅙, ½) · S. 16: Schnittgrößen unter Gleichlast</div>
+</section>
+
+<!-- ===================== TAG 1 ===================== -->
+<section class="view" id="v-tag1">
+  <p class="small">Tag 1 · Do 26.11.</p>
+  <h1>Was ist ein Trägerrost?</h1>
+  <p class="lead">Heute geht es um die Sprache des Trägerrosts: welche Schnittgrößen es gibt, wie die Lager wirken, wie die Koordinaten liegen und wie oft das System unbestimmt ist.</p>
+  <ul class="toc">
+    <li><a href="#t1-1">1. Der Sonderfall des räumlichen Stabwerks</a></li>
+    <li><a href="#t1-2">2. Koordinaten wie in der Klausur</a></li>
+    <li><a href="#t1-3">3. Die drei Lagerarten</a></li>
+    <li><a href="#t1-4">4. Momente als Doppelpfeile</a></li>
+    <li><a href="#t1-5">5. Grad der Unbestimmtheit</a></li>
+    <li><a href="#t1-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t1-1">1. Der Sonderfall des räumlichen Stabwerks</h2>
+  <p>Ein räumlicher Stab hat sechs Schnittgrößen: N, V<sub>y</sub>, V<sub>z</sub>, M<sub>t</sub>, M<sub>y</sub>, M<sub>z</sub>. Beim Trägerrost liegen alle Stäbe in der x-y-Ebene und alle Lasten wirken in z. Dann bleiben nur drei übrig:</p>
+  <table>
+    <tr><th>Schnittgröße</th><th>Was sie tut</th><th>zugehörige Verformung</th></tr>
+    <tr><td class="f">V<sub>z</sub></td><td>Querkraft senkrecht zur Ebene</td><td class="d">w (Durchbiegung)</td></tr>
+    <tr><td class="f">M<sub>y</sub></td><td>Biegemoment, biegt den Stab nach unten oder oben</td><td class="d">Verdrehung quer zur Stabachse</td></tr>
+    <tr><td class="t">M<sub>t</sub></td><td>Torsionsmoment, verdrillt den Stab um die eigene Achse</td><td class="d">Verdrillung um die Stabachse</td></tr>
+  </table>
+  <p>N, V<sub>y</sub> und M<sub>z</sub> sind null, weil nichts in der Ebene drückt oder zieht. Deshalb gilt im Hinweis der Klausuren oft: „Das System ist in der x-y-Ebene unverschieblich gelagert.“ Darum musst du dich nicht kümmern.</p>
+  <div class="box merk"><b class="t">Das Neue gegenüber dem ebenen Rahmen</b>Die Torsion. Ein Trägerrost trägt Last über Biegung <i>und</i> Verdrillung. Wie stark die Torsion mitträgt, hängt vom Verhältnis <b>GI<sub>T</sub> / EI</b> ab. Deshalb gibt es so oft die Zusatzfrage „Was passiert, wenn GI<sub>T</sub> → 0?“.</div>
+
+  <h2 id="t1-2">2. Koordinaten wie in der Klausur</h2>
+  <svg viewBox="0 0 560 210" role="img" aria-label="Globales und lokales Koordinatensystem">
+    <g stroke="#1d2433" stroke-width="2" fill="none"><line x1="70" y1="60" x2="140" y2="60" marker-end="url(#ak)"/><line x1="70" y1="60" x2="30" y2="100" marker-end="url(#ak)"/><line x1="70" y1="60" x2="70" y2="130" marker-end="url(#ak)"/></g>
+    <g font-family="Source Serif 4" font-style="italic" font-size="20"><text x="146" y="66">x</text><text x="14" y="112">y</text><text x="76" y="140">z</text></g>
+    <text x="70" y="180" text-anchor="middle" font-family="Source Sans 3" font-size="15" fill="#5d6475">global, z nach unten</text>
+    <line x1="230" y1="110" x2="520" y2="110" stroke="#1d2433" stroke-width="5"/>
+    <path d="M370,110 l-12,-6 v12 z" fill="#1d2433"/>
+    <g stroke="#2e8b57" stroke-width="2" fill="none"><line x1="430" y1="110" x2="490" y2="110" marker-end="url(#ag)"/><line x1="430" y1="110" x2="400" y2="140" marker-end="url(#ag)"/><line x1="430" y1="110" x2="430" y2="170" marker-end="url(#ag)"/></g>
+    <g font-family="Source Serif 4" font-style="italic" font-size="18" fill="#2e8b57"><text x="494" y="104">x′</text><text x="384" y="152">y′</text><text x="436" y="180">z′</text></g>
+    <text x="375" y="80" text-anchor="middle" font-family="Source Sans 3" font-size="15" fill="#5d6475">Pfeil am Stab = Abschreitrichtung (lokales x)</text>
+  </svg>
+  <p>In jeder Klausur steht: <i>„Die lokalen Abschreitrichtungen der Stäbe (x-Koordinaten) sind angegeben, die lokalen z-Koordinaten zeigen immer in Richtung der globalen z-Achse.“</i> Das heißt:</p>
+  <ul>
+    <li><b>x′</b> = Pfeil auf dem Stab (Abschreitrichtung). Er legt fest, welches Ende „Anfang“ und welches „Ende“ ist.</li>
+    <li><b>z′</b> = immer nach unten, wie global z.</li>
+    <li><b>y′</b> folgt aus dem Rechtssystem. Du brauchst es fast nie.</li>
+    <li><b>M<sub>y</sub> &gt; 0</b> heißt: Zug unten (auf der +z-Seite). Gestrichelte Faser unten, wie gewohnt.</li>
+  </ul>
+
+  <h2 id="t1-3">3. Die drei Lagerarten</h2>
+  <svg viewBox="0 0 600 200" role="img" aria-label="Gelenklager, Gabellager, Einspannung">
+    <g font-family="Source Sans 3" font-size="15" text-anchor="middle">
+      <line x1="40" y1="70" x2="160" y2="70" stroke="#1d2433" stroke-width="5"/>
+      <path d="M100,72 l-12,18 h24 z" fill="none" stroke="#1d2433" stroke-width="2"/>
+      <line x1="100" y1="125" x2="100" y2="95" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ar)"/>
+      <text x="100" y="150" font-weight="700">Gelenklager</text><text x="100" y="170" fill="#5d6475">nur F<tspan font-size="11" dy="3">z</tspan></text>
+      <line x1="240" y1="70" x2="360" y2="70" stroke="#1d2433" stroke-width="5"/>
+      <path d="M300,72 l-12,18 h24 z" fill="none" stroke="#1d2433" stroke-width="2"/>
+      <path d="M286,40 v30 M314,40 v30 M286,70 h28" stroke="#1d2433" stroke-width="2.5" fill="none"/>
+      <line x1="300" y1="125" x2="300" y2="95" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ar)"/>
+      <line x1="250" y1="100" x2="290" y2="100" stroke="#6b4fbb" stroke-width="2.5" marker-end="url(#at)"/><line x1="250" y1="100" x2="282" y2="100" stroke="#6b4fbb" stroke-width="2.5" marker-end="url(#at)"/>
+      <text x="300" y="150" font-weight="700">Gabellager</text><text x="300" y="170" fill="#5d6475">F<tspan font-size="11" dy="3">z</tspan><tspan dy="-3"> + M</tspan><tspan font-size="11" dy="3">t</tspan><tspan dy="-3"> um die Stabachse</tspan></text>
+      <line x1="440" y1="70" x2="540" y2="70" stroke="#1d2433" stroke-width="5"/>
+      <line x1="440" y1="45" x2="440" y2="95" stroke="#1d2433" stroke-width="3"/>
+      <g stroke="#1d2433" stroke-width="1.2"><line x1="440" y1="50" x2="430" y2="60"/><line x1="440" y1="62" x2="430" y2="72"/><line x1="440" y1="74" x2="430" y2="84"/><line x1="440" y1="86" x2="430" y2="96"/></g>
+      <text x="490" y="150" font-weight="700">Einspannung</text><text x="490" y="170" fill="#5d6475">F<tspan font-size="11" dy="3">z</tspan><tspan dy="-3"> + beide Momente</tspan></text>
+    </g>
+  </svg>
+  <p>Das Gabellager ist das typische Klausur-Lager: Es ist das „U“ über dem Dreieck in den Skizzen. Im Text heißt es dann „Gabellager (Einspannmoment um die Stabachse und Kraft in z-Richtung)“. Sein Torsionsmoment ist fast immer das empfohlene X<sub>1</sub>.</p>
+
+  <h2 id="t1-4">4. Momente als Doppelpfeile</h2>
+  <p>Im Raum zeichnest du Momente am besten als <b>Doppelpfeil</b> (Momentenvektor, Rechte-Hand-Regel: Daumen in Pfeilrichtung, Finger zeigen die Drehrichtung). So macht es auch das Skript.</p>
+  <ul>
+    <li>Zeigt der Doppelpfeil <b>entlang</b> des Stabes → <span class="t">Torsionsmoment M<sub>t</sub></span>.</li>
+    <li>Zeigt er <b>quer</b> zum Stab (in der Ebene) → <span class="f">Biegemoment M<sub>y</sub></span>.</li>
+  </ul>
+  <div class="box merk"><b class="t">Warum das so hilft</b>Kommst du an eine 90°-Ecke, zeigt der Doppelpfeil, der eben noch quer zum ersten Stab stand, jetzt <i>entlang</i> des zweiten Stabes. Aus Biegung wird Torsion. Das ist die Eckregel, morgen im Detail.</div>
+
+  <h2 id="t1-5">5. Grad der statischen Unbestimmtheit</h2>
+  <p>Diese Formel wurde in WS 19/20 direkt abgefragt („Verwenden Sie die Formel für Trägerroste und erläutern Sie kurz deren Zustandekommen“):</p>
+  <div class="eq" style="font-size:24px">n = a + 3·s − 3·k − r</div>
+  <table>
+    <tr><th>Symbol</th><th>Bedeutung</th><th>Warum</th></tr>
+    <tr><td>a</td><td>Anzahl Auflagerreaktionen</td><td>Gelenklager 1, Gabellager 2, Einspannung 3</td></tr>
+    <tr><td>3·s</td><td>je Stab 3 Unbekannte</td><td>V<sub>z</sub>, M<sub>y</sub>, M<sub>t</sub></td></tr>
+    <tr><td>3·k</td><td>je Knoten 3 Gleichgewichtsbedingungen</td><td>ΣF<sub>z</sub>, ΣM<sub>x</sub>, ΣM<sub>y</sub></td></tr>
+    <tr><td>r</td><td>Nebenbedingungen</td><td>Gelenk: z. B. M<sub>y</sub> = 0 → r = 1</td></tr>
+  </table>
+  <p><b>Beispiel SS 2016:</b> Lager A (1) + Gabellager B (2) + C (1) → a = 4. Vier Stäbe, fünf Knoten (A, B, C, Kreuzungspunkt, Kragarmende). n = 4 + 12 − 15 − 0 = <b>1</b>. Genau deshalb steht dort „nach dem Kraftgrößenverfahren“ mit einem X<sub>1</sub>.</p>
+  <div class="box warn"><b class="t">Knoten richtig zählen</b>Jedes Stabende ist ein Knoten: Lager, Ecken, Kreuzungen und <b>freie Kragarmenden</b>. Lastangriffspunkte musst du nicht als Knoten setzen. Tust du es doch, zählst du einen Stab mehr und einen Knoten mehr, n bleibt gleich.</div>
+
+  <h2 id="t1-ue">Übungen Tag 1</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.1</span><span class="ti">Unbestimmtheit von Klausursystemen</span></div>
+    <p>Bestimme n mit der Formel. Die Systeme findest du im Tab „Klausuren“.</p>
+    <div class="ans"><label>a) WS 23/24: A, C Gelenklager, B Gabellager, Kragarm mit 5 kN</label><input class="n" data-ans="1" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>b) Übungsblatt 5: zwei Gabellager + ein Gelenklager, 6 Stäbe, 7 Knoten</label><input class="n" data-ans="2" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>c) WS 25/26: Quadrat, B, C, D Gelenklager, A frei</label><input class="n" data-ans="3" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>d) SS 2026: A Gabellager, D und F Gelenklager, 5 Stäbe, 6 Knoten</label><input class="n" data-ans="1" style="width:70px"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungswege</summary><div>
+      <p>a) a = 1 + 2 + 1 = 4; Stäbe A–J1, J1–B, J1–J2, J2–C → s = 4; Knoten A, J1, B, J2, C → k = 5. n = 4 + 12 − 15 = <b>1</b>.</p>
+      <p>b) a = 2 + 2 + 1 = 5 (zwei Gabellager mit je 2, ein Gelenklager); s = 6, k = 7. n = 5 + 18 − 21 = <b>2</b>. So steht es auch in der Musterlösung: „n = 5 + 3·(6 − 7) = 2“.</p>
+      <p>c) a = 3; Stäbe AB, AD, BC, DC → s = 4; Knoten A, B, C, D → k = 4. n = 3 + 12 − 12 = <b>3</b>.</p>
+      <p>d) a = 2 + 1 + 1 = 4; s = 5 (A–B, B–C, B–E, E–D, E–F), k = 6. n = 4 + 15 − 18 = <b>1</b>.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.2</span><span class="ti">Lager auf das Hauptsystem reduzieren</span></div>
+    <p>Bei WS 23/24 wird als X<sub>1</sub> das Einspannmoment am Gabellager B empfohlen. Welche Lager hat dann das statisch bestimmte Hauptsystem, und wie groß ist n dort?</p>
+    <div class="ans"><label>Anzahl Auflagerreaktionen a im Hauptsystem</label><input class="n" data-ans="3" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>n im Hauptsystem</label><input class="n" data-ans="0" style="width:70px"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>Das Gabellager B wird zum Gelenklager (nur noch F<sub>z</sub>). A, B, C haben je eine Kraft → a = 3, n = 3 + 12 − 15 = 0. Statisch bestimmt, also lassen sich alle Auflagerkräfte allein mit Gleichgewicht ausrechnen. Das machen wir morgen.</p></div></details>
+  </div>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc1"></div>
+  <div class="chat"><b>Heute im Chat:</b> Erkläre mir in zwei Sätzen, warum die Formel „3·s − 3·k“ enthält. Genau so fragt Prof. Lang es ab.</div>
+</section>
+
+<!-- ===================== TAG 2 ===================== -->
+<section class="view" id="v-tag2">
+  <p class="small">Tag 2 · Fr 27.11.</p>
+  <h1>Statisch bestimmte Trägerroste</h1>
+  <p class="lead">Jedes KGV beginnt mit einem statisch bestimmten Hauptsystem. Heute lernst du, es schnell und sicher zu rechnen: Auflagerkräfte, die Eckregel und die drei Verläufe.</p>
+  <ul class="toc">
+    <li><a href="#t2-1">1. Auflagerkräfte mit dem Achsen-Trick</a></li>
+    <li><a href="#t2-2">2. Die Eckregel</a></li>
+    <li><a href="#t2-3">3. Knoten mit Abzweig</a></li>
+    <li><a href="#t2-4">4. Verläufe zeichnen</a></li>
+    <li><a href="#t2-5">5. Beispiel: Hauptsystem WS 23/24</a></li>
+    <li><a href="#t2-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t2-1">1. Auflagerkräfte mit dem Achsen-Trick</h2>
+  <p>Für den ganzen Trägerrost gibt es drei Gleichgewichtsbedingungen: ΣF<sub>z</sub> = 0, ΣM um eine Achse = 0, ΣM um eine zweite Achse = 0. Der Trick aus dem Skript:</p>
+  <div class="box merk"><b class="t">Momentensumme um eine Linie durch zwei Lager</b>Wählst du als Drehachse eine Gerade durch zwei Lager, fallen deren Kräfte heraus. Es bleibt eine Gleichung mit nur einer Unbekannten. Der Hebelarm ist der <b>senkrechte Abstand zur Linie</b>.</div>
+  <p>Mit drei Gelenklagern: zweimal den Achsen-Trick, einmal ΣF<sub>z</sub> = 0 als Kontrolle oder für die letzte Kraft.</p>
+
+  <h2 id="t2-2">2. Die Eckregel</h2>
+  <svg viewBox="0 0 560 230" role="img" aria-label="Eckregel: Biegemoment wird Torsionsmoment">
+    <line x1="80" y1="170" x2="300" y2="170" stroke="#1d2433" stroke-width="6"/>
+    <line x1="300" y1="170" x2="300" y2="40" stroke="#1d2433" stroke-width="6"/>
+    <circle cx="300" cy="40" r="5" fill="#1d2433"/>
+    <line x1="300" y1="0" x2="300" y2="34" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/>
+    <text x="318" y="24" font-family="Source Sans 3" font-size="16" fill="#c0392b">P (in z, nach unten)</text>
+    <g stroke="#c0392b" stroke-width="2.5"><line x1="330" y1="150" x2="390" y2="150" marker-end="url(#ar)"/><line x1="330" y1="150" x2="382" y2="150" marker-end="url(#ar)"/></g>
+    <text x="398" y="148" font-family="Source Serif 4" font-style="italic" font-size="18" fill="#c0392b">M<tspan font-size="12" dy="4">y</tspan><tspan dy="-4"> = P·a im Stab 2</tspan></text>
+    <g stroke="#6b4fbb" stroke-width="2.5"><line x1="270" y1="196" x2="200" y2="196" marker-end="url(#at)"/><line x1="270" y1="196" x2="208" y2="196" marker-end="url(#at)"/></g>
+    <text x="90" y="218" font-family="Source Serif 4" font-style="italic" font-size="18" fill="#6b4fbb">M<tspan font-size="12" dy="4">t</tspan><tspan dy="-4"> = P·a im Stab 1</tspan></text>
+    <g font-family="Source Sans 3" font-size="15" fill="#5d6475"><text x="180" y="160">Stab 1</text><text x="310" y="110">Stab 2 (Länge a)</text></g>
+    <line x1="66" y1="150" x2="66" y2="190" stroke="#1d2433" stroke-width="3"/>
+  </svg>
+  <p class="cap">L-förmiger Kragarm von oben gesehen. Der gleiche Doppelpfeil ist für Stab 2 ein Biegemoment und für Stab 1 ein Torsionsmoment.</p>
+  <p>Ein L-förmiger Kragarm, eingespannt links, Last P an der Spitze von Stab 2. An der Ecke hat Stab 2 das Biegemoment M<sub>y</sub> = −P·a (Zug oben). Dieser Momentenvektor zeigt quer zu Stab 2, also <b>entlang</b> Stab 1. Für Stab 1 ist er ein Torsionsmoment. Stab 1 wird also mit |M<sub>t</sub>| = P·a verdrillt, konstant über die ganze Länge. Gleichzeitig biegt P den Stab 1 mit dem Hebelarm seiner eigenen Länge.</p>
+  <div class="box merk"><b class="t">Eckregel</b>An einer unbelasteten rechtwinkligen Ecke gilt: <b>M<sub>y</sub> (Stab 1) = ± M<sub>t</sub> (Stab 2)</b> und <b>M<sub>t</sub> (Stab 1) = ± M<sub>y</sub> (Stab 2)</b>. V<sub>z</sub> geht unverändert durch. Das Vorzeichen holst du dir aus der Doppelpfeil-Skizze am Knoten.</div>
+
+  <h2 id="t2-3">3. Knoten mit Abzweig</h2>
+  <p>Läuft ein Stab gerade durch einen Knoten und zweigt ein dritter Stab rechtwinklig ab, dann gilt am durchlaufenden Stab: <b>Sprung im M<sub>y</sub>-Verlauf = M<sub>t</sub> des abzweigenden Stabes</b>. Und umgekehrt: Sprung im M<sub>t</sub> des durchlaufenden Stabes = M<sub>y</sub> des Abzweigs am Knoten.</p>
+  <p>Beispiel aus WS 23/24 (Hauptsystem, siehe unten): Am Knoten J1 hat der durchlaufende Stab A–B links M<sub>y</sub> = 21 und rechts M<sub>y</sub> = −9. Der Sprung von 30 kNm steckt als Torsion M<sub>t</sub> = 30 kNm im abzweigenden Stab J1–J2.</p>
+
+  <h2 id="t2-4">4. Verläufe zeichnen</h2>
+  <table>
+    <tr><th>Verlauf</th><th>ohne Streckenlast</th><th>mit Gleichlast q</th></tr>
+    <tr><td class="f">V<sub>z</sub></td><td>konstant</td><td>linear (Steigung −q)</td></tr>
+    <tr><td class="f">M<sub>y</sub></td><td>linear</td><td>Parabel, Stich qL²/8</td></tr>
+    <tr><td class="t">M<sub>t</sub></td><td colspan="2">abschnittsweise <b>konstant</b> (es gibt in der Klausur keine verteilten Torsionsmomente)</td></tr>
+  </table>
+  <p>Zeichne jeden Verlauf senkrecht auf den Stab im Schrägbild, so wie im EDV-Ausdruck. Die drei Verläufe immer getrennt.</p>
+  <div class="box warn"><b class="t">Typische Fehler</b>M<sub>t</sub> mit Gefälle zeichnen (ist immer konstant zwischen zwei Knoten) · an freien Enden M<sub>y</sub> ≠ 0 lassen · am Gelenklager ohne Gabel M<sub>t</sub> ≠ 0 lassen (dort ist M<sub>t</sub> = 0, außer ein anderer Stab bringt es hinein).</div>
+
+  <h2 id="t2-5">5. Beispiel: Hauptsystem WS 23/24</h2>
+  <svg viewBox="0 0 520 300" role="img" aria-label="Grundriss WS 23/24">
+    <g font-family="Source Sans 3" font-size="15">
+      <line x1="80" y1="250" x2="80" y2="40" stroke="#1d2433" stroke-width="5"/>
+      <line x1="80" y1="150" x2="360" y2="150" stroke="#1d2433" stroke-width="5"/>
+      <line x1="360" y1="150" x2="360" y2="20" stroke="#1d2433" stroke-width="5"/>
+      <g fill="none" stroke="#1d2433" stroke-width="2"><path d="M80,252 l-10,16 h20z"/><path d="M80,38 l-10,-16 h20z"/><path d="M360,18 l-10,-14 h20z"/></g>
+      <g fill="#c0392b"><rect x="80" y="141" width="280" height="4" opacity=".5"/></g>
+      <text x="200" y="135" fill="#c0392b">q = 2 kN/m</text>
+      <circle cx="360" cy="70" r="7" fill="none" stroke="#c0392b" stroke-width="2"/><path d="M355,65 l10,10 M365,65 l-10,10" stroke="#c0392b" stroke-width="2"/>
+      <text x="374" y="75" fill="#c0392b">5 kN</text>
+      <text x="58" y="286">A</text><text x="56" y="30">B</text><text x="372" y="22">C</text><text x="58" y="148">J1</text><text x="368" y="168">J2</text>
+      <text x="92" y="205" fill="#5d6475">3 m</text><text x="92" y="100" fill="#5d6475">3 m</text><text x="200" y="175" fill="#5d6475">4 m</text><text x="370" y="115" fill="#5d6475">3 m</text><text x="370" y="48" fill="#5d6475">2 m</text>
+    </g>
+  </svg>
+  <p class="cap">Grundriss (von oben). In der Klausur ist B ein Gabellager. Im Hauptsystem ist es zum Gelenklager gelöst.</p>
+  <p><b>Auflager.</b> Achse durch A und B (Linie A–J1–B): nur C hat einen Hebel (4 m), die Lasten auch: Gleichlast 2·4 = 8 kN im Schwerpunkt 2 m, 5 kN bei 4 m.</p>
+  <div class="eq">C·4 = 8·2 + 5·4 &nbsp;⟹&nbsp; C = 9 kN</div>
+  <p>Achse quer dazu durch A (Abstände in Richtung A → B): B bei 6 m, C bei 8 m, Gleichlast bei 3 m, 5 kN bei 6 m.</p>
+  <div class="eq">B·6 + 9·8 = 8·3 + 5·6 &nbsp;⟹&nbsp; B = −3 kN &nbsp;&nbsp;(zieht nach unten) &nbsp;&nbsp; A = 13 − 9 + 3 = 7 kN</div>
+  <p><b>Schnittgrößen.</b></p>
+  <table>
+    <tr><th>Stab</th><th>M<sub>y</sub> [kNm]</th><th>M<sub>t</sub> [kNm]</th><th>V<sub>z</sub> [kN]</th></tr>
+    <tr><td>A → J1</td><td>0 → 21</td><td>0</td><td>7</td></tr>
+    <tr><td>J1 → B</td><td>−9 → 0</td><td>0</td><td>3</td></tr>
+    <tr><td>J1 → J2 (q)</td><td>0 → 0, Parabel mit Stich 4</td><td class="t">30</td><td>4 → −4</td></tr>
+    <tr><td>J2 → Last</td><td>30 → 18</td><td>0</td><td>−4</td></tr>
+    <tr><td>Last → C</td><td>18 → 0</td><td>0</td><td>−9</td></tr>
+  </table>
+  <p>Erkennst du die Eckregel? An J2 wird das Torsionsmoment 30 aus J1–J2 zum Biegemoment 30 im Kragarm. Und an J1 springt M<sub>y</sub> von 21 auf −9: der Sprung 30 ist genau das M<sub>t</sub> des Abzweigs. Die Vorzeichen von M<sub>t</sub> sind im Skript ±; wichtig ist, dass du in beiden Zuständen des KGV dieselbe Regel verwendest.</p>
+
+  <h2 id="t2-ue">Übungen Tag 2</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.1</span><span class="ti">L-Kragarm</span></div>
+    <p>Stab 1 läuft von der Einspannung 3 m in x-Richtung bis zur Ecke, Stab 2 von der Ecke 2 m in y-Richtung bis zur Spitze. An der Spitze greift P = 10 kN nach unten an. Gib die Beträge an.</p>
+    <div class="ans"><label>|M<sub>y</sub>| in Stab 2 an der Ecke [kNm]</label><input class="n" data-ans="20" data-anysign><span class="fb"></span></div>
+    <div class="ans"><label>|M<sub>t</sub>| in Stab 1 [kNm]</label><input class="n" data-ans="20" data-anysign><span class="fb"></span></div>
+    <div class="ans"><label>|M<sub>y</sub>| in Stab 1 an der Einspannung [kNm]</label><input class="n" data-ans="30" data-anysign><span class="fb"></span></div>
+    <div class="ans"><label>V<sub>z</sub> in Stab 1 [kN] (Betrag)</label><input class="n" data-ans="10" data-anysign><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>Stab 2 ist ein Kragarm: M<sub>y</sub> an der Ecke = −10·2 = −20 kNm (Zug oben). Eckregel: Dieses Moment ist für Stab 1 ein Torsionsmoment, |M<sub>t</sub>| = 20 kNm, konstant. Stab 1 hat zusätzlich die Biegung aus P mit Hebel 3 m: M<sub>y</sub> = −30 kNm an der Einspannung, 0 an der Ecke. V<sub>z</sub> = 10 kN überall.</p></div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.2</span><span class="ti">Hauptsystem SS 2016</span></div>
+    <p>System SS 2016 (Tab „Klausuren“): Kreuzungspunkt K. Stab A–K–B in y-Richtung: A liegt 2 m vor K, B 4 m hinter K, Gleichlast 4 kN/m über die ganzen 6 m. Stab L–K–C in x-Richtung: Kragarmende L 2 m links von K mit 10 kN, C 4 m rechts von K. Im Hauptsystem ist das Gabellager B zum Gelenklager gelöst.</p>
+    <div class="ans"><label>A [kN]</label><input class="n" data-ans="22"><span class="fb"></span></div>
+    <div class="ans"><label>B [kN]</label><input class="n" data-ans="17"><span class="fb"></span></div>
+    <div class="ans"><label>C [kN] (nach oben positiv)</label><input class="n" data-ans="-5"><span class="fb"></span></div>
+    <div class="ans"><label>|M<sub>y</sub>| in A–K–B an K [kNm]</label><input class="n" data-ans="36" data-anysign><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div>
+      <p>Achse A–B (Linie durch K in y-Richtung): C·4 = −10·2 ⟹ C = −5 kN (C muss nach unten ziehen, der Kragarm kippt den Rost).</p>
+      <p>Achse durch B quer dazu (x-Richtung). Abstände von B: A 6 m, C und L 4 m (beide auf Höhe K), Gleichlast-Resultierende 24 kN bei 3 m: A·6 + C·4 = 24·3 + 10·4 ⟹ A·6 = 72 + 40 + 20 = 132 ⟹ A = 22 kN.</p>
+      <p>ΣF<sub>z</sub>: B = 24 + 10 − 22 + 5 = 17 kN.</p>
+      <p>M<sub>y</sub> an K im Stab A–K: 22·2 − 4·2²/2 = 36 kNm. An K springt weder M<sub>y</sub> in A–K–B (36 | 36) noch M<sub>y</sub> in L–K–C (−20 | −20). Also gibt keiner der Stäbe Torsion an den anderen ab: Im Hauptsystem ist überall M<sub>t</sub> = 0. Das wird an Tag 6 wichtig.</p>
+    </div></details>
+  </div>
+
+  <h3>Verständnisfragen</h3>
+  <div id="mc2"></div>
+  <div class="chat"><b>Heute im Chat:</b> Zeichne die drei Verläufe des Hauptsystems WS 23/24 als Schrägbild und schick mir ein Foto.</div>
+</section>
+
+<!-- ===================== TAG 3 ===================== -->
+<section class="view" id="v-tag3">
+  <p class="small">Tag 3 · Sa 28.11.</p>
+  <h1>Profilwerte: I<sub>y</sub> und I<sub>T</sub></h1>
+  <p class="lead">Teilaufgabe 1 in fast der Hälfte aller Klausuren. Mit zwei Formeln sicher machbar, und du brauchst das Ergebnis GI<sub>T</sub>/EI für den Rest der Aufgabe.</p>
+  <ul class="toc">
+    <li><a href="#t3-1">1. Dünnwandig: alles auf der Mittellinie</a></li>
+    <li><a href="#t3-2">2. Quadratrohr</a></li>
+    <li><a href="#t3-3">3. Verstärktes HEB</a></li>
+    <li><a href="#t3-4">4. Das Verhältnis GI<sub>T</sub>/EI</a></li>
+    <li><a href="#t3-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t3-1">1. Dünnwandig: alles auf der Mittellinie</h2>
+  <p>„Unter Annahme der Dünnwandigkeit“ heißt: Du rechnest mit der <b>Mittellinie</b> der Bleche. Für geschlossene Querschnitte gilt die 2. Bredtsche Formel:</p>
+  <div class="eq" style="font-size:22px">I<sub>T</sub> = 4·A<sub>m</sub>² / ∮ ds/t</div>
+  <p>A<sub>m</sub> ist die Fläche, die die Mittellinie umschließt. ∮ ds/t ist die Summe über alle Wände: Länge der Wand (auf der Mittellinie) geteilt durch ihre Dicke.</p>
+  <p>Für die maximale Schubspannung brauchst du noch das Torsionswiderstandsmoment (Musterklausur 2016):</p>
+  <div class="eq">τ = M<sub>t</sub> / (2·A<sub>m</sub>·t) &nbsp;&nbsp;⟹&nbsp;&nbsp; W<sub>T</sub> = 2·A<sub>m</sub>·t<sub>min</sub></div>
+
+  <h2 id="t3-2">2. Quadratrohr</h2>
+  <p>Außenmaß b, Wanddicke t. Mittellinie: b<sub>m</sub> = b − t.</p>
+  <div class="eq">A<sub>m</sub> = b<sub>m</sub>² &nbsp;&nbsp; ∮ ds/t = 4·b<sub>m</sub>/t &nbsp;&nbsp;⟹&nbsp;&nbsp; I<sub>T</sub> = 4·b<sub>m</sub>⁴·t / (4·b<sub>m</sub>) = t·b<sub>m</sub>³</div>
+  <div class="eq">I<sub>y</sub> = 2·t·b<sub>m</sub>³/12 + 2·(b<sub>m</sub>·t)·(b<sub>m</sub>/2)² = ⅔·t·b<sub>m</sub>³</div>
+  <p class="small">Stege mit Steiner-Anteil null, Gurte nur Steiner-Anteil (Eigenträgheit der dünnen Gurte vernachlässigt).</p>
+  <p><b>Beispiel Musterklausur SS 2016, Quadratrohr 260×10:</b> b<sub>m</sub> = 25 cm, t = 1 cm.</p>
+  <div class="eq">I<sub>T</sub> = 1·25³ = 15 625 cm⁴ &nbsp;&nbsp; I<sub>y</sub> = ⅔·1·25³ = 10 417 cm⁴ &nbsp;&nbsp; W<sub>T</sub> = 2·625·1 = 1 250 cm³</div>
+  <p>Genau das steht in der Musterlösung. ✓</p>
+
+  <h2 id="t3-3">3. Verstärktes HEB (WS 21/22, SS 21, WS 24/25, SS 18, SS 20)</h2>
+  <p>Ein HEB 220 bekommt seitlich zwei Laschen 204×12. Für Torsion ist der Steg wirkungslos, es entsteht ein <b>einzelliger Hohlkasten</b> aus den zwei Flanschen (t = 16 mm) und den zwei Laschen (t = 12 mm).</p>
+  <svg viewBox="0 0 360 230" role="img" aria-label="Verstärktes HEB 220 als Hohlkasten">
+    <rect x="90" y="30" width="180" height="16" fill="#d9d4c7" stroke="#1d2433"/><rect x="90" y="174" width="180" height="16" fill="#d9d4c7" stroke="#1d2433"/>
+    <rect x="175" y="46" width="10" height="128" fill="#eee" stroke="#999"/>
+    <rect x="78" y="38" width="12" height="144" fill="#c9dcef" stroke="#1d2433"/><rect x="270" y="38" width="12" height="144" fill="#c9dcef" stroke="#1d2433"/>
+    <rect x="84" y="38" width="192" height="144" fill="none" stroke="#6b4fbb" stroke-width="2" stroke-dasharray="6 4"/>
+    <g font-family="Source Sans 3" font-size="14" fill="#1d2433">
+      <text x="180" y="22" text-anchor="middle">Flansch 220 × 16</text>
+      <text x="300" y="115">Lasche</text><text x="300" y="132">204 × 12</text>
+      <text x="180" y="215" text-anchor="middle" fill="#6b4fbb">Mittellinie: 232 × 204 mm</text>
+      <text x="190" y="115" fill="#999">Steg (zählt nicht)</text>
+    </g>
+  </svg>
+  <p><b>Mittellinie:</b> Breite = 220 + 12 = 232 mm (Laschenmitte zu Laschenmitte), Höhe = 220 − 16 = 204 mm (Flanschmitte zu Flanschmitte).</p>
+  <div class="eq">A<sub>m</sub> = 23,2 · 20,4 = 473,28 cm²</div>
+  <div class="eq">∮ ds/t = 2·(23,2/1,6 + 20,4/1,2) = 2·(14,5 + 17,0) = 63,0</div>
+  <div class="eq">I<sub>T</sub> = 4 · 473,28² / 63,0 = 14 222 cm⁴</div>
+  <div class="eq">I<sub>y</sub> = I<sub>y,HEB</sub> + 2·t·h³/12 = 8 091 + 2·1,2·20,4³/12 = 9 789 cm⁴</div>
+  <div class="box warn"><b class="t">Die zwei Fallen</b>
+  <b>1.</b> Für I<sub>y</sub> zählt die Lasche mit ihrer echten Höhe (204 mm), nicht mit der Mittellinien-Höhe. Die Laschen liegen zwischen den Flanschen.<br>
+  <b>2.</b> Für I<sub>T</sub> nimmst du in ∮ ds/t die <b>Längen auf der Mittellinie</b> und teilst durch die Dicke <b>dieser</b> Wand: Flansche 23,2/1,6, Laschen 20,4/1,2.</div>
+
+  <h2 id="t3-4">4. Das Verhältnis GI<sub>T</sub>/EI</h2>
+  <div class="eq">G = E / (2·(1+ν)) = E / 2,6 &nbsp;(Stahl, ν = 0,3) &nbsp;&nbsp;⟹&nbsp;&nbsp; GI<sub>T</sub>/EI<sub>y</sub> = I<sub>T</sub> / (2,6·I<sub>y</sub>)</div>
+  <p>Für das verstärkte HEB 220: 14 222 / (2,6 · 9 789) = <b>0,56</b>. Genau diesen Wert gibt die Klausur als „Notausgang“ an: „Wenn Sie Aufgabenteil 1) nicht lösen konnten, rechnen Sie mit GI<sub>T</sub>/EI<sub>y</sub> = 0,56 weiter.“</p>
+  <div class="box merk"><b class="t">Wofür du das brauchst</b>Im Arbeitssatz wird alles mit EI multipliziert. Dann steht vor dem Torsionsintegral der Faktor <b>EI/GI<sub>T</sub></b> (hier 1/0,56 = 1,79). Im Skript steht er eingekreist über jedem Torsionsterm.</div>
+
+  <h2 id="t3-ue">Übungen Tag 3</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 3.1</span><span class="ti">Quadratrohr 220×12,5 (WS 16/17)</span></div>
+    <div class="ans"><label>b<sub>m</sub> [cm]</label><input class="n" data-ans="20.75"><span class="fb"></span></div>
+    <div class="ans"><label>I<sub>T</sub> [cm⁴]</label><input class="n" data-ans="11167.7"><span class="fb"></span></div>
+    <div class="ans"><label>I<sub>y</sub> [cm⁴]</label><input class="n" data-ans="7445"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>b<sub>m</sub> = 22 − 1,25 = 20,75 cm. I<sub>T</sub> = 1,25 · 20,75³ = 11 167,7 cm⁴. I<sub>y</sub> = ⅔ · 1,25 · 20,75³ = 7 445 cm⁴. Lösungsblatt: „I<sub>y</sub> = 7445 cm⁴; I<sub>T</sub> = 11167,7 cm⁴“ ✓</p></div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 3.2</span><span class="ti">Verstärktes HEB 200 (SS 2020)</span></div>
+    <p>HEB 200 (h = b = 200 mm, Flansch t = 15 mm, I<sub>y</sub> = 5 696 cm⁴) mit zwei Laschen 185×10.</p>
+    <div class="ans"><label>A<sub>m</sub> [cm²]</label><input class="n" data-ans="388.5"><span class="fb"></span></div>
+    <div class="ans"><label>I<sub>T</sub> [cm⁴]</label><input class="n" data-ans="9288"><span class="fb"></span></div>
+    <div class="ans"><label>I<sub>y</sub> [cm⁴]</label><input class="n" data-ans="6751"><span class="fb"></span></div>
+    <div class="ans"><label>GI<sub>T</sub>/EI<sub>y</sub></label><input class="n" data-ans="0.53"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div>
+      <p>Mittellinie: Breite 200 + 10 = 210 mm, Höhe 200 − 15 = 185 mm → A<sub>m</sub> = 21,0 · 18,5 = 388,5 cm².</p>
+      <p>∮ ds/t = 2·(21,0/1,5 + 18,5/1,0) = 65,0 → I<sub>T</sub> = 4·388,5²/65 = 9 288 cm⁴ ✓ (Lösung: 9 288).</p>
+      <p>I<sub>y</sub> = 5 696 + 2·1,0·18,5³/12 = 6 751 cm⁴ (Lösung: 6 755, Rundung des Tabellenwerts).</p>
+      <p>GI<sub>T</sub>/EI = 9 288/(2,6·6 751) = 0,53 ✓ (steht als Ersatzwert in der Klausur).</p>
+    </div></details>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc3"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne das Quadratrohr 300×10 aus SS 2023 und schick mir I<sub>T</sub> und I<sub>y</sub>. Lösungsblatt: I<sub>T</sub> = 24 389 cm⁴.</div>
+</section>
+
+<!-- ===================== TAG 4 ===================== -->
+<section class="view" id="v-tag4">
+  <p class="small">Tag 4 · So 29.11.</p>
+  <h1>KGV am Trägerrost</h1>
+  <p class="lead">Das Herz der Aufgabe. Wir rechnen WS 23/24 komplett durch. Die Lösung stimmt mit dem EDV-Ausdruck von Prof. Lang überein.</p>
+  <ul class="toc">
+    <li><a href="#t4-1">1. Ablauf in 6 Schritten</a></li>
+    <li><a href="#t4-2">2. Zustand 0 und Zustand 1</a></li>
+    <li><a href="#t4-3">3. δ<sub>10</sub> und δ<sub>11</sub></a></li>
+    <li><a href="#t4-4">4. Überlagern und kontrollieren</a></li>
+    <li><a href="#t4-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t4-1">1. Ablauf in 6 Schritten</h2>
+  <ol class="steps">
+    <li><b>n bestimmen</b> (meist 1) und X<sub>1</sub> wählen. Nimm den Hinweis der Klausur, meist das Torsionsmoment am Gabellager.</li>
+    <li><b>Zustand 0:</b> Hauptsystem unter Last → Auflager, M<sub>y,0</sub>, M<sub>t,0</sub> (V<sub>z,0</sub> für später).</li>
+    <li><b>Zustand 1:</b> Hauptsystem nur mit X<sub>1</sub> = 1 → Auflager, M<sub>y,1</sub>, M<sub>t,1</sub>.</li>
+    <li><b>δ<sub>10</sub>, δ<sub>11</sub></b> mit Koppeltafeln, Torsionsterme mal EI/GI<sub>T</sub>.</li>
+    <li><b>X<sub>1</sub> = −δ<sub>10</sub>/δ<sub>11</sub></b></li>
+    <li><b>Überlagern:</b> Größe = Größe<sub>0</sub> + X<sub>1</sub> · Größe<sub>1</sub>. Für M<sub>y</sub>, M<sub>t</sub>, V<sub>z</sub> und die Auflager.</li>
+  </ol>
+
+  <h2 id="t4-2">2. Zustand 0 und Zustand 1 (WS 23/24)</h2>
+  <p>System siehe Tag 2. Profil: I<sub>y</sub> = 10 010 cm⁴, I<sub>t</sub> = 15 940 cm⁴. Damit EI/GI<sub>T</sub> = 2,1·10 010 / (0,81·15 940) = <b>1,628</b>. X<sub>1</sub> = Einspannmoment (Torsion) am Gabellager B.</p>
+  <div class="two">
+  <div class="card"><b>Zustand 0</b> (Last, B gelenkig)<br>A = 7 · B = −3 · C = 9 kN
+    <table><tr><th>Stab</th><th>M<sub>y,0</sub></th><th>M<sub>t,0</sub></th></tr>
+    <tr><td>A–J1</td><td>0 → 21</td><td>0</td></tr><tr><td>J1–B</td><td>−9 → 0</td><td>0</td></tr>
+    <tr><td>J1–J2</td><td>Parabel, f = 4</td><td>−30</td></tr><tr><td>J2–P</td><td>30 → 18</td><td>0</td></tr><tr><td>P–C</td><td>18 → 0</td><td>0</td></tr></table></div>
+  <div class="card"><b>Zustand 1</b> (X<sub>1</sub> = 1 an B)<br>A = 1/12 · B = −1/3 · C = 1/4
+    <table><tr><th>Stab</th><th>M<sub>y,1</sub></th><th>M<sub>t,1</sub></th></tr>
+    <tr><td>A–J1</td><td>0 → 0,25</td><td>0</td></tr><tr><td>J1–B</td><td>−1 → 0</td><td>−1</td></tr>
+    <tr><td>J1–J2</td><td>1 → 0</td><td>−1,25</td></tr><tr><td>J2–P</td><td>1,25 → 0,5</td><td>0</td></tr><tr><td>P–C</td><td>0,5 → 0</td><td>0</td></tr></table></div>
+  </div>
+  <p><b>Wie kommt Zustand 1 zustande?</b> Das Moment 1 um die Stabachse an B verdrillt den Stab J1–B (M<sub>t</sub> = −1). Damit das Gleichgewicht stimmt, braucht es Auflagerkräfte: Um die Achse A–B kann nur C halten: C·4 = 1 → C = 0,25. Dann B·6 + 0,25·8 = 0 → B = −1/3 und A = 1/3 − 1/4 = 1/12. Die Momente folgen wie an Tag 2.</p>
+
+  <h2 id="t4-3">3. δ<sub>10</sub> und δ<sub>11</sub></h2>
+  <div class="eq">EI·δ<sub>10</sub> = Σ ∫ M<sub>y,0</sub>·M<sub>y,1</sub> dx + 1,628 · Σ M<sub>t,0</sub>·M<sub>t,1</sub>·L</div>
+  <div class="scroll"><table>
+    <tr><th>Stab</th><th>Biegung (Koppeltafel)</th><th class="n">Biegung</th><th class="n">Torsion</th></tr>
+    <tr><td>A–J1</td><td>⅓ · 21 · 0,25 · 3</td><td class="n">5,25</td><td class="n">0</td></tr>
+    <tr><td>J1–B</td><td>⅓ · (−9) · (−1) · 3</td><td class="n">9,00</td><td class="n">0</td></tr>
+    <tr><td>J1–J2</td><td>⅓ · 4 · 1 · 4 (Parabel × Dreieck) · Torsion: (−30)(−1,25)·4·1,628</td><td class="n">5,33</td><td class="n">244,21</td></tr>
+    <tr><td>J2–P</td><td>Trapez × Trapez, ⅙·3·[30(2·1,25+0,5)+18(1,25+2·0,5)]</td><td class="n">65,25</td><td class="n">0</td></tr>
+    <tr><td>P–C</td><td>⅓ · 18 · 0,5 · 2</td><td class="n">6,00</td><td class="n">0</td></tr>
+    <tr><th colspan="2">Summe EI·δ<sub>10</sub></th><th class="n" colspan="2">335,05</th></tr>
+  </table></div>
+  <div class="scroll"><table>
+    <tr><th>Stab</th><th>EI·δ<sub>11</sub></th><th class="n">Wert</th></tr>
+    <tr><td>A–J1</td><td>⅓ · 0,25² · 3</td><td class="n">0,06</td></tr>
+    <tr><td>J1–B</td><td>⅓ · 1² · 3 + 1²·3·1,628</td><td class="n">1,00 + 4,88</td></tr>
+    <tr><td>J1–J2</td><td>⅓ · 1² · 4 + 1,25²·4·1,628</td><td class="n">1,33 + 10,18</td></tr>
+    <tr><td>J2–P</td><td>⅓ · 3 · (1,25² + 1,25·0,5 + 0,5²)</td><td class="n">2,44</td></tr>
+    <tr><td>P–C</td><td>⅓ · 0,5² · 2</td><td class="n">0,17</td></tr>
+    <tr><th>Summe</th><th></th><th class="n">20,06</th></tr>
+  </table></div>
+  <div class="eq" style="font-size:22px">X<sub>1</sub> = −335,05 / 20,06 = −16,70 kNm</div>
+  <p>Lösungsblatt: „MT<sub>B</sub> = −16,7 kNm“ ✓</p>
+  <div class="box warn"><b class="t">Der häufigste Punktverlust</b>Den Torsionsanteil vergessen oder ohne den Faktor EI/GI<sub>T</sub> einsetzen. Hier macht die Torsion 73 % von δ<sub>10</sub> aus. Ohne sie wäre X<sub>1</sub> völlig falsch.</div>
+
+  <h2 id="t4-4">4. Überlagern und kontrollieren</h2>
+  <div class="eq">A = 7 + (−16,70)·(1/12) = 5,61 &nbsp;&nbsp; B = −3 + (−16,70)·(−1/3) = 2,57 &nbsp;&nbsp; C = 9 + (−16,70)·0,25 = 4,83 kN</div>
+  <p>Lösungsblatt: A = 5,61, B = 2,57, C = 4,83 kN ✓. Kontrolle ΣF<sub>z</sub>: 5,61 + 2,57 + 4,83 = 13,0 = 2·4 + 5 ✓</p>
+  <table>
+    <tr><th>Stab</th><th>M<sub>y</sub> = M<sub>y,0</sub> + X<sub>1</sub>·M<sub>y,1</sub></th><th>M<sub>t</sub></th></tr>
+    <tr><td>A–J1</td><td>0 → 21 − 4,18 = <b>16,82</b></td><td>0</td></tr>
+    <tr><td>J1–B</td><td>−9 + 16,70 = <b>7,70</b> → 0</td><td>16,70</td></tr>
+    <tr><td>J1–J2</td><td>−16,70 → 0, mit Parabel f = 4</td><td>−30 + 20,88 = <b>−9,12</b></td></tr>
+    <tr><td>J2–P</td><td>30 − 20,88 = <b>9,12</b> → 18 − 8,35 = <b>9,65</b></td><td>0</td></tr>
+    <tr><td>P–C</td><td>9,65 → 0</td><td>0</td></tr>
+  </table>
+  <p>Genau diese Zahlen (16,8 · 16,7 · 7,70 · 9,12 · 9,65) stehen im ProStab-Ausdruck des Lösungsblatts. Kontrolle Eckregel an J2: M<sub>t</sub> = 9,12 in J1–J2 wird M<sub>y</sub> = 9,12 im Kragarm ✓.</p>
+
+  <h2 id="t4-ue">Übungen Tag 4</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 4.1</span><span class="ti">WS 22/23: gleiches System, anderes X<sub>1</sub></span></div>
+    <p>Jetzt ist C das Gabellager (A, B Gelenklager). X<sub>1</sub> = vertikale Auflagerkraft C. Im Hauptsystem hält C also nur noch das Torsionsmoment. EI/GI<sub>T</sub> = 1,628.</p>
+    <div class="ans"><label>Zustand 0: A [kN]</label><input class="n" data-ans="4"><span class="fb"></span></div>
+    <div class="ans"><label>Zustand 0: B [kN]</label><input class="n" data-ans="9"><span class="fb"></span></div>
+    <div class="ans"><label>X<sub>1</sub> = C [kN]</label><input class="n" data-ans="5.52"><span class="fb"></span></div>
+    <div class="ans"><label>A endgültig [kN]</label><input class="n" data-ans="5.84"><span class="fb"></span></div>
+    <div class="ans"><label>B endgültig [kN]</label><input class="n" data-ans="1.64"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>Zustand 0:</b> Nur A und B tragen vertikal. Achse A–B: Die Lasten haben Hebel, aber kein Lager → das Moment geht als Torsion ins Gabellager C (M<sub>t,C</sub> = 8·2 + 5·4 = 36). Querachse: B·6 = 8·3 + 5·6 → B = 9, A = 13 − 9 = 4.</p>
+      <p>M<sub>y,0</sub>: A–J1 0 → 12 · J1–B 27 → 0 · J1–J2 0 → 36 (mit Parabel) · J2–P −15 → 0 · P–C 0. M<sub>t,0</sub>: J1–J2 15 · J2–P und P–C 36.</p>
+      <p><b>Zustand 1</b> (C = 1 nach oben): A = 1/3, B = −4/3. M<sub>y,1</sub>: A–J1 0 → 1 · J1–B −4 → 0 · J1–J2 0 → −4 · J2–P 5 → 2 · P–C 2 → 0. M<sub>t,1</sub>: J1–J2 −5 · J2–C −4.</p>
+      <p>EI·δ<sub>10</sub> = −2 060,0 (davon Torsion −1 660,7), EI·δ<sub>11</sub> = 373,1 → X<sub>1</sub> = 5,52 kN.</p>
+      <p>A = 4 + 5,52/3 = 5,84 · B = 9 − 4/3·5,52 = 1,64 · M<sub>t,C</sub> = 36 − 4·5,52 = 13,9 kNm.</p>
+    </div></details>
+  </div>
+
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 4.2</span><span class="ti">SS 2016 komplett</span></div>
+    <p>Hauptsystem aus Ü 2.2 (A = 22, B = 17, C = −5). X<sub>1</sub> = Torsionsmoment am Gabellager B. I<sub>t</sub> = 14 110 cm⁴, I<sub>y</sub> = 9 055 cm⁴ → EI/GI<sub>T</sub> = 1,664.</p>
+    <div class="ans"><label>EI·δ<sub>11</sub></label><input class="n" data-ans="8.21"><span class="fb"></span></div>
+    <div class="ans"><label>|X<sub>1</sub>| = |M<sub>t,B</sub>| [kNm]</label><input class="n" data-ans="6.66" data-anysign data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>A [kN]</label><input class="n" data-ans="20.89"><span class="fb"></span></div>
+    <div class="ans"><label>C [kN]</label><input class="n" data-ans="-3.34"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p><b>Zustand 1</b> (Moment 1 um die Achse A–B an B): Achse A–B → C·4 = 1 → |C| = 0,25. Daraus A = 1/6, B = 1/12, C = −1/4 (mit Vorzeichen). M<sub>y,1</sub>: A–K 0 → 1/3, K–B 1/3 → 0, K–C −1 → 0. M<sub>t,1</sub> = 1 in K–B.</p>
+      <p>EI·δ<sub>11</sub> = ⅓·(1/3)²·2 + ⅓·(1/3)²·4 + ⅓·1²·4 + 1²·4·1,664 = 0,074 + 0,148 + 1,333 + 6,655 = 8,21.</p>
+      <p>EI·δ<sub>10</sub> = 8,44 + 19,56 + 26,67 = 54,67 (keine Torsion in Zustand 0!) → |X<sub>1</sub>| = 6,66 kNm (Lösungsblatt: 6,64, Rundung bei G).</p>
+      <p>A = 22 − 6,66/6 = 20,89 · B = 17 − 6,66/12 = 16,45 · C = −5 + 6,66/4 = −3,34 ✓ (Lösungsblatt: A = 20,89; B = 16,45; C = −3,34).</p>
+    </div></details>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc4"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne SS 2025 (gleiches System wie SS 2016, X<sub>1</sub> = Torsionsmoment an A) und schick mir dein X<sub>1</sub>. Lösungsblatt: x = −4,734.</div>
+</section>
+
+<!-- ===================== TAG 5 ===================== -->
+<section class="view" id="v-tag5">
+  <p class="small">Tag 5 · Mo 30.11.</p>
+  <h1>Symmetrie und Antimetrie – einfach erklärt</h1>
+  <p class="lead">„Nutzen Sie die Symmetrie des Systems aus“ oder „Denken Sie in Verformungsfiguren“ steht in sechs Klausuren. Mit drei Regeln wird daraus ein halbes System mit weniger Unbekannten.</p>
+  <ul class="toc">
+    <li><a href="#t5-1">1. Die Spiegel-Idee</a></li>
+    <li><a href="#t5-2">2. Jede Last zerlegen</a></li>
+    <li><a href="#t5-3">3. Was in der Achse null ist</a></li>
+    <li><a href="#t5-4">4. Ersatzlager für das halbe System</a></li>
+    <li><a href="#t5-5">5. Beispiel SS 2022</a></li>
+    <li><a href="#t5-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t5-1">1. Die Spiegel-Idee</h2>
+  <p>Stell einen Spiegel auf die Symmetrieachse des Systems.</p>
+  <ul>
+    <li><b>Symmetrische Last:</b> Die Last im Spiegel sieht genauso aus wie die echte. Dann muss auch die <b>Verformung</b> spiegelbildlich sein. Beide Hälften biegen sich gleich nach unten.</li>
+    <li><b>Antimetrische Last:</b> Die Last im Spiegel ist umgedreht (links nach unten, rechts nach oben). Dann ist auch die Verformung umgedreht. Eine Hälfte geht runter, die andere hoch. In der Achse selbst: <b>w = 0</b>.</li>
+  </ul>
+  <svg viewBox="0 0 600 190" role="img" aria-label="Verformungsfiguren symmetrisch und antimetrisch">
+    <g font-family="Source Sans 3" font-size="15">
+      <line x1="150" y1="30" x2="150" y2="160" stroke="#5d6475" stroke-dasharray="6 5"/>
+      <line x1="30" y1="70" x2="270" y2="70" stroke="#bbb" stroke-width="3"/>
+      <path d="M30,70 C80,70 110,115 150,115 C190,115 220,70 270,70" fill="none" stroke="#2e8b57" stroke-width="3"/>
+      <line x1="135" y1="115" x2="165" y2="115" stroke="#1d2433" stroke-width="1.5"/>
+      <text x="150" y="180" text-anchor="middle" font-weight="700">symmetrisch</text>
+      <text x="168" y="135" fill="#5d6475">Tangente waagerecht</text>
+      <line x1="450" y1="30" x2="450" y2="160" stroke="#5d6475" stroke-dasharray="6 5"/>
+      <line x1="330" y1="95" x2="570" y2="95" stroke="#bbb" stroke-width="3"/>
+      <path d="M330,95 C370,95 400,130 450,95 C500,60 530,95 570,95" fill="none" stroke="#2e8b57" stroke-width="3"/>
+      <circle cx="450" cy="95" r="5" fill="#2e8b57"/>
+      <text x="450" y="180" text-anchor="middle" font-weight="700">antimetrisch</text>
+      <text x="462" y="120" fill="#5d6475">w = 0, Wendepunkt</text>
+    </g>
+  </svg>
+
+  <h2 id="t5-2">2. Jede Last zerlegen</h2>
+  <p>Jede beliebige Last lässt sich in einen symmetrischen und einen antimetrischen Teil zerlegen. Eine Einzellast P nur auf der linken Seite:</p>
+  <div class="eq">P links = ( P/2 links + P/2 rechts ) + ( P/2 links − P/2 rechts )</div>
+  <p class="cap">symmetrischer Teil + antimetrischer Teil</p>
+  <p>Du rechnest beide Teile getrennt an der halben Struktur und addierst am Ende. Liegt die Last schon symmetrisch, fällt der antimetrische Teil weg und umgekehrt.</p>
+
+  <h2 id="t5-3">3. Was in der Achse null ist</h2>
+  <p>Merkregel: <b>Was beim Spiegeln sein Vorzeichen wechselt, muss in der Achse null sein.</b> Beim Trägerrost (Stab läuft senkrecht durch die Achse):</p>
+  <table>
+    <tr><th></th><th>symmetrische Last</th><th>antimetrische Last</th></tr>
+    <tr><td>Verformungsfigur</td><td>symmetrisch</td><td>antimetrisch</td></tr>
+    <tr><td>M<sub>y</sub></td><td>symmetrisch → ≠ 0 in der Achse</td><td>antimetrisch → <b>0</b> in der Achse</td></tr>
+    <tr><td>V<sub>z</sub></td><td>antimetrisch → <b>0</b> in der Achse</td><td>symmetrisch → ≠ 0</td></tr>
+    <tr><td>M<sub>t</sub></td><td>antimetrisch → <b>0</b> in der Achse</td><td>symmetrisch → ≠ 0</td></tr>
+  </table>
+  <p class="small">Diese Tabelle ist aus dem Skript (Kapitel 3, „Symmetrie und Antimetrie beim Trägerrost“).</p>
+  <div class="box merk"><b class="t">Eselsbrücke</b>Symmetrisch: <b>nur M<sub>y</sub> bleibt</b> in der Achse. Antimetrisch: <b>M<sub>y</sub> fällt weg</b>, V<sub>z</sub> und M<sub>t</sub> bleiben.</div>
+
+  <h2 id="t5-4">4. Ersatzlager für das halbe System</h2>
+  <p>Du schneidest in der Achse und ersetzt die andere Hälfte durch ein Lager, das genau das Richtige festhält:</p>
+  <div class="two">
+    <div class="card"><b>Symmetrisch</b><br>w frei (V<sub>z</sub> = 0) · Biegeverdrehung gesperrt (M<sub>y</sub> ≠ 0) · Verdrillung frei (M<sub>t</sub> = 0)<br><span class="pill">in z verschiebliche Einspannung</span></div>
+    <div class="card"><b>Antimetrisch</b><br>w = 0 (V<sub>z</sub> ≠ 0) · Biegeverdrehung frei (M<sub>y</sub> = 0) · Verdrillung gesperrt (M<sub>t</sub> ≠ 0)<br><span class="pill k">Gabellager!</span></div>
+  </div>
+  <div class="box warn"><b class="t">Wichtig für die Klausur</b>Das halbe System ist oft statisch bestimmt oder 1-fach unbestimmt, obwohl das ganze System 3-fach unbestimmt ist (SS 2022: n = 4, weil der geschlossene Rahmen allein schon 3-fach unbestimmt ist). Deshalb lohnt sich der Umweg.</div>
+
+  <h2 id="t5-5">5. Beispiel SS 2022</h2>
+  <svg viewBox="0 0 560 260" role="img" aria-label="Grundriss SS 2022">
+    <g font-family="Source Sans 3" font-size="15">
+      <line x1="280" y1="10" x2="280" y2="250" stroke="#5d6475" stroke-dasharray="6 5"/>
+      <line x1="110" y1="60" x2="450" y2="60" stroke="#1d2433" stroke-width="5"/>
+      <line x1="50" y1="200" x2="510" y2="200" stroke="#1d2433" stroke-width="5"/>
+      <line x1="110" y1="60" x2="110" y2="200" stroke="#1d2433" stroke-width="5"/>
+      <line x1="450" y1="60" x2="450" y2="200" stroke="#1d2433" stroke-width="5"/>
+      <g fill="none" stroke="#1d2433" stroke-width="2"><path d="M110,202 l-10,16 h20z"/><path d="M450,202 l-10,16 h20z"/><path d="M110,58 l-10,-16 h20z"/><path d="M450,58 l-10,-16 h20z"/></g>
+      <g stroke="#c0392b" stroke-width="2" fill="none"><circle cx="50" cy="200" r="8"/><circle cx="280" cy="200" r="8"/><circle cx="280" cy="60" r="8"/><circle cx="510" cy="200" r="8"/></g>
+      <g stroke="#c0392b" stroke-width="2"><path d="M44,194 l12,12 M56,194 l-12,12"/><path d="M274,194 l12,12 M286,194 l-12,12"/><path d="M274,54 l12,12 M286,54 l-12,12"/></g>
+      <circle cx="510" cy="200" r="2.5" fill="#c0392b"/>
+      <g fill="#c0392b"><text x="30" y="232">10↓</text><text x="290" y="232">10↓</text><text x="290" y="48">10↓</text><text x="490" y="232">10↑</text></g>
+      <g fill="#1d2433"><text x="92" y="238">A</text><text x="458" y="238">B</text><text x="458" y="42">C</text><text x="92" y="42">D</text></g>
+      <g fill="#5d6475"><text x="180" y="190">3 m</text><text x="360" y="190">3 m</text><text x="118" y="135">4 m</text><text x="60" y="190">1 m</text></g>
+      <text x="286" y="20" fill="#5d6475">Achse</text>
+    </g>
+  </svg>
+  <p class="cap">Von oben. ⊗ = Last nach unten, ⊙ = Last nach oben (rechter Kragarm).</p>
+  <p><b>Zerlegen:</b> Die beiden Lasten in Feldmitte liegen <b>auf</b> der Achse → rein symmetrisch. Die Kragarmlasten (links 10 nach unten, rechts 10 nach oben) sind <b>antimetrisch</b>.</p>
+  <p><b>Symmetrischer Teil:</b> Vorder- und Hinterträger tragen jeweils 10 kN in Feldmitte als Einfeldträger. Beide verdrehen sich an den Enden gleich, also werden die Seitenstäbe A–D und B–C nicht verdrillt: M<sub>t</sub> = 0. Ergebnis: M<sub>y</sub> = 10·6/4 = 15 kNm in Feldmitte, unabhängig von GI<sub>T</sub>.</p>
+  <p><b>Antimetrischer Teil:</b> Der Kragarm drückt bei A ein Moment −10 kNm in den Vorderträger, bei B +10 kNm. Der Vorderträger will sich an A verdrehen. Der Seitenstab A–D wehrt sich mit Torsion X und gibt das Moment an den Hinterträger weiter. Halbes System: In der Achse ein Gabellager (M<sub>y</sub> = 0, w = 0).</p>
+  <p>Verträglichkeit an A (Biegeverdrehung des halben Vorderträgers, 3 m lang, Gelenk in der Achse: φ = M·L/(3EI) = M/EI):</p>
+  <div class="eq">(10 − X)/EI − X/EI = X·4/GI<sub>T</sub> &nbsp;&nbsp;⟹&nbsp;&nbsp; X = 10 / (2 + 4·EI/GI<sub>T</sub>)</div>
+  <table>
+    <tr><th>Teilaufgabe</th><th>GI<sub>T</sub>/EI</th><th class="n">M<sub>t</sub> Seitenstab</th><th class="n">M<sub>y</sub> bei A</th><th class="n">M<sub>y</sub> bei D</th></tr>
+    <tr><td>1)</td><td>0</td><td class="n">0</td><td class="n">−10</td><td class="n">0</td></tr>
+    <tr><td>2)</td><td>∞</td><td class="n">5</td><td class="n">−5</td><td class="n">−5</td></tr>
+    <tr><td>3)</td><td>0,50</td><td class="n">1</td><td class="n">−9</td><td class="n">−1</td></tr>
+  </table>
+  <p><b>Anschaulich:</b> Ohne Torsionssteifigkeit trägt der Vorderträger seine Kragarme allein. Bei unendlicher Torsionssteifigkeit teilen sich Vorder- und Hinterträger das Kragmoment genau zur Hälfte. Genau so ist der Hinweis „Denken Sie in Verformungsfiguren“ gemeint.</p>
+
+  <h2 id="t5-ue">Übungen Tag 5</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.1</span><span class="ti">SS 2022 mit dem verstärkten HEB</span></div>
+    <p>Gleiches System, aber GI<sub>T</sub>/EI = 0,56 (verstärktes HEB 220).</p>
+    <div class="ans"><label>M<sub>t</sub> im Seitenstab [kNm]</label><input class="n" data-ans="1.094" data-anysign><span class="fb"></span></div>
+    <div class="ans"><label>|M<sub>y</sub>| am Lager A im Vorderträger [kNm]</label><input class="n" data-ans="8.906" data-anysign><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>y</sub> Feldmitte Hinterträger [kNm]</label><input class="n" data-ans="15"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>X = 10/(2 + 4/0,56) = 10/9,143 = 1,094 kNm. M<sub>y,A</sub> = −10 + 1,094 = −8,91 kNm. Feldmitte hinten: symmetrischer Teil 15 kNm, antimetrischer Teil ist in der Achse null → 15 kNm.</p></div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.2</span><span class="ti">Last zerlegen</span></div>
+    <p>Ein symmetrischer Rost bekommt nur links eine Einzellast 20 kN. Wie groß ist die Last links im symmetrischen und im antimetrischen Lastfall?</p>
+    <div class="ans"><label>symmetrisch, links [kN]</label><input class="n" data-ans="10"><span class="fb"></span></div>
+    <div class="ans"><label>antimetrisch, rechts (nach unten positiv) [kN]</label><input class="n" data-ans="-10"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc5"></div>
+  <div class="chat"><b>Heute im Chat:</b> Skizziere für SS 2022 die Verformungsfigur des antimetrischen Lastfalls und schick sie mir.</div>
+</section>
+
+<!-- ===================== TAG 6 ===================== -->
+<section class="view" id="v-tag6">
+  <p class="small">Tag 6 · Di 1.12.</p>
+  <h1>Verformung, Verdrehung und die GI<sub>T</sub>-Frage</h1>
+  <p class="lead">Die Teilaufgabe „Wie groß ist die Durchbiegung / Verdrehung?“ kommt in 11 Klausuren. Und deine Frage zuerst: Ja, du darfst den Reduktionssatz anwenden. Und du musst dabei mit den endgültigen Schnittgrößen überlagern.</p>
+  <ul class="toc">
+    <li><a href="#t6-1">1. Reduktionssatz: was mit was?</a></li>
+    <li><a href="#t6-2">2. Durchbiegung WS 23/24</a></li>
+    <li><a href="#t6-3">3. Verdrehung der Stabachse</a></li>
+    <li><a href="#t6-4">4. Die Zusatzfrage GI<sub>T</sub> → 0</a></li>
+    <li><a href="#t6-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t6-1">1. Reduktionssatz: was mit was?</h2>
+  <p>Eine Verformung im statisch unbestimmten System bekommst du mit dem Arbeitssatz. Du überlagerst zwei Zustände:</p>
+  <div class="two">
+    <div class="card"><b class="f">Zustand „echt“</b><br>Die <b>endgültigen</b> Schnittgrößen M<sub>y</sub>, M<sub>t</sub> des statisch unbestimmten Systems, also nach dem KGV mit X<sub>1</sub> eingerechnet.</div>
+    <div class="card"><b class="d">Zustand „virtuell“</b><br>Eine <b>1</b> an der gesuchten Stelle (Kraft 1 für w, Moment 1 für eine Verdrehung), aufgebracht an <b>irgendeinem statisch bestimmten</b> Hauptsystem.</div>
+  </div>
+  <div class="eq" style="font-size:21px">EI·w = ∫ M<sub>y</sub>·M̄<sub>y</sub> dx + (EI/GI<sub>T</sub>)·∫ M<sub>t</sub>·M̄<sub>t</sub> dx</div>
+  <div class="box merk"><b class="t">Das ist der Reduktionssatz</b>Weil die endgültigen Schnittgrößen schon alle Verträglichkeitsbedingungen erfüllen, darfst du den virtuellen Zustand an einem <b>beliebigen</b> statisch bestimmten System rechnen. Es muss nicht dasselbe Hauptsystem wie beim KGV sein. Nimm das, bei dem M̄ am einfachsten ist. Im Lösungsblatt WS 16/17 steht genau das: „Reduktionssatz anwenden (z. B. Gabellager entfernen)“.</div>
+  <div class="box warn"><b class="t">Die zwei Fehler, die Punkte kosten</b>
+  <b>1.</b> M<sub>0</sub> (Hauptsystem unter Last) mit M̄ überlagern. Das gibt die Verformung des Hauptsystems, nicht die des echten Systems. Mindestens <i>ein</i> Zustand muss der endgültige sein.<br>
+  <b>2.</b> Den Torsionsanteil vergessen. Hat der virtuelle Zustand ein M̄<sub>t</sub>, gehört (EI/GI<sub>T</sub>)·∫M<sub>t</sub>·M̄<sub>t</sub> dazu.</div>
+  <p>Wenn du „endgültig × endgültig“ überlagern wolltest, bräuchtest du für den virtuellen Zustand nochmal ein ganzes KGV. Das ist erlaubt, aber unnötig viel Arbeit.</p>
+
+  <h2 id="t6-2">2. Durchbiegung unter der 5-kN-Last (WS 23/24)</h2>
+  <p><b>Virtueller Zustand:</b> Kraft 1 an der Laststelle P, am Hauptsystem mit B als Gelenklager. Auflager: C = 1, B = −1/3, A = 1/3.</p>
+  <table>
+    <tr><th>Stab</th><th>endgültig M<sub>y</sub>, M<sub>t</sub></th><th>virtuell M̄<sub>y</sub>, M̄<sub>t</sub></th><th class="n">Beitrag</th></tr>
+    <tr><td>A–J1</td><td>0 → 16,82</td><td>0 → 1</td><td class="n">⅓·16,82·1·3 = 16,82</td></tr>
+    <tr><td>J1–B</td><td>7,70 → 0</td><td>−1 → 0</td><td class="n">−7,70</td></tr>
+    <tr><td>J1–J2</td><td>M<sub>t</sub> = −9,12</td><td>M̄<sub>t</sub> = −2, M̄<sub>y</sub> = 0</td><td class="n">9,12·2·4·1,628 = 118,81</td></tr>
+    <tr><td>J2–P</td><td>9,12 → 9,65</td><td>2 → 2</td><td class="n">½·(9,12+9,65)·2·3 = 56,31</td></tr>
+    <tr><td>P–C</td><td>9,65 → 0</td><td>2 → 0</td><td class="n">⅓·9,65·2·2 = 12,87</td></tr>
+    <tr><th colspan="3">EI·w</th><th class="n">197,1 kNm³</th></tr>
+  </table>
+  <div class="eq">w = 197,1 / (2,1·10⁸ · 10 010·10⁻⁸) = 197,1 / 21 021 = 0,00938 m = 9,4 mm</div>
+  <p>Ich habe das mit einer Steifigkeitsrechnung des ganzen Systems geprüft: gleiche 197,1 kNm³. Der Reduktionssatz funktioniert also, obwohl der virtuelle Zustand am Hauptsystem gerechnet wurde.</p>
+  <div class="box hb"><b class="t">Schneller Weg in der Klausur</b>Wähle das virtuelle Hauptsystem so, dass M̄ nur auf wenigen Stäben ≠ 0 ist. Bei einem Kragarm ist ein Hauptsystem mit Einspannung (oder Gabellager) direkt hinter dem Kragarm oft am kürzesten.</div>
+
+  <h2 id="t6-3">3. Verdrehung der Stabachse</h2>
+  <p>„Berechnen Sie die Verdrehung der Stabachse A–B im Knoten A“ (SS 2016, SS 2025, SS 2026, WS 19/20). Gemeint ist die Drehung des Knotens <b>um die Stabachse</b>, also die Verdrillung.</p>
+  <ol class="steps">
+    <li>Virtuell: <b>Moment 1 um die Stabachse</b> an der gesuchten Stelle (als Doppelpfeil entlang des Stabes).</li>
+    <li>An einem statisch bestimmten System M̄<sub>y</sub>, M̄<sub>t</sub> bestimmen. Wie Zustand 1 beim KGV, nur an der neuen Stelle.</li>
+    <li>Mit den <b>endgültigen</b> M<sub>y</sub>, M<sub>t</sub> überlagern, Torsionsanteil mit EI/GI<sub>T</sub>.</li>
+    <li>φ = Ergebnis / EI in rad. In Grad: · 180/π.</li>
+  </ol>
+  <p><b>SS 2016:</b> Ergebnis φ<sub>A</sub> = 2,33·10⁻³ rad = 0,133° (Lösungsblatt: ν = 0,133°) ✓.</p>
+  <div class="box warn"><b class="t">Ist der Punkt ein Gabellager?</b>Dort ist die Verdrehung um die Stabachse null, das ist ja X<sub>1</sub>. Gefragt wird deshalb immer an einem Gelenklager oder freien Ende.</div>
+
+  <h2 id="t6-4">4. Die Zusatzfrage „GI<sub>T</sub> → 0“</h2>
+  <p>Diese Frage kommt in 13 Klausuren, mit verschiedenen Worten: „HEA statt Rohr, I<sub>t</sub> ≈ 0“, „Laschen weggelassen“, „Torsionssteifigkeit wird null“. Es gibt genau drei Antworten:</p>
+  <table>
+    <tr><th>Fall</th><th>Woran erkennbar</th><th>Antwort</th><th>Klausuren</th></tr>
+    <tr><td><b>A</b></td><td>System statisch bestimmt</td><td>Schnittgrößen ändern sich nicht, nur die Verformungen werden größer</td><td>SS 18, SS 19, WS 19/20</td></tr>
+    <tr><td><b>B</b></td><td>X<sub>1</sub> ist ein Torsionsmoment und im Hauptsystem ist überall M<sub>t,0</sub> = 0</td><td>M<sub>t</sub> = 0 → X<sub>1</sub> = 0 → Lösung = Hauptsystem</td><td>SS 16, SS 20, SS 21, WS 21/22, WS 24/25, SS 25</td></tr>
+    <tr><td><b>C</b></td><td>Das Hauptsystem braucht Torsion für das Gleichgewicht (M<sub>t,0</sub> ≠ 0)</td><td>Das System wird kinematisch (versagt)</td><td>WS 22/23, WS 23/24</td></tr>
+  </table>
+  <div class="box merk"><b class="t">So entscheidest du in 30 Sekunden</b>Schau dir Zustand 0 an. Gibt es dort irgendwo ein M<sub>t,0</sub> ≠ 0 (z. B. die 30 kNm in WS 23/24)? Dann kann das System ohne Torsionssteifigkeit nicht im Gleichgewicht sein → kinematisch. Ist M<sub>t,0</sub> überall null (SS 2016)? Dann ist die Hauptsystem-Lösung die Antwort.</div>
+
+  <h2 id="t6-ue">Übungen Tag 6</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 6.1</span><span class="ti">Kragarmspitze WS 16/17</span></div>
+    <p>Endgültige Schnittgrößen (X<sub>1</sub> = M<sub>t,C</sub> = 1,31): Kragarm-Stäbe M<sub>y</sub> = −10 → 0 (je 1 m), M<sub>t</sub> = −10 im Stab B–K; A–B: M<sub>y</sub> 0 → −8,69 mit q = 2; B–C: M<sub>y</sub> −10 → 0 mit q = 2, M<sub>t</sub> = 1,31. EI = 15 233 kNm², EI/GI<sub>T</sub> = 1,638. Wähle als virtuelles System „Gabellager entfernen“ (wie im Lösungsblatt).</p>
+    <div class="ans"><label>Vertikalverformung Kragarmspitze [mm]</label><input class="n" data-ans="2.44" data-tol="0.03"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>Virtuell: Kraft 1 an der Spitze, Hauptsystem ohne Gabel (A, B, C Gelenklager): C = −1/3, A = −1/3, B = 5/3. M̄<sub>y</sub>: Kragarm −1 → 0 (je Stab), A–B 0 → −1, B–C −1 → 0. M̄<sub>t</sub> = −1 in B–K, sonst 0 (B–C bekommt kein M̄<sub>t</sub>, weil am Hauptsystem nichts gehalten wird).</p>
+      <p>EI·w = 1·(−1)(−10)·1·1,638 + ⅓·(−1)(−10)·1 + ⅓·(−1)(−10)·1 + [A–B: ⅓·(−8,69)·(−1)·3 + Parabel ⅓·2,25·(−1)·3] + [B–C: ⅓·(−10)·(−1)·3 + ⅓·2,25·(−1)·3] ≈ 37,2 kNm³</p>
+      <p>w = 37,2 / 15 233 = 2,44 mm (Lösungsblatt: 2,41 mm, gerundete Zwischenwerte).</p>
+    </div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 6.2</span><span class="ti">Welcher Fall?</span></div>
+    <p>Ordne zu: A = statisch bestimmt, B = Hauptsystem-Lösung, C = kinematisch. Tippe 1, 2 oder 3 (A = 1, B = 2, C = 3).</p>
+    <div class="ans"><label>SS 2016 (X<sub>1</sub> = M<sub>t,B</sub>, im Hauptsystem M<sub>t,0</sub> = 0)</label><input class="n" data-ans="2" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>WS 22/23 (Kragarm hängt nur über Torsion am Gabellager C)</label><input class="n" data-ans="3" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>WS 19/20 (Biegemomentengelenk, n = 0)</label><input class="n" data-ans="1" style="width:70px"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc6"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne die Verdrehung an A für SS 2016 mit dem Reduktionssatz und schick mir deine M̄-Verläufe.</div>
+</section>
+
+<!-- ===================== TAG 7 ===================== -->
+<section class="view" id="v-tag7">
+  <p class="small">Tag 7 · Mi 2.12.</p>
+  <h1>Einflusslinien und Probeklausur</h1>
+  <p class="lead">In Aufgabe 4 kam bisher keine Einflusslinie dran, aber in Aufgabe 1–3 („Einflusslinie zeichnen“, „Einflusslinie Verdrehung“). Die Idee ist dieselbe, deshalb hier kurz und am Trägerrost. Danach die Probeklausur.</p>
+  <ul class="toc">
+    <li><a href="#t7-1">1. Was ist eine Einflusslinie?</a></li>
+    <li><a href="#t7-2">2. Statisch bestimmt: gerade Linien</a></li>
+    <li><a href="#t7-3">3. Statisch unbestimmt: Biegelinie</a></li>
+    <li><a href="#t7-pk">Probeklausur</a></li>
+  </ul>
+
+  <h2 id="t7-1">1. Was ist eine Einflusslinie?</h2>
+  <p>Eine Schnittgröße oder Auflagerkraft hängt davon ab, <b>wo</b> eine Last steht. Die Einflusslinie (EL) zeigt für jeden Laststandort, wie groß die Größe wird, wenn dort eine Last <b>1</b> steht. Willst du eine echte Last P an der Stelle m: Größe = P · η(m).</p>
+  <div class="box merk"><b class="t">Prinzip von Müller-Breslau</b>Die EL einer Kraftgröße ist die <b>Biegelinie</b>, die entsteht, wenn du an der Stelle dieser Größe eine Verformung <b>−1</b> erzwingst (Lager absenken um 1, Knick 1 im Moment, Verdrillung 1 im Torsionsmoment).</div>
+
+  <h2 id="t7-2">2. Statisch bestimmt: gerade Linien</h2>
+  <p>Ist das System nach dem Lösen statisch bestimmt, bewegt es sich als <b>Starrkörperkette</b>. Die EL besteht aus geraden Stücken. Beispiel Hauptsystem WS 23/24, EL der Auflagerkraft C: Achse durch A und B ⟹ C = y/4 (y = Abstand der Last von der Linie A–B).</p>
+
+  <h2 id="t7-3">3. Statisch unbestimmt: Biegelinie</h2>
+  <p>Im echten System (mit Gabellager B) wird die EL gekrümmt. Mit KGV: η(m) = η<sub>0</sub>(m) + X<sub>1</sub>(m)·η<sub>1</sub>, wobei X<sub>1</sub>(m) = −δ<sub>m1</sub>/δ<sub>11</sub> selbst eine EL ist: die Biegelinie des Hauptsystems infolge X<sub>1</sub> = 1, geteilt durch −δ<sub>11</sub>.</p>
+  <div class="fig" style="position:relative;min-height:280px"><svg id="elsvg" style="position:absolute;inset:0;width:100%;height:100%"></svg></div>
+  <p class="cap">EL der Auflagerkraft C, Last wandert von J1 über J2 bis C (Abstand in m entlang des Weges). Grau gestrichelt: Hauptsystem (gerade Stücke). Rot: echtes System mit Gabellager B (gekrümmt).</p>
+  <div class="scroll"><table>
+    <tr><th>Laststelle</th><th class="n">s [m]</th><th class="n">η<sub>C</sub> Hauptsystem</th><th class="n">η<sub>C</sub> echt</th><th class="n">η<sub>Mt,B</sub> echt [m]</th></tr>
+    <tr><td>J1</td><td class="n">0</td><td class="n">0</td><td class="n">0,01</td><td class="n">−0,06</td></tr>
+    <tr><td>Mitte J1–J2</td><td class="n">2</td><td class="n">0,50</td><td class="n">0,16</td><td class="n">1,37</td></tr>
+    <tr><td>J2</td><td class="n">4</td><td class="n">1,00</td><td class="n">0,32</td><td class="n">2,70</td></tr>
+    <tr><td>Laststelle 5 kN</td><td class="n">7</td><td class="n">1,00</td><td class="n">0,71</td><td class="n">1,17</td></tr>
+    <tr><td>C</td><td class="n">9</td><td class="n">1,00</td><td class="n">1,00</td><td class="n">0</td></tr>
+  </table></div>
+  <p><b>Kontrolle mit der Klausur:</b> 5 kN bei s = 7 → C-Anteil 5·0,71 = 3,54. Die Gleichlast auf J1–J2 liefert ∫q·η ds = 1,29. Summe 4,83 kN = C aus dem Lösungsblatt ✓.</p>
+  <div class="box warn"><b class="t">In der Klausur gefragt sind meist</b>die Form (gerade oder gekrümmt, wo null, wo Knick) und ein bis zwei Ordinaten. Bei statisch bestimmten Systemen reichen Starrkörperbewegungen. Bei unbestimmten: η = Biegelinie infolge X = 1, normiert mit δ<sub>11</sub>.</div>
+
+  <h2 id="t7-pk">Probeklausur · 50 min</h2>
+  <div class="card">
+  <svg viewBox="0 0 460 260" role="img" aria-label="Grundriss Probeklausur">
+    <g font-family="Source Sans 3" font-size="15">
+      <line x1="80" y1="200" x2="360" y2="200" stroke="#1d2433" stroke-width="5"/>
+      <line x1="360" y1="200" x2="360" y2="50" stroke="#1d2433" stroke-width="5"/>
+      <line x1="360" y1="50" x2="80" y2="50" stroke="#1d2433" stroke-width="5"/>
+      <path d="M80,202 l-10,16 h20z" fill="none" stroke="#1d2433" stroke-width="2"/><path d="M66,170 v32 M94,170 v32 M66,202 h28" stroke="#1d2433" stroke-width="2.5" fill="none"/>
+      <path d="M360,48 l-10,-16 h20z" fill="none" stroke="#1d2433" stroke-width="2"/><path d="M80,48 l-10,-16 h20z" fill="none" stroke="#1d2433" stroke-width="2"/>
+      <rect x="80" y="190" width="280" height="4" fill="#c0392b" opacity=".5"/><text x="170" y="183" fill="#c0392b">q = 4 kN/m</text>
+      <circle cx="360" cy="125" r="8" fill="none" stroke="#c0392b" stroke-width="2"/><path d="M354,119 l12,12 M366,119 l-12,12" stroke="#c0392b" stroke-width="2"/><text x="374" y="130" fill="#c0392b">10 kN</text>
+      <text x="62" y="240">A (Gabellager)</text><text x="370" y="214">B</text><text x="370" y="44">C</text><text x="62" y="30">E</text>
+      <g fill="#5d6475"><text x="200" y="225">4 m</text><text x="320" y="95">1,5 m</text><text x="320" y="165">1,5 m</text><text x="200" y="70">4 m</text></g>
+      <path d="M220,200 l-10,-5 v10z M360,90 l-5,10 h10z M220,50 l10,-5 v10z" fill="#1d2433"/>
+    </g>
+  </svg>
+  <p>U-förmiger Trägerrost von oben. A Gabellager (Torsion um die Stabachse A–B), C und E Gelenklager. Abschreitrichtungen A → B → C → E. Quadratrohr 260×10, Stahl, ν = 0,3. Lasten: q = 4 kN/m auf A–B, 10 kN in der Mitte von B–C.</p>
+  <ol>
+    <li>Bestimme den Grad der statischen Unbestimmtheit.</li>
+    <li>Ermittle I<sub>y</sub> und I<sub>T</sub> (dünnwandig) und GI<sub>T</sub>/EI.</li>
+    <li>Ermittle Auflagerkräfte und Schnittgrößen nach dem KGV. Hinweis: X<sub>1</sub> = Torsionseinspannmoment an A.</li>
+    <li>Stelle M<sub>y</sub>, V<sub>z</sub>, M<sub>t</sub> grafisch dar.</li>
+    <li>Wie groß ist die Durchbiegung im Knoten B?</li>
+    <li>Was passiert, wenn GI<sub>T</sub> → 0?</li>
+  </ol>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">PK</span><span class="ti">Ergebnisse eintragen</span></div>
+    <div class="ans"><label>1) n</label><input class="n" data-ans="1" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>2) I<sub>T</sub> [cm⁴]</label><input class="n" data-ans="15625"><span class="fb"></span></div>
+    <div class="ans"><label>2) GI<sub>T</sub>/EI</label><input class="n" data-ans="0.579"><span class="fb"></span></div>
+    <div class="ans"><label>3) |X<sub>1</sub>| [kNm]</label><input class="n" data-ans="25.28" data-anysign data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>3) A [kN]</label><input class="n" data-ans="12.57" data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>3) C [kN]</label><input class="n" data-ans="18"><span class="fb"></span></div>
+    <div class="ans"><label>3) E [kN] (nach oben positiv)</label><input class="n" data-ans="-4.57" data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>3) |M<sub>t</sub>| in B–C [kNm]</label><input class="n" data-ans="18.29" data-anysign data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>5) w<sub>B</sub> [mm]</label><input class="n" data-ans="28.2" data-tol="0.03"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Musterlösung</summary><div>
+      <p><b>1)</b> a = 2 + 1 + 1 = 4, s = 3, k = 4 → n = 4 + 9 − 12 = 1.</p>
+      <p><b>2)</b> b<sub>m</sub> = 25 cm: I<sub>T</sub> = 25³ = 15 625 cm⁴, I<sub>y</sub> = ⅔·25³ = 10 417 cm⁴. GI<sub>T</sub>/EI = 15 625/(2,6·10 417) = 0,577 (mit G = 0,81·10⁸: 0,579). EI = 21 876 kNm², EI/GI<sub>T</sub> = 1,728.</p>
+      <p><b>3) Zustand 0</b> (A gelenkig): Achse A–E: C·4 = 16·2 + 10·4 ⟹ C = 18. Achse C–E: A·3 = 16·3 + 10·1,5 ⟹ A = 21. E = 26 − 18 − 21 = −13 kN. M<sub>y,0</sub>: A–B 0 → 52 (Parabel, Stich 8); B–C 0 → 7,5 → 0; C–E −52 → 0. M<sub>t,0</sub> = 52 in B–C (Eckregel an B und C).</p>
+      <p><b>Zustand 1</b> (Moment 1 an A um A–B): A = −1/3, E = 1/3, C = 0. M<sub>y,1</sub>: A–B 0 → −1,333; B–C 1 → 0,5 → 0; C–E 1,333 → 0. M<sub>t,1</sub>: A–B −1, B–C −1,333.</p>
+      <p>EI·δ<sub>10</sub> = −106,67 + 3,75 + 1,88 − 92,44 − 359,52 (Torsion) = −553,0. EI·δ<sub>11</sub> = 2,37 + 6,91 + 0,88 + 4,61 + 0,13 + 4,61 + 2,37 = 21,87. X<sub>1</sub> = 25,28 kNm.</p>
+      <p>A = 21 − 25,28/3 = 12,57 · C = 18 · E = −13 + 25,28/3 = −4,57 kN. Kontrolle 12,57 + 18 − 4,57 = 26 = 16 + 10 ✓.</p>
+      <p><b>4)</b> A–B: M<sub>y</sub> 0 → 18,29, max ≈ 19,8 bei x = 3,14 m; M<sub>t</sub> = −25,28. B–C: M<sub>y</sub> 25,28 → 20,14 → 0; M<sub>t</sub> = 18,29. C–E: M<sub>y</sub> −18,29 → 0. Eckregel an B: M<sub>t</sub>(A–B) = 25,28 = M<sub>y</sub>(B–C) ✓; M<sub>y</sub>(A–B) = 18,29 = M<sub>t</sub>(B–C) ✓.</p>
+      <p><b>5)</b> Reduktionssatz, virtuell Kraft 1 in B an einem statisch bestimmten System. EI·w<sub>B</sub> = 617 kNm³ → w<sub>B</sub> = 617/21 876 = 28,2 mm.</p>
+      <p><b>6)</b> Im Hauptsystem ist M<sub>t,0</sub> = 52 ≠ 0 (B–C) → ohne Torsionssteifigkeit kein Gleichgewicht → <b>System wird kinematisch</b> (Fall C).</p>
+    </div></details>
+  </div>
+  <div class="chat"><b>Heute im Chat:</b> Schick mir Fotos deiner kompletten Probeklausur, ich korrigiere wie Prof. Lang (Punkte pro Teilaufgabe).</div>
+</section>
+
+<!-- ===================== KARTEN ===================== -->
+<section class="view" id="v-karten">
+  <h1>Karteikarten</h1>
+  <p class="lead">Tippe auf die Karte zum Umdrehen. Täglich einmal durch.</p>
+  <div class="fc-wrap"><div class="fc" id="fc"><div class="side front" id="fcF"></div><div class="side back" id="fcB"></div></div></div>
+  <div class="fc-nav"><button class="ghost" id="fcPrev" aria-label="vorherige Karte">←</button><span class="small" id="fcN"></span><button class="ghost" id="fcNext" aria-label="nächste Karte">→</button><button class="ghost" id="fcShuf">Mischen</button></div>
+</section>
+
+</main>
+
+<script>
+{
+/* ---------- Exam table ---------- */
+const EX=[
+ ['Muster SS 16','Z-System, Gabellager C, Quadratrohr 260×10','p,k','Profil + W<sub>T</sub>; X<sub>1</sub> = C oder M<sub>t,C</sub>','A = 11,66 · B = 3,34 · C = 11,05 kN · M<sub>C</sub> = −28'],
+ ['SS 2016','Kreuz, Gabellager B, Kragarm 10 kN','k,v,g','KGV X<sub>1</sub> = M<sub>t,B</sub>; Verdrehung A; I<sub>t</sub> ≈ 0','A = 20,89 · B = 16,45 · C = −3,34 · M<sub>B</sub> = 6,64 · φ = 0,133°'],
+ ['WS 16/17','Kragarm-Winkel, Gabellager C','p,k,v','Quadratrohr 220×12,5; X<sub>1</sub> = M<sub>t,C</sub>; Kragarmspitze','X<sub>1</sub> = 1,30 · w = 2,41 mm'],
+ ['SS 2017','Gabellager A, Kragarm 5 kN','p,k,v','Quadratrohr 260×10; X<sub>1</sub> = M<sub>t,A</sub>; w unter Last','δ = 1,4 cm'],
+ ['WS 17/18','Gabellager B, Kragarm 10 kN','k,v','KGV; w unter Last','δ = 72 mm'],
+ ['SS 2018','zwei Winkel, Symmetrie','p,k,v,s,g','HEB 200 + Laschen 185×15; w; Laschen weg','I<sub>T</sub> = 11 865 · f = 2,68 cm · stat. bestimmt'],
+ ['WS 18/19','räumliches Stabwerk (Ausnahme)','k','B; N…M<sub>t</sub>; Spannungen','B = 3,91 kN · σ = 39,37 · τ = 5,76 kN/cm²'],
+ ['SS 2019','Z-System mit M<sub>T</sub>-Lasten','g','Verläufe; GI<sub>T</sub> = 0,7·EI','ändern sich nicht'],
+ ['WS 19/20','Biegemomentengelenk','v,g','n mit Formel; Auflager; Verdrehung A; anderes Profil','n = 0 · A = 20 · B = 66,33 · C = 45,33 · D = 18,33'],
+ ['SS 2020','Dreieck, HEB 200 + Laschen','p,s,g','Profil; Symmetrie; Laschen weg','I<sub>T</sub> = 9 288 · Einfeldträger bei I<sub>T</sub> = 0'],
+ ['WS 20/21','Quadratrohr 300×16, 4 Lager','k','Auflager A–D; Verläufe','A = 8,25 · B = 44,98 · C = 23,03 · D = 33,75'],
+ ['SS 2021','Zickzack, HEB 220 + Laschen','p,s,g','Profil; Symmetrie; Laschen weg','I<sub>T</sub> = 14 222 · M<sub>T</sub> = 0 → stat. bestimmt'],
+ ['WS 21/22','Rost mit 5 Lagern, HEB 220 + Laschen','p,s,g','wie WS 24/25','I<sub>y</sub> = 9 789 · I<sub>T</sub> = 14 222'],
+ ['SS 2022','Rechteck mit Kragarmen','s','GI<sub>T</sub>/EI = 0, ∞, 0,5','siehe Tag 5'],
+ ['WS 22/23','Gabellager C, Kragarm 5 kN','k,g','X<sub>1</sub> = C; GI<sub>T</sub> = 0','kinematisch'],
+ ['SS 2023','Gabellager A, Quadratrohr 300×10','p,k,v','Profil; X<sub>1</sub> = Einspannmoment A; f','I<sub>T</sub> = 24 389 · x<sub>1</sub> = −11,64 · f = 9 mm'],
+ ['WS 23/24','wie WS 22/23, Gabellager B','k,g','X<sub>1</sub> = M<sub>t,B</sub>; GI<sub>T</sub> = 0','A = 5,61 · B = 2,57 · C = 4,83 · M<sub>T,B</sub> = −16,7'],
+ ['SS 2024','Rohrleitung mit Feder','k,v','Last aus Flüssigkeit; KGV; Verdrehung Ende','q = 0,1 kN/m · φ = −2,5·10⁻⁶'],
+ ['WS 24/25','= WS 21/22','p,s,g','Profil; Symmetrie; Laschen weg','I<sub>y</sub> = 9 789 · I<sub>t</sub> = 14 222'],
+ ['SS 2025','Kreuz wie SS 16, Quadratrohr 250×10','k,v,g','X<sub>1</sub> = M<sub>t,A</sub>; Verdrehung B; HEA 260','x = −4,734 · φ<sub>B</sub> = −0,0475°'],
+ ['WS 25/26','Quadrat, Last an freier Ecke','v,g','Verläufe; EI·w<sub>A</sub>; Laschen weg','EI·w = 680 · ändern sich nicht'],
+ ['SS 2026','Gabellager A, Kragarm C, 3 Lager','k,v,g','Auflager nach KGV; Verdrehung C; GI<sub>T</sub> = 0','eigene Lösung (unten): X<sub>1</sub> = 225,9 kNm · A = 3,53 · D = 10,25 · F = 126,22 kN · φ<sub>C</sub> = 3,45°']
+];
+const PL={p:['p','Profil'],k:['k','KGV'],v:['v','Verf.'],s:['s','Sym.'],g:['','GI<sub>T</sub>']};
+document.getElementById('extab').innerHTML=EX.map(r=>'<tr><td data-l="Klausur"><b>'+r[0]+'</b></td><td data-l="System">'+r[1]+'</td><td data-l="Aufgaben">'+r[2].split(',').map(k=>'<span class="pill '+PL[k][0]+'">'+PL[k][1]+'</span>').join('')+'<br>'+r[3]+'</td><td data-l="Ergebnis">'+r[4]+'</td></tr>').join('');
+const BARS=[['Trägerrost',21],['GI<sub>T</sub>-Zusatzfrage',13],['KGV (statisch unbestimmt)',14],['Verformung / Verdrehung',11],['Profilwerte (Bredt)',9],['Symmetrie',6]];
+document.getElementById('bars').innerHTML=BARS.map(b=>'<div class="row"><span>'+b[0]+'</span><div class="bar" style="width:'+(b[1]/22*100)+'%"></div><span class="num">'+b[1]+'/22</span></div>').join('');
+
+/* ---------- Number checks ---------- */
+function parseNum(s){
+  s=String(s).trim().replace(/\s/g,'').replace(',', '.').replace('−','-');
+  if(s==='')return NaN;
+  if(/^[-+]?\d*\.?\d+\/[-+]?\d*\.?\d+$/.test(s)){const [a,b]=s.split('/');return parseFloat(a)/parseFloat(b);}
+  return Number(s);
+}
+function near(v,ans,tol){
+  if(isNaN(v))return false;
+  if(ans===0)return Math.abs(v)<1e-6;
+  return Math.abs(v-ans)<=Math.abs(ans)*tol+1e-9;
+}
+document.querySelectorAll('.chk-btn').forEach(b=>b.addEventListener('click',()=>{
+  b.closest('.ex').querySelectorAll('input.n').forEach(inp=>{
+    let v=parseNum(inp.value);const a=parseNum(inp.dataset.ans);
+    const tol=inp.dataset.tol?parseFloat(inp.dataset.tol):0.012;
+    if(inp.hasAttribute('data-anysign')&&!isNaN(v))v=Math.abs(v)*Math.sign(a||1);
+    const ok=near(v,a,tol);
+    inp.classList.toggle('ok',ok);inp.classList.toggle('bad',!ok);
+    const fb=inp.parentElement.querySelector('.fb');
+    if(fb){fb.textContent=ok?'✓':(isNaN(v)?'?':'✗');fb.className='fb '+(ok?'ok':'bad');}
+  });
+}));
+
+/* ---------- Multiple choice ---------- */
+const MC={
+ mc1:[
+  {q:'Welche Schnittgrößen treten im Trägerrost auf?',o:['N, V<sub>z</sub>, M<sub>y</sub>','V<sub>z</sub>, M<sub>y</sub>, M<sub>t</sub>','V<sub>y</sub>, M<sub>z</sub>, M<sub>t</sub>','alle sechs'],c:1,w:'Lasten nur in z, Stäbe in der x-y-Ebene: es bleiben Querkraft V<sub>z</sub>, Biegemoment M<sub>y</sub> und Torsionsmoment M<sub>t</sub>.'},
+  {q:'Was hält ein Gabellager?',o:['nur die Kraft in z','Kraft in z und das Torsionsmoment um die Stabachse','Kraft in z und das Biegemoment','alle drei Größen'],c:1,w:'Die „Gabel“ verhindert, dass sich der Stab um seine eigene Achse verdreht. Biegeverdrehung bleibt frei.'},
+  {q:'Warum steht „3·k“ in der Formel n = a + 3s − 3k − r?',o:['Jeder Knoten hat drei Lager','Je Knoten gibt es drei Gleichgewichtsbedingungen: ΣF<sub>z</sub>, ΣM<sub>x</sub>, ΣM<sub>y</sub>','Jeder Stab hat drei Knoten','Weil der Raum drei Dimensionen hat'],c:1,w:'Beim Trägerrost sind pro Knoten drei Gleichungen nicht automatisch erfüllt: Kräfte in z und Momente um x und y.'},
+  {q:'Ein Doppelpfeil zeigt entlang des Stabes. Was ist das?',o:['Biegemoment','Torsionsmoment','Querkraft','Normalkraft'],c:1,w:'Momentenvektor in Stabrichtung = Drehung um die Stabachse = Torsion.'}
+ ],
+ mc2:[
+  {q:'Wie verläuft M<sub>t</sub> zwischen zwei Knoten (ohne Torsionslast)?',o:['linear','konstant','parabelförmig','null'],c:1,w:'Es gibt keine verteilten Torsionsmomente, also ist M<sub>t</sub> abschnittsweise konstant.'},
+  {q:'An einer unbelasteten 90°-Ecke hat Stab 1 am Eckpunkt M<sub>y</sub> = 12 kNm. Was folgt für Stab 2?',o:['M<sub>y</sub> = 12','|M<sub>t</sub>| = 12','V<sub>z</sub> = 12','nichts'],c:1,w:'Eckregel: Das Biegemoment des einen Stabes ist das Torsionsmoment des anderen.'},
+  {q:'Warum wählt man die Momentenachse durch zwei Lager?',o:['Weil es so im Skript steht','Weil deren Kräfte keinen Hebel haben, es bleibt eine Unbekannte','Weil dann M<sub>t</sub> = 0 ist','Weil das genauer ist'],c:1,w:'Liegt das Lager auf der Drehachse, ist sein Hebelarm null.'}
+ ],
+ mc3:[
+  {q:'Was ist A<sub>m</sub> in der Bredtschen Formel?',o:['Die Querschnittsfläche','Die von der Mittellinie umschlossene Fläche','Die Außenfläche b·h','Die Stegfläche'],c:1,w:'A<sub>m</sub> ist die Fläche innerhalb der Wand-Mittellinie, nicht die Blechfläche.'},
+  {q:'Warum zählt der Steg des HEB bei I<sub>T</sub> nicht?',o:['Er ist zu dünn','Er teilt die Zelle, trägt aber kaum Schubfluss (Hinweis der Aufgabe: wirkungslos)','Er liegt in der Schwerachse','Er ist aus anderem Stahl'],c:1,w:'Die Aufgabe sagt ausdrücklich: einzelliger Hohlkasten aus Flanschen und Laschen.'},
+  {q:'Welches GI<sub>T</sub>/EI hat ein Stahl-Quadratrohr (dünnwandig)?',o:['≈ 0,38','≈ 0,58','≈ 1,0','≈ 1,5'],c:1,w:'I<sub>T</sub>/I<sub>y</sub> = 1,5 und G/E = 1/2,6 → 1,5/2,6 = 0,58.'}
+ ],
+ mc4:[
+  {q:'Welcher Faktor steht vor dem Torsionsintegral, wenn du alles mit EI multiplizierst?',o:['GI<sub>T</sub>/EI','EI/GI<sub>T</sub>','1','G/E'],c:1,w:'EI·∫M<sub>t</sub>M̄<sub>t</sub>/GI<sub>T</sub> = (EI/GI<sub>T</sub>)·∫M<sub>t</sub>M̄<sub>t</sub>.'},
+  {q:'δ<sub>11</sub> ist …',o:['immer positiv','immer negativ','manchmal null','vom Lastfall abhängig'],c:0,w:'δ<sub>11</sub> enthält nur Quadrate, ist also immer positiv. Ist es bei dir negativ, steckt ein Rechenfehler drin.'},
+  {q:'Wie prüfst du deine Auflagerkräfte am Ende?',o:['ΣF<sub>z</sub> = Summe aller Lasten','A = B','X<sub>1</sub> &gt; 0','gar nicht'],c:0,w:'Die Summe der Auflagerkräfte muss die Summe aller Lasten ergeben. X<sub>1</sub> ändert diese Summe nie.'}
+ ],
+ mc5:[
+  {q:'Symmetrische Last: Welche Größen sind in der Symmetrieachse null?',o:['M<sub>y</sub>','V<sub>z</sub> und M<sub>t</sub>','alle','keine'],c:1,w:'Bei Symmetrie bleibt in der Achse nur M<sub>y</sub>. V<sub>z</sub> und M<sub>t</sub> wechseln beim Spiegeln das Vorzeichen und sind deshalb null.'},
+  {q:'Antimetrische Last: Welches Ersatzlager setzt du in der Achse?',o:['Einspannung','Gabellager (w = 0, M<sub>y</sub> = 0, M<sub>t</sub> ≠ 0)','gar keins','Feder'],c:1,w:'w = 0 und Verdrillung gesperrt, Biegung frei: das ist genau ein Gabellager.'},
+  {q:'Eine Last 10 kN steht genau auf der Symmetrieachse. Wozu gehört sie?',o:['zum symmetrischen Lastfall','zum antimetrischen Lastfall','halb/halb','zu keinem'],c:0,w:'Eine Last auf der Achse ist ihr eigenes Spiegelbild, also rein symmetrisch.'}
+ ],
+ mc6:[
+  {q:'Durchbiegung im statisch unbestimmten System: Was überlagerst du?',o:['M<sub>0</sub> mit M̄ am Hauptsystem','die endgültigen M mit M̄ an einem beliebigen statisch bestimmten System','M<sub>1</sub> mit M̄','nur die Torsionsmomente'],c:1,w:'Reduktionssatz: endgültig × virtuell (statisch bestimmt). M<sub>0</sub> × M̄ gibt nur die Verformung des Hauptsystems.'},
+  {q:'Muss das virtuelle System dasselbe Hauptsystem wie beim KGV sein?',o:['Ja, immer','Nein, jedes statisch bestimmte System ist erlaubt','Nur bei Symmetrie','Nur bei Torsion'],c:1,w:'Genau das ist der Witz am Reduktionssatz. Wähle das System mit den einfachsten M̄.'},
+  {q:'Im Hauptsystem ist M<sub>t,0</sub> = 30 kNm in einem Stab. Was passiert bei GI<sub>T</sub> → 0?',o:['nichts','X<sub>1</sub> = 0','Das System wird kinematisch','M<sub>t</sub> verdoppelt sich'],c:2,w:'Das Gleichgewicht braucht Torsion. Ohne Torsionssteifigkeit geht das nicht mehr.'}
+ ]
+};
+Object.entries(MC).forEach(([id,qs])=>{
+  const host=document.getElementById(id);
+  qs.forEach(q=>{
+    const d=document.createElement('div');d.className='mc';
+    d.innerHTML='<div class="q">'+q.q+'</div>'+q.o.map((o,i)=>'<button data-i="'+i+'">'+o+'</button>').join('')+'<div class="why">'+q.w+'</div>';
+    d.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const i=+b.dataset.i;b.classList.add(i===q.c?'ok':'bad');
+      if(i!==q.c)d.querySelectorAll('button')[q.c].classList.add('ok');
+      d.classList.add('done');
+    }));
+    host.appendChild(d);
+  });
+});
+
+/* ---------- Influence line chart ---------- */
+const S=[0,1,2,3,4,5,6,7,8,9],H=[0,.25,.5,.75,1,1,1,1,1,1],R=[.014,.081,.157,.239,.324,.440,.569,.708,.852,1];
+const el=document.getElementById('elsvg');
+function drawEL(){
+  const W=el.clientWidth||600,Ht=el.clientHeight||280,m={l:46,r:16,t:16,b:40};
+  const x=s=>m.l+s/9*(W-m.l-m.r), y=v=>Ht-m.b-v*(Ht-m.t-m.b);
+  let g='';
+  [0,.5,1].forEach(v=>{g+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="#e2ded4"/><text x="'+(m.l-8)+'" y="'+(y(v)+5)+'" text-anchor="end" font-size="13" fill="#5d6475">'+String(v).replace('.',',')+'</text>';});
+  [[0,'J1'],[4,'J2'],[7,'5 kN'],[9,'C']].forEach(([s,t])=>{g+='<line x1="'+x(s)+'" x2="'+x(s)+'" y1="'+y(0)+'" y2="'+(y(0)+6)+'" stroke="#1d2433"/><text x="'+x(s)+'" y="'+(y(0)+22)+'" text-anchor="middle" font-size="13" fill="#1d2433">'+t+'</text>';});
+  const pl=a=>S.map((s,i)=>x(s)+','+y(a[i])).join(' ');
+  g+='<polyline points="'+pl(H)+'" fill="none" stroke="#5d6475" stroke-width="2" stroke-dasharray="6 5"/>';
+  g+='<polyline points="'+pl(R)+'" fill="none" stroke="#c0392b" stroke-width="3"/>';
+  S.forEach((s,i)=>{g+='<circle cx="'+x(s)+'" cy="'+y(R[i])+'" r="3" fill="#c0392b"/>';});
+  if(W>420)g+='<text x="'+(x(4.3))+'" y="'+(y(1)-4)+'" font-size="13" fill="#5d6475">Hauptsystem</text><text x="'+x(5.2)+'" y="'+(y(.44)+20)+'" font-size="13" fill="#c0392b">mit Gabellager B</text>';
+  el.innerHTML=g;
+}
+const elObs=new ResizeObserver(drawEL);elObs.observe(el);
+
+/* ---------- Flashcards ---------- */
+let cards=[
+ ['Schnittgrößen im Trägerrost','V<sub>z</sub>, M<sub>y</sub>, M<sub>t</sub><br><small>N = V<sub>y</sub> = M<sub>z</sub> = 0</small>'],
+ ['Grad der statischen Unbestimmtheit','n = a + 3s − 3k − r'],
+ ['Gelenklager / Gabellager / Einspannung: Anzahl Reaktionen','1 / 2 / 3'],
+ ['Eckregel','An der 90°-Ecke: M<sub>y</sub> des einen Stabes = M<sub>t</sub> des anderen. V<sub>z</sub> läuft durch.'],
+ ['Knoten mit Abzweig','Sprung im M<sub>y</sub> des durchlaufenden Stabes = M<sub>t</sub> des Abzweigs'],
+ ['Arbeitssatz Trägerrost','EI·δ = ∫M·M̄ dx + (EI/GI<sub>T</sub>)·∫M<sub>t</sub>·M̄<sub>t</sub> dx'],
+ ['2. Bredtsche Formel','I<sub>T</sub> = 4A<sub>m</sub>² / ∮ ds/t'],
+ ['Quadratrohr dünnwandig','I<sub>T</sub> = t·b<sub>m</sub>³ · I<sub>y</sub> = ⅔·t·b<sub>m</sub>³ · W<sub>T</sub> = 2A<sub>m</sub>t'],
+ ['G aus E','G = E / (2(1+ν)) = E/2,6 für Stahl'],
+ ['Symmetrie: in der Achse null?','V<sub>z</sub> = 0, M<sub>t</sub> = 0 · Ersatzlager: in z verschiebliche Einspannung'],
+ ['Antimetrie: in der Achse null?','M<sub>y</sub> = 0, w = 0 · Ersatzlager: Gabellager'],
+ ['Reduktionssatz','endgültige Schnittgrößen × virtuelle 1 an beliebigem statisch bestimmten System'],
+ ['GI<sub>T</sub> → 0: drei Antworten','A: stat. bestimmt → keine Änderung · B: M<sub>t,0</sub> = 0 → Hauptsystem-Lösung · C: M<sub>t,0</sub> ≠ 0 → kinematisch'],
+ ['Verdrehung der Stabachse','virtuelles Moment 1 um die Stabachse (Doppelpfeil längs)'],
+ ['Müller-Breslau','EL einer Kraftgröße = Biegelinie bei erzwungener Verformung −1 an dieser Stelle']
+];
+let ci=0;const fc=document.getElementById('fc');
+function showCard(){fc.classList.remove('flip');document.getElementById('fcF').innerHTML=cards[ci][0];document.getElementById('fcB').innerHTML=cards[ci][1];document.getElementById('fcN').textContent=(ci+1)+' / '+cards.length;}
+fc.addEventListener('click',()=>fc.classList.toggle('flip'));
+document.getElementById('fcNext').onclick=()=>{ci=(ci+1)%cards.length;showCard();};
+document.getElementById('fcPrev').onclick=()=>{ci=(ci-1+cards.length)%cards.length;showCard();};
+document.getElementById('fcShuf').onclick=()=>{for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}ci=0;showCard();};
+showCard();
+
+/* ---------- Plan ---------- */
+const DAYS=[
+ ['26.11.','Do','Tag 1 · Grundlagen','Schnittgrößen, Lager, Doppelpfeile, Unbestimmtheit','tag1'],
+ ['27.11.','Fr','Tag 2 · Statisch bestimmt','Achsen-Trick, Eckregel, Verläufe, Hauptsystem WS 23/24','tag2'],
+ ['28.11.','Sa','Tag 3 · Profilwerte','Bredt, Quadratrohr, verstärktes HEB, GI<sub>T</sub>/EI','tag3'],
+ ['29.11.','So','Tag 4 · KGV','WS 23/24 komplett, WS 22/23, SS 2016','tag4'],
+ ['30.11.','Mo','Tag 5 · Symmetrie','Last zerlegen, Ersatzlager, SS 2022','tag5'],
+ ['1.12.','Di','Tag 6 · Verformung & GI<sub>T</sub>','Reduktionssatz, Verdrehung, Zusatzfrage','tag6'],
+ ['2.12.','Mi','Tag 7 · Einflusslinien & Probeklausur','Müller-Breslau, Probeklausur 50 min','tag7'],
+ ['3.–7.12.','','Training','Jeden Tag eine Aufgabe 4 auf Zeit (50 min), Karteikarten','klausuren']
+];
+let prog={};try{prog=JSON.parse(localStorage.getItem('tr-prog')||'{}');}catch(e){}
+function renderDays(){
+  const h=document.getElementById('days');h.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const e=document.createElement('div');e.className='day'+(prog[i]?' done':'');
+    e.innerHTML='<div class="dt">'+(d[1]?'<b>'+d[1]+'</b>':'')+d[0]+'</div><div><div class="tt">'+d[2]+'</div><div class="ds">'+d[3]+'</div></div><div style="display:flex;gap:8px;align-items:center"><a class="go" href="#'+d[4]+'">Öffnen</a><input type="checkbox" class="chk" '+(prog[i]?'checked':'')+' aria-label="erledigt"></div>';
+    e.querySelector('input').addEventListener('change',ev=>{prog[i]=ev.target.checked;try{localStorage.setItem('tr-prog',JSON.stringify(prog));}catch(_){}renderDays();renderCount();});
+    h.appendChild(e);
+  });
+}
+function renderCount(){
+  const days=Math.max(0,Math.ceil((new Date('2026-12-08T08:00:00')-new Date())/864e5));
+  const done=Object.values(prog).filter(Boolean).length;
+  document.getElementById('count').innerHTML='<div><b>'+days+'</b><span>Tage bis zur Klausur</span></div><div style="background:#2e8b57"><b>'+done+' / 8</b><span>Etappen erledigt</span></div>';
+}
+renderDays();renderCount();
+
+/* ---------- Routing ---------- */
+function route(){
+  let h=(location.hash||'#start').slice(1),view=h,anchor=null;
+  const m=h.match(/^t(\d)-/);if(m){view='tag'+m[1];anchor=h;}
+  if(!document.getElementById('v-'+view))view='start';
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
+  document.querySelectorAll('#tabs a').forEach(a=>{const on=a.getAttribute('href')==='#'+view;a.classList.toggle('on',on);if(on)a.scrollIntoView({block:'nearest',inline:'nearest'});});
+  if(view==='tag7')drawEL();
+  if(anchor){const e=document.getElementById(anchor);if(e)setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),30);}
+  else window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);route();
+}
+</script>
+<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));}</script>
+</body>
+</html>
