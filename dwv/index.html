@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Drehwinkel">
+<meta name="theme-color" content="#f6f4ef">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Drehwinkelverfahren in 7 Tagen – Baustatik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,wght@0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: ruhiges Lernheft, wie die AWGV- und Trägerrost-Plattform
+   IDEA: Aufgabenblatt + Musterlösung von Prof. Lang
+   PICTURE: Rahmen-Skizzen, Drehwinkel als grüne Pfeile
+   COLOUR/TYPE: Source Serif/Sans; rot = Lasten/Momente, grün = Drehwinkel, blau = Merksätze
+   LAYOUT: eine Spalte, Tabs, Übungen mit Prüf-Knopf */
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#1d2433; --muted:#5d6475; --line:#e2ded4;
+  --accent:#1f5f8b; --accent-soft:#e3eef6;
+  --force:#c0392b; --force-soft:#fbeae7;
+  --disp:#2e8b57; --disp-soft:#e6f4ec;
+  --warn:#b7791f; --warn-soft:#fdf3e1;
+  --ok:#2e8b57; --bad:#c0392b; --tor:#6b4fbb; --tor-soft:#f1eefc;
+  --r:12px;
+}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Source Sans 3",system-ui,sans-serif;overflow-x:clip}
+html{scroll-padding-top:110px}
+a{color:var(--accent)}
+header.top{position:sticky;top:0;z-index:10;background:rgba(246,244,239,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.topin{max-width:860px;margin:0 auto;padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-family:"Source Serif 4",serif;font-weight:600;font-size:19px;margin-right:auto}
+.brand small{display:block;font:400 13px "Source Sans 3";color:var(--muted)}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;max-width:100%;padding-bottom:2px}
+nav.tabs a{flex:none;white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 11px;border-radius:999px;font-size:15px;border:1px solid var(--line);background:#fff}
+nav.tabs a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+main{max-width:860px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+section.view{display:none}
+section.view.on{display:block}
+h1{font-family:"Source Serif 4",serif;font-weight:600;font-size:30px;line-height:1.2;margin:8px 0 6px}
+h2{font-family:"Source Serif 4",serif;font-weight:600;font-size:23px;margin:34px 0 8px;padding-top:6px}
+h3{font-size:18px;margin:22px 0 6px}
+p{margin:8px 0}
+.lead{color:var(--muted);font-size:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:14px 0}
+.box{border-radius:var(--r);padding:14px 16px;margin:14px 0;border-left:5px solid}
+.box b.t{display:block;margin-bottom:4px}
+.merk{background:var(--accent-soft);border-color:var(--accent)} .merk b.t{color:var(--accent)}
+.warn{background:var(--warn-soft);border-color:var(--warn)} .warn b.t{color:var(--warn)}
+.hb{background:var(--tor-soft);border-color:var(--tor)} .hb b.t{color:var(--tor)}
+.f{color:var(--force);font-weight:600}
+.d{color:var(--disp);font-weight:600}
+.mono{font-family:"JetBrains Mono",monospace;font-size:.92em}
+.eq{font-family:"Source Serif 4",serif;font-style:italic;font-size:19px;text-align:center;margin:12px 0;overflow-x:auto}
+.eq .up{font-style:normal}
+sub,sup{font-size:.7em}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:16px}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere;hyphens:auto}
+th{background:#faf8f3;font-weight:600}
+td.n,th.n{text-align:right;white-space:nowrap}
+.scroll{overflow-x:auto}
+svg{max-width:100%;height:auto;display:block;margin:6px auto}
+.cap{font-size:14px;color:var(--muted);text-align:center;margin-top:2px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
+.steps li{counter-increment:s;position:relative;padding:6px 0 6px 40px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.ex{background:#fff;border:2px solid var(--ink);border-radius:var(--r);padding:16px 18px;margin:18px 0}
+.ex .h{display:flex;gap:8px;align-items:baseline;margin-bottom:6px;flex-wrap:wrap}
+.ex .tag{background:var(--ink);color:#fff;border-radius:6px;padding:1px 8px;font-size:13px;font-weight:700}
+.ex .ti{font-weight:700}
+.ans{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0}
+.ans label{min-width:150px;flex:1 1 220px}
+input.n{font:inherit;font-size:16px;width:120px;padding:7px 8px;border:1.5px solid var(--line);border-radius:8px;background:#fdfcf9}
+input.n.ok{border-color:var(--ok);background:var(--disp-soft)}
+input.n.bad{border-color:var(--bad);background:var(--force-soft)}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;padding:8px 14px;font-weight:600;min-height:40px}
+button.ghost{background:#fff;color:var(--ink)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.fb{font-size:15px;margin-left:4px}
+.fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+details{margin:10px 0;border:1px solid var(--line);border-radius:10px;background:#fbfaf6}
+details summary{cursor:pointer;padding:9px 13px;font-weight:600;color:var(--accent)}
+details > div{padding:4px 14px 12px}
+.mc{margin:12px 0;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+.mc .q{font-weight:600;margin-bottom:8px}
+.mc button{display:block;width:100%;text-align:left;margin:6px 0;background:#fdfcf9;color:var(--ink);border:1.5px solid var(--line);font-weight:400}
+.mc button.ok{border-color:var(--ok);background:var(--disp-soft)}
+.mc button.bad{border-color:var(--bad);background:var(--force-soft)}
+.mc .why{display:none;font-size:15px;color:var(--muted);margin-top:4px}
+.mc.done .why{display:block}
+.days{display:grid;gap:10px}
+.day{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.day .dt{font-weight:700;font-size:14px;color:var(--muted);text-align:center;line-height:1.2;min-width:52px}
+.day .dt b{display:block;font-size:20px;color:var(--ink)}
+.day .tt{font-weight:600}
+.day .ds{font-size:15px;color:var(--muted)}
+.day a.go{font-size:14px;text-decoration:none;border:1.5px solid var(--ink);border-radius:999px;padding:4px 11px;color:var(--ink);white-space:nowrap}
+.day.done{background:var(--disp-soft);border-color:#bfe0cc}
+.chk{width:22px;height:22px;accent-color:var(--ok)}
+.count{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.count div{background:var(--ink);color:#fff;border-radius:var(--r);padding:10px 16px}
+.count b{font-size:26px;display:block;line-height:1.1}
+.count span{font-size:14px;opacity:.85}
+.bars div.row{display:grid;grid-template-columns:13em minmax(0,1fr) 3.5em;gap:8px;align-items:center;margin:6px 0;font-size:15px}
+.bars .bar{height:16px;border-radius:4px;background:var(--accent)}
+.bars .num{text-align:right;font-weight:600}
+.fc-wrap{perspective:1000px;margin:16px auto;max-width:520px}
+.fc{position:relative;height:270px;transition:transform .45s;transform-style:preserve-3d;cursor:pointer}
+.fc.flip{transform:rotateY(180deg)}
+.fc .side{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:center;text-align:center;border:1px solid var(--line);box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.fc .front{background:#fff;font-size:20px;font-weight:600}
+.fc .back{background:var(--ink);color:#fff;transform:rotateY(180deg);font-size:17px}
+.fc-nav{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap}
+.small{font-size:14px;color:var(--muted)}
+.chat{background:var(--ink);color:#fff;border-radius:var(--r);padding:14px 18px;margin:22px 0}
+.chat b{color:#9fd3ff}
+.toc{columns:2;font-size:15px;padding-left:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:13px;font-weight:600;background:var(--accent-soft);color:var(--accent);margin:1px 2px;white-space:nowrap}
+.pill.k{background:var(--force-soft);color:var(--force)}
+.pill.p{background:var(--tor-soft);color:var(--tor)}
+.pill.v{background:var(--disp-soft);color:var(--disp)}
+.pill.s{background:var(--warn-soft);color:var(--warn)}
+@media (max-width:600px){.toc{columns:1}h1{font-size:26px}.eq{font-size:17px}.two{grid-template-columns:1fr}
+  .bars div.row{grid-template-columns:9em minmax(0,1fr) 3em}
+  table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:6.5em}.stack td::before{content:attr(data-l);float:inline-start;width:6em;margin-inline-start:-6.5em;font-weight:600;color:var(--muted)}}
+@media (min-width:768px){
+  .topin,main{max-width:1000px}
+  html,body{font-size:18px}
+  nav.tabs a{padding:9px 15px;font-size:16px}
+  input.n{width:140px;padding:10px}
+  .mc button{padding:12px 14px}
+  .fc{height:320px}
+}
+@media (prefers-reduced-motion:reduce){.fc{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2433"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b57"/></marker>
+  </defs>
+</svg>
+<header class="top"><div class="topin">
+  <div class="brand">Drehwinkelverfahren in 7 Tagen<small>Baustatik III · Aufgabe 3 · Klausur 8.12.</small></div>
+  <nav class="tabs" id="tabs">
+    <a href="#start">Plan</a>
+    <a href="#klausuren">Klausuren</a>
+    <a href="#merkzettel">Merkzettel</a>
+    <a href="#tag1">Tag 1</a>
+    <a href="#tag2">Tag 2</a>
+    <a href="#tag3">Tag 3</a>
+    <a href="#tag4">Tag 4</a>
+    <a href="#tag5">Tag 5</a>
+    <a href="#tag6">Tag 6</a>
+    <a href="#tag7">Tag 7</a>
+    <a href="#karten">Karten</a>
+  </nav>
+</div></header>
+
+<main>
+
+<!-- ===================== START ===================== -->
+<section class="view" id="v-start">
+  <h1>Dein Plan für Aufgabe 3</h1>
+  <p class="lead">Aufgabe 3 ist in allen 22 Altklausuren das Drehwinkelverfahren: 50–55 Minuten, 27–31 % der Punkte. Das Verfahren kennst du schon. Hier geht es darum, es klausursicher zu machen: richtige Steifigkeiten, richtige Vorzeichen, schnelle Lösung mit dem Taschenrechner. Jeden Tag ca. 1 h, parallel zu den Trägerrosten.</p>
+  <div class="count" id="count"></div>
+  <div class="days" id="days"></div>
+
+  <h2>So läuft jeder Lerntag</h2>
+  <ol class="steps">
+    <li><b>Lesen &amp; skizzieren (≈ 15 min).</b> System abzeichnen, Freiheitsgrade φ grün einkreisen, Stäbe nach Typ markieren (k, k′, 0).</li>
+    <li><b>Rechnen (≈ 35 min).</b> Übungen auf Papier, dann hier eintippen und prüfen. Den Lösungsweg erst aufklappen, wenn du festhängst.</li>
+    <li><b>Im Chat besprechen (≈ 5 min).</b> Foto deiner Rechnung schicken, ich korrigiere.</li>
+    <li><b>Karteikarten (≈ 5 min).</b></li>
+  </ol>
+
+  <h2>Was in Aufgabe 3 drankommt</h2>
+  <div class="bars" id="bars"></div>
+  <p class="small">Auszählung aus allen 22 Klausuren in deinem Drive-Ordner „Baustatik 3 / Klausuren“ (Musterklausur SS 2016 bis SS 2026) und deiner Klausurübersicht. Details im Tab „Klausuren“.</p>
+
+  <div class="box merk"><b class="t">Das typische Klausur-Gerüst</b>
+  <b>1)</b> Grad der statischen Unbestimmtheit n → <b>2)</b> Begründen, warum unverschieblich (oft) → <b>3)</b> Stabendmomente mit DWV (1–3 unbekannte Drehwinkel) → <b>4)</b> M-, V-, N-Linie und Verformungsfigur zeichnen → <b>5)</b> Zusatz: Einflusslinie, Durchbiegung oder M(x) eines Stabes.</div>
+</section>
+
+<!-- ===================== KLAUSUREN ===================== -->
+<section class="view" id="v-klausuren">
+  <h1>Alle Aufgaben 3 im Überblick</h1>
+  <p class="lead">Ich habe die Aufgabe 3 aus jeder Klausur mit Ergebnissen gelesen. Die Ergebnisse stammen aus den Lösungsblättern von Prof. Lang. Die meisten habe ich mit einer eigenen Stabwerksrechnung nachgerechnet (✓ = stimmt überein).</p>
+  <div class="scroll">
+  <table class="stack">
+    <thead><tr><th>Klausur</th><th>System</th><th>Teilaufgaben</th><th>Ergebnisse</th></tr></thead>
+    <tbody id="extab"></tbody>
+  </table>
+  </div>
+  <p class="small"><span class="pill p">n</span> Unbestimmtheit · <span class="pill k">DWV</span> Stabendmomente · <span class="pill v">V/N</span> Querkraft/Normalkraft · <span class="pill s">Sym.</span> Symmetrie · <span class="pill">EL</span> Einflusslinie · <span class="pill v">w</span> Verformung</p>
+  <div class="box warn"><b class="t">Vorzeichen in den Lösungsblättern</b>Prof. Lang gibt die Ergebnisse mal in <b>VZK II</b> (Drehsinn, Summe am Knoten = 0) und mal in <b>VZK I</b> (Biegemoment, gestrichelte Faser) an. Oft steht es dabei, z. B. „(VKII)“. Wenn die Summe der Momente an einem Knoten nicht null ergibt, ist es VZK I. Mehr dazu an Tag 2.</div>
+
+  <h2 id="ss26">SS 2026 selbst gelöst</h2>
+  <p class="lead">Für diese Klausur liegt keine Lösung im Ordner. Ich habe sie von Hand mit dem DWV gerechnet und mit einer Stabwerksrechnung geprüft. Beide Wege ergeben dieselben Zahlen.</p>
+  <div class="card"><svg viewBox="0 0 460 340" role="img" aria-label="System SS 2026"><g font-family="Source Sans 3" font-size="15"><rect x="45" y="134" width="64.4" height="22" fill="#c0392b" opacity=".13"/><line x1="45" y1="134" x2="109.4" y2="134" stroke="#c0392b" stroke-width="1.5"/><line x1="45.0" y1="134" x2="45.0" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="77.2" y1="134" x2="77.2" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="109.4" y1="134" x2="109.4" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><rect x="120.60000000000001" y="134" width="309.4" height="22" fill="#c0392b" opacity=".13"/><line x1="120.60000000000001" y1="134" x2="430.0" y2="134" stroke="#c0392b" stroke-width="1.5"/><line x1="120.60000000000001" y1="134" x2="120.60000000000001" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="148.72727272727275" y1="134" x2="148.72727272727275" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="176.85454545454547" y1="134" x2="176.85454545454547" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="204.9818181818182" y1="134" x2="204.9818181818182" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="233.10909090909092" y1="134" x2="233.10909090909092" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="261.23636363636365" y1="134" x2="261.23636363636365" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="289.3636363636364" y1="134" x2="289.3636363636364" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="317.4909090909091" y1="134" x2="317.4909090909091" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="345.6181818181818" y1="134" x2="345.6181818181818" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="373.74545454545455" y1="134" x2="373.74545454545455" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="401.8727272727273" y1="134" x2="401.8727272727273" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="430.0" y1="134" x2="430.0" y2="154" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="255" y="128" text-anchor="middle" fill="#c0392b">10 kN/m</text><line x1="45" y1="160" x2="115" y2="160" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="115" y1="160" x2="325" y2="160" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="325" y1="160" x2="430.0" y2="160" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="115" y1="300" x2="115" y2="160" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="115" y1="160" x2="115" y2="20" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="325" y1="160" x2="430.0" y2="300" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><path d="M45,160 l-17,-11 v22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="24" y1="145" x2="24" y2="175" stroke="#1d2433" stroke-width="2"/><line x1="19" y1="145" x2="19" y2="175" stroke="#1d2433" stroke-width="2"/><path d="M115,20 l-11,-17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="130" y1="-10" x2="130" y2="20" stroke="#1d2433" stroke-width="2"/><line x1="135" y1="-10" x2="135" y2="20" stroke="#1d2433" stroke-width="2"/><line x1="99" y1="300" x2="131" y2="300" stroke="#1d2433" stroke-width="3"/><line x1="101" y1="300" x2="95" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="109" y1="300" x2="103" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="117" y1="300" x2="111" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="125" y1="300" x2="119" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="133" y1="300" x2="127" y2="308" stroke="#1d2433" stroke-width="1.3"/><path d="M430.0,300 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="414.0" y1="317" x2="446.0" y2="317" stroke="#1d2433" stroke-width="2"/><line x1="416.0" y1="317" x2="410.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="424.0" y1="317" x2="418.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="432.0" y1="317" x2="426.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="440.0" y1="317" x2="434.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="448.0" y1="317" x2="442.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><text x="41" y="184" fill="#1d2433" text-anchor="start">A</text><text x="123" y="180" fill="#1d2433" text-anchor="start">B</text><text x="307" y="182" fill="#1d2433" text-anchor="start">C</text><text x="426.0" y="182" fill="#1d2433" text-anchor="start">D</text><text x="125" y="294" fill="#1d2433" text-anchor="start">5</text><text x="91" y="22" fill="#1d2433" text-anchor="start">7</text><text x="444.0" y="306" fill="#1d2433" text-anchor="start">6</text><g fill="#5d6475"><text x="80.0" y="330" text-anchor="middle">1,0</text><text x="220.0" y="330" text-anchor="middle">1,5 + 1,5</text><text x="377.5" y="330" text-anchor="middle">1,5 m</text><text x="125" y="90">2 m</text><text x="125" y="230">2 m</text></g></g></svg>
+  <p class="cap">A hält nur horizontal (verschieblich in z), 7 hält nur horizontal, 5 eingespannt, 6 gelenkig. EI = konst., EA = ∞. Volllast 10 kN/m auf A–D.</p></div>
+  <p><b>Freiheitsgrade:</b> φ<sub>B</sub> und φ<sub>C</sub>. Unverschieblich, weil der Riegel über A und 7 horizontal gehalten ist (EA = ∞).</p>
+  <p><b>Stabtypen.</b> A–B: Lager A hält nur in Stabrichtung, quer ist A frei → <b>Kragarm</b> (k = 0). B–7: oben horizontal gehalten = quer zum Stab gelenkig → k′. B–5: eingespannt → k. B–C: k. C–D: Kragarm. C–6: gelenkig → k′.</p>
+  <table>
+    <tr><th>Stab</th><th>Steifigkeit</th><th class="n">Wert (·EI)</th><th>M̊ (VZK II)</th></tr>
+    <tr><td>B–A</td><td>Kragarm</td><td class="n">0</td><td>M̊<sub>BA</sub> = −10·1²/2 = −5</td></tr>
+    <tr><td>B–5</td><td>2EI/2</td><td class="n">1,000</td><td>0</td></tr>
+    <tr><td>B–7</td><td>1,5EI/2</td><td class="n">0,750</td><td>0</td></tr>
+    <tr><td>B–C</td><td>2EI/3</td><td class="n">0,667</td><td>±10·3²/12 = ±7,5</td></tr>
+    <tr><td>C–D</td><td>Kragarm</td><td class="n">0</td><td>M̊<sub>CD</sub> = +10·1,5²/2 = +11,25</td></tr>
+    <tr><td>C–6</td><td>1,5EI/2,5</td><td class="n">0,600</td><td>0</td></tr>
+  </table>
+  <div class="eq">EI·<span class="up">[</span> 4,833 &nbsp; 0,667 ; &nbsp; 0,667 &nbsp; 2,533 <span class="up">]</span> · <span class="up">[</span>φ<sub>B</sub> ; φ<sub>C</sub><span class="up">]</span> = −<span class="up">[</span>−5 + 7,5 ; −7,5 + 11,25<span class="up">]</span> = <span class="up">[</span>−2,5 ; −3,75<span class="up">]</span></div>
+  <div class="eq" style="font-size:22px">EI·φ<sub>B</sub> = −0,325 &nbsp;&nbsp; EI·φ<sub>C</sub> = −1,395</div>
+  <table>
+    <tr><th>Stabendmoment (VZK II)</th><th class="n">kNm</th></tr>
+    <tr><td>M<sub>BA</sub> (Kragarm)</td><td class="n">−5,00</td></tr>
+    <tr><td>M<sub>B5</sub> = 1·2·φ<sub>B</sub> · M<sub>5B</sub> = 1·φ<sub>B</sub></td><td class="n">−0,65 · −0,32</td></tr>
+    <tr><td>M<sub>B7</sub>′ = 0,75·2·φ<sub>B</sub></td><td class="n">−0,49</td></tr>
+    <tr><td>M<sub>BC</sub> = 0,667·(2φ<sub>B</sub> + φ<sub>C</sub>) + 7,5</td><td class="n">6,14</td></tr>
+    <tr><td>M<sub>CB</sub> = 0,667·(2φ<sub>C</sub> + φ<sub>B</sub>) − 7,5</td><td class="n">−9,58</td></tr>
+    <tr><td>M<sub>CD</sub> (Kragarm)</td><td class="n">11,25</td></tr>
+    <tr><td>M<sub>C6</sub>′ = 0,6·2·φ<sub>C</sub></td><td class="n">−1,67</td></tr>
+  </table>
+  <p>Kontrollen: Knoten B: −5 − 0,65 − 0,49 + 6,14 = 0 ✓ · Knoten C: −9,58 + 11,25 − 1,67 = 0 ✓. Feldmoment B–C (VZK I): M<sub>max</sub> = −6,14 + 13,85²/20 = <b>3,46 kNm</b> bei x = 1,39 m.</p>
+  <p><b>3) Einflusslinie EI·φ<sub>C</sub></b> (Last 1 wandert über A–D, s. Tag 7):</p>
+  <table>
+    <tr><th>Bereich</th><th>Gleichung</th></tr>
+    <tr><td>A–B, c = Abstand von B</td><td>η = −c / 17,7 = −0,0565·c</td></tr>
+    <tr><td>B–C, a = Abstand von B</td><td>η = a·(3 − a)·(12 + 25a) / 637,2</td></tr>
+    <tr><td>C–D, d = Abstand von C</td><td>η = −0,410·d</td></tr>
+  </table>
+  <p><b>4) Feldweise Last 10 kN/m:</b> nur A–B: −0,28 · nur B–C: +3,50 · nur C–D: −4,61. Also <b>max EI·φ<sub>C</sub> = +3,50</b> (nur B–C belastet) und <b>min EI·φ<sub>C</sub> = −4,89</b> (A–B und C–D belastet). Summe aller drei = −1,39 = Volllast ✓.</p>
+
+  <h2>Was daraus folgt</h2>
+  <ul>
+    <li><b>Die Methode ist immer dieselbe.</b> Freiheitsgrade, Steifigkeiten, Starreinspannmomente, K·φ = P, Stabendmomente. Das trainierst du an Tag 3 und 4.</li>
+    <li><b>Systeme wiederholen sich.</b> WS 23/24 = WS 25/26 (nur Fußpunkte gelenkig). WS 16/17 = SS 25 = fast SS 26. SS 18 = WS 22/23. SS 20, SS 21, WS 21/22 und SS 22 haben dasselbe Dreiecks-Fachwerk.</li>
+    <li><b>Die Punkte liegen in den Sonderstäben.</b> Kragarm, Pendelstab, Lager das nur horizontal hält, schräger Stab mit Projektionslast. Das ist Tag 5.</li>
+    <li><b>„Begründen Sie, warum unverschieblich“</b> hat drei Standardantworten (Tag 1). Sichere Punkte.</li>
+  </ul>
+</section>
+
+<!-- ===================== MERKZETTEL ===================== -->
+<section class="view" id="v-merkzettel">
+  <h1>Merkzettel Drehwinkelverfahren</h1>
+  <p class="lead">In den Hilfsblättern stehen die Starreinspannmomente und die Koppeltafeln. Das Verfahren selbst steht dort nicht. Diese sieben Punkte musst du auswendig können.</p>
+
+  <div class="card"><h3 style="margin-top:0">① Ablauf (8 Schritte, Skript Kap. 5)</h3>
+  <p>Unverschieblich prüfen → Drehfreiheitsgrade festlegen → Stabsteifigkeiten → Starreinspannmomente → K aufstellen → Lastvektor P → K·φ = P lösen → Stabendmomente, dann V, N, Verformungsfigur.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">② Stabendmomente (VZK II)</h3>
+  <div class="eq">M<sub>ij</sub> = k<sub>ij</sub>·(2φ<sub>i</sub> + φ<sub>j</sub>) + M̊<sub>ij</sub> &nbsp;&nbsp;&nbsp; M<sub>ij</sub>′ = k<sub>ij</sub>′·2φ<sub>i</sub> + M̊<sub>ij</sub>′</div>
+  <p>Im unverschieblichen System ist ψ = 0.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">③ Steifigkeiten</h3>
+  <p>beidseitig eingespannt: <b>k = 2EI/L</b> · Gegenende gelenkig: <b>k′ = 1,5EI/L = 0,75·k</b> · Kragarm, Pendelstab, beidseitig gelenkig: <b>k = 0</b></p></div>
+
+  <div class="card"><h3 style="margin-top:0">④ Steifigkeitsmatrix</h3>
+  <p><b>Hauptdiagonale:</b> doppelte Summe aller k und k′ am Knoten. <b>Nebendiagonale:</b> einfaches k des Stabes, der beide Knoten biegesteif verbindet (k′ nie!). <b>P</b> = −Σ M̊ am Knoten (+ äußeres Knotenmoment).</p></div>
+
+  <div class="card"><h3 style="margin-top:0">⑤ Starreinspannmomente (VZK II)</h3>
+  <p>Bild drehen, bis die Last „nach unten“ zeigt: <b>links +, rechts −</b>. q: ±qL²/12 · P mittig: ±PL/8 · einseitig gelenkig: qL²/8 bzw. 3PL/16 · Kragarm rechts vom Knoten: +qc²/2, links: −qc²/2.</p></div>
+
+  <div class="card"><h3 style="margin-top:0">⑥ VZK II → VZK I</h3>
+  <p>Abschreitrichtung so, dass die gestrichelte Faser rechts liegt. <b>Stabanfang: Vorzeichen wechseln. Stabende: Vorzeichen bleibt.</b></p></div>
+
+  <div class="card"><h3 style="margin-top:0">⑦ Warum unverschieblich?</h3>
+  <p>a) Symmetrie (u = 0 in der Achse) · b) horizontal unverschiebliches Lager am Riegel + EA = ∞ · c) steife Dreiecke bzw. Diagonale (EA = ∞)</p></div>
+
+  <div class="box hb"><b class="t">Was du in den Hilfsblättern nachschlägst</b>Starreinspannmomente für weitere Lastfälle (Dreieckslast, Einzellast außermittig) · Koppeltafeln ∫M·M̄ für Verformungen · Gleichlast-Schnittgrößen.</div>
+</section>
+
+<!-- ===================== TAG 1 ===================== -->
+<section class="view" id="v-tag1">
+  <p class="small">Tag 1 · Do 26.11.</p>
+  <h1>Idee, Freiheitsgrade und Unverschieblichkeit</h1>
+  <p class="lead">Heute: worauf das Verfahren beruht, wie viele Drehwinkel du brauchst und wie du begründest, dass das System unverschieblich ist.</p>
+  <ul class="toc">
+    <li><a href="#t1-1">1. Die Idee</a></li>
+    <li><a href="#t1-2">2. Freiheitsgrade zählen</a></li>
+    <li><a href="#t1-3">3. Warum unverschieblich?</a></li>
+    <li><a href="#t1-4">4. Grad der Unbestimmtheit</a></li>
+    <li><a href="#t1-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t1-1">1. Die Idee</h2>
+  <p>Das Drehwinkelverfahren ist ein <b>Sonderfall des allgemeinen Weggrößenverfahrens</b> (Skript Kap. 5). Annahme: EA = ∞, also ändern Stäbe ihre Länge nicht. Wenn sich außerdem kein Knoten verschieben kann, bleiben als Unbekannte nur die <span class="d">Knotendrehwinkel φ</span>.</p>
+  <div class="eq">s = k·v + s̊ &nbsp;&nbsp;⟶&nbsp;&nbsp; M<sub>ij</sub> = k<sub>ij</sub>·(2φ<sub>i</sub> + φ<sub>j</sub> + 3ψ) + M̊<sub>ij</sub></div>
+  <p>Im unverschieblichen System ist der Stabdrehwinkel <b>ψ = 0</b>. Die Gleichungen, die du lösen musst, sind die <b>Momentengleichgewichte an den Knoten</b>: Die Summe aller Stabendmomente an einem Knoten ist null.</p>
+  <div class="box merk"><b class="t">Warum das schneller ist als das KGV</b>Beim KGV zählt die Zahl der statisch Unbestimmten (oft 5–11). Beim DWV zählt nur die Zahl der freien Knotendrehungen (fast immer 1–3). WS 21/22 ist 11-fach unbestimmt, aber mit Antimetrie bleibt ein Drehwinkel.</div>
+
+  <h2 id="t1-2">2. Freiheitsgrade zählen</h2>
+  <p>Ein Drehwinkel φ<sub>i</sub> ist unbekannt an jedem Knoten, an dem <b>mindestens zwei Stäbe biegesteif</b> zusammenkommen oder ein Stab biegesteif an einem drehbaren Lager hängt.</p>
+  <table>
+    <tr><th>Knoten</th><th>φ unbekannt?</th></tr>
+    <tr><td>Einspannung</td><td>nein, φ = 0</td></tr>
+    <tr><td>Gelenk / Gelenklager am Stabende</td><td>nein, wird über k′ „eingebaut“</td></tr>
+    <tr><td>Biegesteife Ecke, Kreuzung, Abzweig</td><td><b>ja</b></td></tr>
+    <tr><td>Ecke mit Kragarm</td><td>ja, der Kragarm liefert nur ein bekanntes Moment</td></tr>
+    <tr><td>Symmetrieachse bei symmetrischer Last</td><td>nein, φ = 0 (Tag 4)</td></tr>
+  </table>
+  <svg viewBox="0 0 560 345" role="img" aria-label="System WS 2023/24"><g font-family="Source Sans 3" font-size="15"><rect x="85" y="34" width="390" height="22" fill="#c0392b" opacity=".13"/><line x1="85" y1="34" x2="475" y2="34" stroke="#c0392b" stroke-width="1.5"/><line x1="85.0" y1="34" x2="85.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="111.0" y1="34" x2="111.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="137.0" y1="34" x2="137.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="163.0" y1="34" x2="163.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="189.0" y1="34" x2="189.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="215.0" y1="34" x2="215.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="241.0" y1="34" x2="241.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="267.0" y1="34" x2="267.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="293.0" y1="34" x2="293.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="319.0" y1="34" x2="319.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="345.0" y1="34" x2="345.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="371.0" y1="34" x2="371.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="397.0" y1="34" x2="397.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="423.0" y1="34" x2="423.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="449.0" y1="34" x2="449.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="475.0" y1="34" x2="475.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="280.0" y="28" text-anchor="middle" fill="#c0392b">30 kN/m</text><rect x="85" y="154" width="390" height="22" fill="#c0392b" opacity=".13"/><line x1="85" y1="154" x2="475" y2="154" stroke="#c0392b" stroke-width="1.5"/><line x1="85.0" y1="154" x2="85.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="111.0" y1="154" x2="111.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="137.0" y1="154" x2="137.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="163.0" y1="154" x2="163.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="189.0" y1="154" x2="189.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="215.0" y1="154" x2="215.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="241.0" y1="154" x2="241.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="267.0" y1="154" x2="267.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="293.0" y1="154" x2="293.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="319.0" y1="154" x2="319.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="345.0" y1="154" x2="345.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="371.0" y1="154" x2="371.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="397.0" y1="154" x2="397.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="423.0" y1="154" x2="423.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="449.0" y1="154" x2="449.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="475.0" y1="154" x2="475.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="280.0" y="148" text-anchor="middle" fill="#c0392b">40 kN/m</text><line x1="85" y1="300" x2="85" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="180" x2="85" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="475" y1="300" x2="475" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="475" y1="180" x2="475" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="280.0" y1="300" x2="280.0" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="180" x2="475" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="60" x2="475" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="69" y1="300" x2="101" y2="300" stroke="#1d2433" stroke-width="3"/><line x1="71" y1="300" x2="65" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="79" y1="300" x2="73" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="87" y1="300" x2="81" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="95" y1="300" x2="89" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="103" y1="300" x2="97" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="264.0" y1="300" x2="296.0" y2="300" stroke="#1d2433" stroke-width="3"/><line x1="266.0" y1="300" x2="260.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="274.0" y1="300" x2="268.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="282.0" y1="300" x2="276.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="290.0" y1="300" x2="284.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="298.0" y1="300" x2="292.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="459" y1="300" x2="491" y2="300" stroke="#1d2433" stroke-width="3"/><line x1="461" y1="300" x2="455" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="469" y1="300" x2="463" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="477" y1="300" x2="471" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="485" y1="300" x2="479" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="493" y1="300" x2="487" y2="308" stroke="#1d2433" stroke-width="1.3"/><circle cx="85" cy="60" r="5.5" fill="#fff" stroke="#1d2433" stroke-width="2"/><circle cx="475" cy="60" r="5.5" fill="#fff" stroke="#1d2433" stroke-width="2"/><text x="63" y="294" fill="#1d2433" text-anchor="start">1</text><text x="288.0" y="292" fill="#1d2433" text-anchor="start">2</text><text x="483" y="292" fill="#1d2433" text-anchor="start">1'</text><text x="63" y="200" fill="#1d2433" text-anchor="start">3</text><text x="288.0" y="202" fill="#1d2433" text-anchor="start">4</text><text x="483" y="202" fill="#1d2433" text-anchor="start">3'</text><text x="63" y="60" fill="#1d2433" text-anchor="start">5</text><text x="485" y="60" fill="#1d2433" text-anchor="start">5'</text><path d="M100,180 A15,15 0 1 0 85,195" fill="none" stroke="#2e8b57" stroke-width="2" marker-end="url(#ag)"/><text x="104" y="207" fill="#2e8b57" font-style="italic">φ<tspan font-size="11" dy="3">3</tspan></text><g fill="#5d6475"><text x="182.5" y="330" text-anchor="middle">6,50 m</text><text x="377.5" y="330" text-anchor="middle">6,50 m</text><text x="489" y="240">4,0 m</text><text x="489" y="120">4,0 m</text></g><line x1="280.0" y1="42.0" x2="280.0" y2="318.0" stroke="#5d6475" stroke-dasharray="6 5"/></g></svg>
+  <p class="cap">WS 23/24: Knoten 3 und 3′ und 4 sind biegesteif. Wegen der Symmetrie ist φ<sub>4</sub> = 0 und φ<sub>3′</sub> = −φ<sub>3</sub> → nur <b>ein</b> unbekannter Drehwinkel φ<sub>3</sub>.</p>
+
+  <h2 id="t1-3">3. Warum unverschieblich?</h2>
+  <p>Diese Frage kam in SS 21, SS 23, WS 23/24 und WS 25/26. Es gibt drei Standardantworten, oft reichen zwei:</p>
+  <table>
+    <tr><th>Begründung</th><th>Beispiel</th></tr>
+    <tr><td><b>a) Symmetrie:</b> Symmetrisches System unter symmetrischer Last, in der Achse ist u = 0. Mit EA = ∞ kann sich dann kein Riegelknoten horizontal verschieben.</td><td>WS 23/24: „symmetrisches System, u = 0 in Symmetrieachse → horizontal unverschieblich“</td></tr>
+    <tr><td><b>b) Festes Lager am Riegel:</b> Ein Lager hält den Riegel horizontal, EA = ∞ überträgt das auf alle Riegelknoten.</td><td>SS 26 (Lager A und 7), Skript-Beispiel</td></tr>
+    <tr><td><b>c) Steife Dreiecke / Diagonale:</b> Zwei Stäbe mit EA = ∞ bilden mit dem Boden ein Dreieck. Der Knoten an der Spitze kann sich nicht bewegen.</td><td>SS 21 („steife Stäbe 4–2 und 2–5“), SS 23 („Diagonale rechts“)</td></tr>
+  </table>
+  <div class="box warn"><b class="t">Wenn keine Begründung passt</b>Dann ist das System verschieblich, und es kommt der Stabdrehwinkel ψ dazu. Das wird in der Klausur nicht verlangt: Dort ist es immer unverschieblich. Wenn du kein Argument findest, schau nach einem Lager, das horizontal hält.</div>
+
+  <h2 id="t1-4">4. Grad der statischen Unbestimmtheit</h2>
+  <div class="eq" style="font-size:24px">n = a + 3·(s − k) − r</div>
+  <p>a = Auflagerreaktionen (Gelenklager 2, Einspannung 3, verschiebliches Lager 1) · s = Stäbe · k = Knoten · r = Nebenbedingungen (Gelenk zwischen zwei Stäben: r = 1; zwischen drei Stäben: r = 2).</p>
+  <p><b>Beispiel WS 23/24:</b> a = 3·3 = 9. Stäbe 1–3, 3–5, 1′–3′, 3′–5′, 2–4, 3–4, 4–3′, 5–5′ → s = 8. Knoten 1, 2, 1′, 3, 4, 3′, 5, 5′ → k = 8. Gelenke 5 und 5′ → r = 2. n = 9 + 0 − 2 = <b>7</b> ✓.</p>
+  <div class="box merk"><b class="t">n ≠ Anzahl der Drehwinkel</b>n brauchst du für Teilaufgabe 1. Für das Rechnen zählt nur die Anzahl unbekannter φ. Bei WS 23/24: n = 7, aber nur φ<sub>3</sub>.</div>
+
+  <h2 id="t1-ue">Übungen Tag 1</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.1</span><span class="ti">Grad der Unbestimmtheit</span></div>
+    <p>Die Systeme findest du im Tab „Klausuren“ bzw. in deinen PDFs.</p>
+    <div class="ans"><label>a) WS 25/26 (wie WS 23/24, aber Fußpunkte 1, 2, 1′ gelenkig)</label><input class="n" data-ans="4" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>b) SS 21 (Dreiecke, Gelenklager 4 und 5, Ecken 1 und 3 frei)</label><input class="n" data-ans="7" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>c) WS 19/20 (6, 7, 2 gelenkig, 1 und 5 eingespannt)</label><input class="n" data-ans="9" style="width:70px"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungswege</summary><div>
+      <p>a) a = 3·2 = 6, s = 8, k = 8, r = 2 → n = 6 + 0 − 2 = <b>4</b>.</p>
+      <p>b) a = 2 + 2 = 4; Stäbe 1–2, 2–3, 1–4, 4–2, 2–5, 5–3 → s = 6; Knoten 1…5 → k = 5. n = 4 + 3 = <b>7</b>.</p>
+      <p>c) a = 2 + 2 + 3 + 2 + 3 = 12; Stäbe 3–6, 3–7, 3–1, 3–4, 4–2, 4–5 → s = 6; k = 7. n = 12 + 3·(−1) = <b>9</b>.</p>
+    </div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 1.2</span><span class="ti">Wie viele unbekannte Drehwinkel?</span></div>
+    <div class="ans"><label>a) WS 24/25 (Tag 4)</label><input class="n" data-ans="2" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>b) SS 16 (Tag 4)</label><input class="n" data-ans="2" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>c) WS 25/26 mit Symmetrie</label><input class="n" data-ans="1" style="width:70px"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div>
+      <p>a) φ<sub>2</sub>, φ<sub>3</sub>. Knoten 1 und 6 sind eingespannt, 4 und 5 gelenkig. Der Stiel 2–4 ist ein Pendelstab.</p>
+      <p>b) φ<sub>2</sub>, φ<sub>3</sub>. Am Knoten 2 hält das Lager nur horizontal, die Drehung ist frei. Der Kragarm 3–4–5 macht Knoten 3 nicht zum Lager.</p>
+      <p>c) φ<sub>3</sub>. φ<sub>4</sub> = 0 wegen Symmetrie, φ<sub>3′</sub> = −φ<sub>3</sub>.</p>
+    </div></details>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc1"></div>
+  <div class="chat"><b>Heute im Chat:</b> Schreib mir für SS 21 die zwei Begründungen, warum das System unverschieblich ist, in je einem Satz.</div>
+</section>
+
+<!-- ===================== TAG 2 ===================== -->
+<section class="view" id="v-tag2">
+  <p class="small">Tag 2 · Fr 27.11.</p>
+  <h1>Steifigkeiten, Starreinspannmomente, Vorzeichen</h1>
+  <p class="lead">Die meisten Punktverluste beim DWV sind keine Rechenfehler, sondern falsche Vorzeichen bei M̊ oder ein vergessenes k′. Heute machst du das sicher.</p>
+  <ul class="toc">
+    <li><a href="#t2-1">1. Vorzeichenkonvention II</a></li>
+    <li><a href="#t2-2">2. Die drei Stabtypen</a></li>
+    <li><a href="#t2-3">3. Starreinspannmomente</a></li>
+    <li><a href="#t2-4">4. Zurück zu VZK I</a></li>
+    <li><a href="#t2-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t2-1">1. Vorzeichenkonvention II</h2>
+  <svg viewBox="0 0 540 165" role="img" aria-label="Vorzeichenkonvention II"><g font-family="Source Sans 3" font-size="15"><line x1="120" y1="90" x2="420" y2="90" stroke="#1d2433" stroke-width="6" stroke-linecap="round"/><text x="116" y="118" fill="#1d2433" text-anchor="start">i</text><text x="416" y="118" fill="#1d2433" text-anchor="start">j</text><path d="M144,90 A24,24 0 1 0 120,114" fill="none" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ar)"/><text x="146" y="62" fill="#c0392b" font-style="italic" font-size="17">M<tspan font-size="11" dy="3">ij</tspan></text><path d="M444,90 A24,24 0 1 0 420,114" fill="none" stroke="#c0392b" stroke-width="2.5" marker-end="url(#ar)"/><text x="446" y="62" fill="#c0392b" font-style="italic" font-size="17">M<tspan font-size="11" dy="3">ji</tspan></text><text x="270" y="150" text-anchor="middle" fill="#5d6475">VZK II: Stabendmomente und Knotendrehwinkel linksdrehend positiv</text><line x1="140" y1="104" x2="400" y2="104" stroke="#1d2433" stroke-dasharray="7 5"/></g></svg>
+  <p>Im DWV rechnest du in <b>VZK II</b>: Ein Stabendmoment ist positiv, wenn es <b>linksdrehend</b> (gegen den Uhrzeiger) auf das Stabende wirkt. Genauso ist φ linksdrehend positiv. Der Vorteil: Am Knoten gilt einfach <b>Σ M<sub>ij</sub> = 0</b>, egal wie die Stäbe liegen.</p>
+
+  <h2 id="t2-2">2. Die drei Stabtypen</h2>
+  <table>
+    <tr><th>Stabtyp</th><th>Steifigkeit</th><th>Stabendmoment</th></tr>
+    <tr><td>beidseitig biegesteif angeschlossen</td><td><b>k = 2EI/L</b></td><td>M<sub>ij</sub> = k·(2φ<sub>i</sub> + φ<sub>j</sub>) + M̊<sub>ij</sub></td></tr>
+    <tr><td>Gegenende gelenkig</td><td><b>k′ = 1,5EI/L = 0,75·k</b></td><td>M<sub>ij</sub>′ = k′·2φ<sub>i</sub> + M̊<sub>ij</sub>′</td></tr>
+    <tr><td>Kragarm, Pendelstab, beidseitig gelenkig</td><td><b>k = 0</b></td><td>M = statisch bestimmt (Kragmoment) oder 0</td></tr>
+  </table>
+  <div class="box warn"><b class="t">Gelenkig heißt auch: „hält nur quer zum Stab“</b>Ein Stiel, der oben von einem Lager nur horizontal gehalten wird (WS 16/17, SS 26: Knoten 7), ist für Biegung ein Stab mit gelenkigem Ende → k′. Ein Riegel, dessen Endlager nur <b>in Stabrichtung</b> hält (SS 26: Lager A), ist quer frei → <b>Kragarm</b>, k = 0.</div>
+  <p><b>Woher kommt k′?</b> Skript Fall b): Am gelenkigen Ende ist M<sub>ji</sub> = 0. Daraus φ<sub>j</sub> = −φ<sub>i</sub>/2 − M̊<sub>ji</sub>/(2k). Einsetzen gibt M<sub>ij</sub> = 1,5·k·φ<sub>i</sub> + M̊<sub>ij</sub> − M̊<sub>ji</sub>/2. Also <b>k′ = 0,75·k</b> und <b>M̊<sub>ij</sub>′ = M̊<sub>ij</sub> − M̊<sub>ji</sub>/2</b>.</p>
+
+  <h2 id="t2-3">3. Starreinspannmomente (VZK II)</h2>
+  <p>Merkregel: <b>Bild drehen (nicht spiegeln), bis die Last „nach unten“ auf den Stab drückt. Dann ist das linke Ende +, das rechte −.</b></p>
+  <div class="scroll"><table>
+    <tr><th>Last</th><th>beidseitig eingespannt: M̊<sub>links</sub> / M̊<sub>rechts</sub></th><th>rechts gelenkig: M̊<sub>links</sub>′</th><th>links gelenkig: M̊<sub>rechts</sub>′</th></tr>
+    <tr><td>Gleichlast q</td><td>+qL²/12 / −qL²/12</td><td>+qL²/8</td><td>−qL²/8</td></tr>
+    <tr><td>Einzellast P mittig</td><td>+PL/8 / −PL/8</td><td>+3PL/16</td><td>−3PL/16</td></tr>
+    <tr><td>Einzellast P bei a (b = L − a)</td><td>+Pab²/L² / −Pa²b/L²</td><td>+Pab(L+b)/(2L²)</td><td>−Pab(L+a)/(2L²)</td></tr>
+  </table></div>
+  <p><b>Kragarm:</b> Er ist statisch bestimmt. Sein Moment am Knoten geht wie ein M̊ in den Lastvektor: Last <b>rechts</b> vom Knoten (nach unten): <b>+P·c</b> bzw. <b>+qc²/2</b>. Last <b>links</b> vom Knoten: <b>−P·c</b> bzw. <b>−qc²/2</b>.</p>
+  <p class="small">Beispiele: SS 26 M̊<sub>BA</sub> = −10·1²/2 = −5 (Last links von B), M̊<sub>CD</sub> = +10·1,5²/2 = +11,25 (Last rechts von C). WS 16/17: 10 kN an der Kragarmspitze 1,5 m rechts → +15.</p>
+  <div class="box merk"><b class="t">Stiele mit Horizontallast</b>WS 16/17: q = 5 kN/m zeigt nach rechts auf den Stiel 2–3 (unten 2, oben 3 gelenkig). Dreh das Bild 90° im Uhrzeigersinn, dann drückt die Last nach unten und Knoten 2 liegt links. Also M̊<sub>23</sub>′ = +qL²/8 = +5·2²/8 = <b>+2,5</b>.</div>
+
+  <h2 id="t2-4">4. Zurück zu VZK I</h2>
+  <p>Für die M-Linie brauchst du Biegemomente mit gestrichelter Faser (VZK I). Wähle die Abschreitrichtung i → j so, dass die gestrichelte Faser <b>rechts</b> liegt (beim waagrechten Riegel: von links nach rechts, Faser unten).</p>
+  <div class="eq">M<sup>I</sup>(Stabanfang i) = −M<sub>ij</sub> &nbsp;&nbsp;&nbsp;&nbsp; M<sup>I</sup>(Stabende j) = +M<sub>ji</sub></div>
+  <p>Skript-Beispiel: M<sub>12</sub> = +114 → −114 kNm (Stützmoment, Zug oben). M<sub>21</sub> = −42 → −42 kNm. Genau so steht es mit „VZK I“ im Skript.</p>
+
+  <h2 id="t2-ue">Übungen Tag 2</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.1</span><span class="ti">Steifigkeiten WS 24/25</span></div>
+    <p>System im Tab „Tag 4“. Riegel 1–2–3 (je 4 m), Stiel 2–4 oben und unten gelenkig (3 m), Stiel 3–5 unten gelenkig (3 m), Schrägstab 3–6 eingespannt (L = 5 m). Gib k in Vielfachen von EI an.</p>
+    <div class="ans"><label>k<sub>12</sub></label><input class="n" data-ans="0.5"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>24</sub></label><input class="n" data-ans="0"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>35</sub>′</label><input class="n" data-ans="0.5"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>36</sub></label><input class="n" data-ans="0.4"><span class="fb"></span></div>
+    <div class="ans"><label>M̊<sub>23</sub> (q = 10 kN/m) [kNm]</label><input class="n" data-ans="13.333"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>k<sub>12</sub> = 2EI/4 = 0,5EI · 2–4 ist ein Pendelstab: k = 0 (die 30 kN an Knoten 2 gehen nur als Normalkraft hinein) · k<sub>35</sub>′ = 1,5EI/3 = 0,5EI · k<sub>36</sub> = 2EI/5 = 0,4EI · M̊<sub>23</sub> = 10·4²/12 = 13,33 kNm.</p></div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 2.2</span><span class="ti">Außermittige Last WS 19/20</span></div>
+    <p>Riegel 3–4, L = 3 m, P = 20 kN, 1 m rechts von Knoten 3. Riegel 4–5, L = 2 m, P = 20 kN mittig. Schrägstab 3–6: L = √2 m, bei 6 gelenkig.</p>
+    <div class="ans"><label>M̊<sub>34</sub> [kNm]</label><input class="n" data-ans="8.889"><span class="fb"></span></div>
+    <div class="ans"><label>M̊<sub>43</sub> [kNm]</label><input class="n" data-ans="-4.444"><span class="fb"></span></div>
+    <div class="ans"><label>M̊<sub>45</sub> [kNm]</label><input class="n" data-ans="5"><span class="fb"></span></div>
+    <div class="ans"><label>k<sub>36</sub>′ [·EI]</label><input class="n" data-ans="1.0607"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>a = 1, b = 2: M̊<sub>34</sub> = 20·1·2²/3² = 8,89 · M̊<sub>43</sub> = −20·1²·2/3² = −4,44 · M̊<sub>45</sub> = 20·2/8 = 5 · k′ = 1,5EI/1,414 = 1,061EI.</p></div></details>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc2"></div>
+  <div class="chat"><b>Heute im Chat:</b> Schick mir für SS 17 eine Liste aller Stäbe mit Typ (k, k′ oder 0) und M̊. Ich sage dir, ob alles stimmt.</div>
+</section>
+
+<!-- ===================== TAG 3 ===================== -->
+<section class="view" id="v-tag3">
+  <p class="small">Tag 3 · Sa 28.11.</p>
+  <h1>Ein Drehwinkel: das Knotengleichgewicht</h1>
+  <p class="lead">Mit einem unbekannten φ ist das DWV eine einzige Gleichung. Wir rechnen WS 23/24 komplett. Die Lösung stimmt mit dem Lösungsblatt überein.</p>
+  <ul class="toc">
+    <li><a href="#t3-1">1. Die Knotengleichung</a></li>
+    <li><a href="#t3-2">2. Skript-Beispiel</a></li>
+    <li><a href="#t3-3">3. WS 23/24 komplett</a></li>
+    <li><a href="#t3-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t3-1">1. Die Knotengleichung</h2>
+  <p>Am Knoten i: Σ M<sub>ij</sub> = 0 (bzw. = äußeres Knotenmoment). Einsetzen der Stabendmomente gibt</p>
+  <div class="eq">2·(Σ k<sub>ij</sub> + Σ k<sub>ij</sub>′)·φ<sub>i</sub> = −Σ M̊<sub>ij</sub></div>
+  <p>Die Kragarmmomente zählen dabei wie M̊.</p>
+
+  <h2 id="t3-2">2. Skript-Beispiel</h2>
+  <p>Durchlaufträger 1–2–5 (1 eingespannt, Feld 6 m mit 30 kN/m, Kragarm 2,1 m mit 10 kN), Stiel oben 2–3 gelenkig, Stiel unten 2–4 eingespannt, je 4 m. I<sub>Riegel</sub> = 24·10⁻⁴, I<sub>Stiel</sub> = 4·10⁻⁴ m⁴.</p>
+  <table>
+    <tr><th>Stab</th><th>k</th><th>M̊</th></tr>
+    <tr><td>2–1</td><td>2E·24·10⁻⁴/6 = 8·10⁻⁴E</td><td>M̊<sub>21</sub> = −30·6²/12 = −90</td></tr>
+    <tr><td>2–3</td><td>k′ = 1,5E·4·10⁻⁴/4 = 1,5·10⁻⁴E</td><td>0</td></tr>
+    <tr><td>2–4</td><td>2E·4·10⁻⁴/4 = 2·10⁻⁴E</td><td>0</td></tr>
+    <tr><td>2–5</td><td>Kragarm</td><td>M̊<sub>25</sub> = +10·2,1 = 21</td></tr>
+  </table>
+  <div class="eq">2·(8 + 1,5 + 2)·10⁻⁴·E·φ<sub>2</sub> = −(−90 + 21) = 69 &nbsp;⟹&nbsp; φ<sub>2</sub> = 3·10⁴/E</div>
+  <p>Dann M<sub>12</sub> = 8·3 + 90 = 114, M<sub>21</sub> = 8·2·3 − 90 = −42, M<sub>23</sub>′ = 1,5·2·3 = 9, M<sub>24</sub> = 2·2·3 = 12, M<sub>25</sub> = 21. Kontrolle: −42 + 9 + 12 + 21 = 0 ✓.</p>
+
+  <h2 id="t3-3">3. WS 23/24 komplett</h2>
+  <svg viewBox="0 0 560 345" role="img" aria-label="System WS 2023/24"><g font-family="Source Sans 3" font-size="15"><rect x="85" y="34" width="390" height="22" fill="#c0392b" opacity=".13"/><line x1="85" y1="34" x2="475" y2="34" stroke="#c0392b" stroke-width="1.5"/><line x1="85.0" y1="34" x2="85.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="111.0" y1="34" x2="111.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="137.0" y1="34" x2="137.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="163.0" y1="34" x2="163.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="189.0" y1="34" x2="189.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="215.0" y1="34" x2="215.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="241.0" y1="34" x2="241.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="267.0" y1="34" x2="267.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="293.0" y1="34" x2="293.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="319.0" y1="34" x2="319.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="345.0" y1="34" x2="345.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="371.0" y1="34" x2="371.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="397.0" y1="34" x2="397.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="423.0" y1="34" x2="423.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="449.0" y1="34" x2="449.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="475.0" y1="34" x2="475.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="280.0" y="28" text-anchor="middle" fill="#c0392b">30 kN/m</text><rect x="85" y="154" width="390" height="22" fill="#c0392b" opacity=".13"/><line x1="85" y1="154" x2="475" y2="154" stroke="#c0392b" stroke-width="1.5"/><line x1="85.0" y1="154" x2="85.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="111.0" y1="154" x2="111.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="137.0" y1="154" x2="137.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="163.0" y1="154" x2="163.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="189.0" y1="154" x2="189.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="215.0" y1="154" x2="215.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="241.0" y1="154" x2="241.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="267.0" y1="154" x2="267.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="293.0" y1="154" x2="293.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="319.0" y1="154" x2="319.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="345.0" y1="154" x2="345.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="371.0" y1="154" x2="371.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="397.0" y1="154" x2="397.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="423.0" y1="154" x2="423.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="449.0" y1="154" x2="449.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="475.0" y1="154" x2="475.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="280.0" y="148" text-anchor="middle" fill="#c0392b">40 kN/m</text><line x1="85" y1="300" x2="85" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="180" x2="85" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="475" y1="300" x2="475" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="475" y1="180" x2="475" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="280.0" y1="300" x2="280.0" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="180" x2="475" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="60" x2="475" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="69" y1="300" x2="101" y2="300" stroke="#1d2433" stroke-width="3"/><line x1="71" y1="300" x2="65" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="79" y1="300" x2="73" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="87" y1="300" x2="81" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="95" y1="300" x2="89" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="103" y1="300" x2="97" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="264.0" y1="300" x2="296.0" y2="300" stroke="#1d2433" stroke-width="3"/><line x1="266.0" y1="300" x2="260.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="274.0" y1="300" x2="268.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="282.0" y1="300" x2="276.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="290.0" y1="300" x2="284.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="298.0" y1="300" x2="292.0" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="459" y1="300" x2="491" y2="300" stroke="#1d2433" stroke-width="3"/><line x1="461" y1="300" x2="455" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="469" y1="300" x2="463" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="477" y1="300" x2="471" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="485" y1="300" x2="479" y2="308" stroke="#1d2433" stroke-width="1.3"/><line x1="493" y1="300" x2="487" y2="308" stroke="#1d2433" stroke-width="1.3"/><circle cx="85" cy="60" r="5.5" fill="#fff" stroke="#1d2433" stroke-width="2"/><circle cx="475" cy="60" r="5.5" fill="#fff" stroke="#1d2433" stroke-width="2"/><text x="63" y="294" fill="#1d2433" text-anchor="start">1</text><text x="288.0" y="292" fill="#1d2433" text-anchor="start">2</text><text x="483" y="292" fill="#1d2433" text-anchor="start">1'</text><text x="63" y="200" fill="#1d2433" text-anchor="start">3</text><text x="288.0" y="202" fill="#1d2433" text-anchor="start">4</text><text x="483" y="202" fill="#1d2433" text-anchor="start">3'</text><text x="63" y="60" fill="#1d2433" text-anchor="start">5</text><text x="485" y="60" fill="#1d2433" text-anchor="start">5'</text><path d="M100,180 A15,15 0 1 0 85,195" fill="none" stroke="#2e8b57" stroke-width="2" marker-end="url(#ag)"/><text x="104" y="207" fill="#2e8b57" font-style="italic">φ<tspan font-size="11" dy="3">3</tspan></text><g fill="#5d6475"><text x="182.5" y="330" text-anchor="middle">6,50 m</text><text x="377.5" y="330" text-anchor="middle">6,50 m</text><text x="489" y="240">4,0 m</text><text x="489" y="120">4,0 m</text></g><line x1="280.0" y1="42.0" x2="280.0" y2="318.0" stroke="#5d6475" stroke-dasharray="6 5"/></g></svg>
+  <p><b>Freiheitsgrad:</b> φ<sub>3</sub> (φ<sub>4</sub> = 0 wegen Symmetrie). Der obere Riegel 5–5′ ist beidseitig gelenkig: Er ist ein Einfeldträger mit M = 30·13²/8 = 633,75 kNm und gibt nur Kräfte an die Stiele.</p>
+  <table>
+    <tr><th>Stab am Knoten 3</th><th>Steifigkeit</th><th>M̊</th></tr>
+    <tr><td>3–1 (unten eingespannt)</td><td>k = 2EI/4 = 0,5EI</td><td>0</td></tr>
+    <tr><td>3–5 (oben gelenkig)</td><td>k′ = 1,5EI/4 = 0,375EI</td><td>0</td></tr>
+    <tr><td>3–4 (φ<sub>4</sub> = 0, wirkt wie eingespannt)</td><td>k = 2EI/6,5 = 0,3077EI</td><td>+40·6,5²/12 = +140,83</td></tr>
+  </table>
+  <div class="eq">2·(0,5 + 0,375 + 0,3077)·EI·φ<sub>3</sub> = −140,83 &nbsp;⟹&nbsp; EI·φ<sub>3</sub> = −59,54</div>
+  <table>
+    <tr><th>Stabendmoment</th><th class="n">VZK II</th><th class="n">VZK I (Lösungsblatt)</th></tr>
+    <tr><td>M<sub>13</sub> = 0,5·φ<sub>3</sub></td><td class="n">−29,77</td><td class="n">29,77</td></tr>
+    <tr><td>M<sub>31</sub> = 0,5·2φ<sub>3</sub></td><td class="n">−59,54</td><td class="n">−59,54</td></tr>
+    <tr><td>M<sub>35</sub>′ = 0,375·2φ<sub>3</sub></td><td class="n">−44,65</td><td class="n">44,65</td></tr>
+    <tr><td>M<sub>34</sub> = 0,3077·2φ<sub>3</sub> + 140,83</td><td class="n">104,19</td><td class="n">−104,19</td></tr>
+    <tr><td>M<sub>43</sub> = 0,3077·φ<sub>3</sub> − 140,83</td><td class="n">−159,15</td><td class="n">−159,15</td></tr>
+  </table>
+  <p>Kontrolle Knoten 3: −59,54 − 44,65 + 104,19 = 0 ✓. Lösungsblatt: „VKI: M<sub>13</sub> = 29,77, M<sub>31</sub> = −59,54, M<sub>35</sub> = 44,65, M<sub>34</sub> = −104,19, M<sub>43</sub> = −159,15“ ✓.</p>
+  <div class="box merk"><b class="t">Mittelstütze bei Symmetrie</b>Der Mittelstiel 2–4 bekommt bei symmetrischer Last <b>kein Moment</b> (φ<sub>4</sub> = 0 und unten eingespannt). Er trägt nur Normalkraft. Das ist ein schneller Kontrollpunkt für die M-Linie.</div>
+
+  <h2 id="t3-ue">Übungen Tag 3</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 3.1</span><span class="ti">WS 25/26: gleiches System, Fußpunkte gelenkig</span></div>
+    <svg viewBox="0 0 560 345" role="img" aria-label="System WS 2023/24 mit Gelenkfüßen (WS 2025/26)"><g font-family="Source Sans 3" font-size="15"><rect x="85" y="34" width="390" height="22" fill="#c0392b" opacity=".13"/><line x1="85" y1="34" x2="475" y2="34" stroke="#c0392b" stroke-width="1.5"/><line x1="85.0" y1="34" x2="85.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="111.0" y1="34" x2="111.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="137.0" y1="34" x2="137.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="163.0" y1="34" x2="163.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="189.0" y1="34" x2="189.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="215.0" y1="34" x2="215.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="241.0" y1="34" x2="241.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="267.0" y1="34" x2="267.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="293.0" y1="34" x2="293.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="319.0" y1="34" x2="319.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="345.0" y1="34" x2="345.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="371.0" y1="34" x2="371.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="397.0" y1="34" x2="397.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="423.0" y1="34" x2="423.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="449.0" y1="34" x2="449.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="475.0" y1="34" x2="475.0" y2="54" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="280.0" y="28" text-anchor="middle" fill="#c0392b">30 kN/m</text><rect x="85" y="154" width="390" height="22" fill="#c0392b" opacity=".13"/><line x1="85" y1="154" x2="475" y2="154" stroke="#c0392b" stroke-width="1.5"/><line x1="85.0" y1="154" x2="85.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="111.0" y1="154" x2="111.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="137.0" y1="154" x2="137.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="163.0" y1="154" x2="163.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="189.0" y1="154" x2="189.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="215.0" y1="154" x2="215.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="241.0" y1="154" x2="241.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="267.0" y1="154" x2="267.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="293.0" y1="154" x2="293.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="319.0" y1="154" x2="319.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="345.0" y1="154" x2="345.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="371.0" y1="154" x2="371.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="397.0" y1="154" x2="397.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="423.0" y1="154" x2="423.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="449.0" y1="154" x2="449.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="475.0" y1="154" x2="475.0" y2="174" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="280.0" y="148" text-anchor="middle" fill="#c0392b">40 kN/m</text><line x1="85" y1="300" x2="85" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="180" x2="85" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="475" y1="300" x2="475" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="475" y1="180" x2="475" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="280.0" y1="300" x2="280.0" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="180" x2="475" y2="180" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="85" y1="60" x2="475" y2="60" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><path d="M85,300 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="69" y1="317" x2="101" y2="317" stroke="#1d2433" stroke-width="2"/><line x1="71" y1="317" x2="65" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="79" y1="317" x2="73" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="87" y1="317" x2="81" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="95" y1="317" x2="89" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="103" y1="317" x2="97" y2="324" stroke="#1d2433" stroke-width="1.2"/><path d="M280.0,300 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="264.0" y1="317" x2="296.0" y2="317" stroke="#1d2433" stroke-width="2"/><line x1="266.0" y1="317" x2="260.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="274.0" y1="317" x2="268.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="282.0" y1="317" x2="276.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="290.0" y1="317" x2="284.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="298.0" y1="317" x2="292.0" y2="324" stroke="#1d2433" stroke-width="1.2"/><path d="M475,300 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="459" y1="317" x2="491" y2="317" stroke="#1d2433" stroke-width="2"/><line x1="461" y1="317" x2="455" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="469" y1="317" x2="463" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="477" y1="317" x2="471" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="485" y1="317" x2="479" y2="324" stroke="#1d2433" stroke-width="1.2"/><line x1="493" y1="317" x2="487" y2="324" stroke="#1d2433" stroke-width="1.2"/><circle cx="85" cy="60" r="5.5" fill="#fff" stroke="#1d2433" stroke-width="2"/><circle cx="475" cy="60" r="5.5" fill="#fff" stroke="#1d2433" stroke-width="2"/><text x="63" y="294" fill="#1d2433" text-anchor="start">1</text><text x="288.0" y="292" fill="#1d2433" text-anchor="start">2</text><text x="483" y="292" fill="#1d2433" text-anchor="start">1'</text><text x="63" y="200" fill="#1d2433" text-anchor="start">3</text><text x="288.0" y="202" fill="#1d2433" text-anchor="start">4</text><text x="483" y="202" fill="#1d2433" text-anchor="start">3'</text><text x="63" y="60" fill="#1d2433" text-anchor="start">5</text><text x="485" y="60" fill="#1d2433" text-anchor="start">5'</text><path d="M100,180 A15,15 0 1 0 85,195" fill="none" stroke="#2e8b57" stroke-width="2" marker-end="url(#ag)"/><text x="104" y="207" fill="#2e8b57" font-style="italic">φ<tspan font-size="11" dy="3">3</tspan></text><g fill="#5d6475"><text x="182.5" y="330" text-anchor="middle">6,50 m</text><text x="377.5" y="330" text-anchor="middle">6,50 m</text><text x="489" y="240">4,0 m</text><text x="489" y="120">4,0 m</text></g><line x1="280.0" y1="42.0" x2="280.0" y2="318.0" stroke="#5d6475" stroke-dasharray="6 5"/></g></svg>
+    <p>Gib die Werte in VZK II an (so steht es im Lösungsblatt).</p>
+    <div class="ans"><label>EI·φ<sub>3</sub></label><input class="n" data-ans="-66.58"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>31</sub>′ [kNm]</label><input class="n" data-ans="-49.93"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>34</sub> [kNm]</label><input class="n" data-ans="99.86"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>43</sub> [kNm]</label><input class="n" data-ans="-161.32"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>Jetzt sind beide Stiele am Knoten 3 einseitig gelenkig: k′<sub>31</sub> = k′<sub>35</sub> = 0,375EI. k<sub>34</sub> = 0,3077EI.</p>
+      <p>2·(0,375 + 0,375 + 0,3077)·EI·φ<sub>3</sub> = −140,83 → EI·φ<sub>3</sub> = −66,58.</p>
+      <p>M<sub>31</sub>′ = M<sub>35</sub>′ = 0,75·(−66,58) = −49,93 · M<sub>34</sub> = 0,6154·(−66,58) + 140,83 = 99,86 · M<sub>43</sub> = 0,3077·(−66,58) − 140,83 = −161,32. Lösungsblatt: „M31′ = −49,93; M35′ = −49,93; M34 = 99,86; M43 = −161,31 (VKII)“ ✓.</p>
+    </div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 3.2</span><span class="ti">SS 21: Dreiecke unter Gleichlast</span></div>
+    <p>Riegel 1–2–3 (je 4 m, q = 10 kN/m), Schrägstäbe 1–4, 4–2, 2–5, 5–3 (Höhe 3 m, horizontal 2 m, L = √13), Gelenklager 4 und 5, alle Stäbe dort gelenkig angeschlossen. Ecken 1 und 3 sind biegesteif. Nutze φ<sub>2</sub> = 0 (Symmetrie).</p>
+    <div class="ans"><label>k<sub>14</sub>′ [·EI]</label><input class="n" data-ans="0.416"><span class="fb"></span></div>
+    <div class="ans"><label>EI·φ<sub>1</sub></label><input class="n" data-ans="-7.278"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>12</sub> (VZK II) [kNm]</label><input class="n" data-ans="6.056"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>21</sub> (VZK II) [kNm]</label><input class="n" data-ans="-16.97"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>k<sub>12</sub> = 2EI/4 = 0,5EI, k<sub>14</sub>′ = 1,5EI/√13 = 0,416EI. M̊<sub>12</sub> = 10·4²/12 = 13,33.</p>
+      <p>2·(0,5 + 0,416)·φ<sub>1</sub> = −13,33 → EI·φ<sub>1</sub> = −7,28 (genau so in deiner Notiz: 1,832·φ<sub>1</sub> = −13,33).</p>
+      <p>M<sub>12</sub> = 0,5·2·(−7,28) + 13,33 = 6,06 · M<sub>21</sub> = 0,5·(−7,28) − 13,33 = −16,97 · M<sub>14</sub>′ = −6,06. Die Schrägstäbe 4–2 und 2–5 bleiben momentenfrei (φ<sub>2</sub> = 0, unten gelenkig).</p>
+    </div></details>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc3"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne WS 20/21 (q = 60 kN/m, EI = 30 000 kNm²) mit Symmetrie und schick mir φ<sub>2</sub>. Handnotiz im Lösungs-PDF: φ<sub>2</sub> = −11,25/EI.</div>
+</section>
+
+<!-- ===================== TAG 4 ===================== -->
+<section class="view" id="v-tag4">
+  <p class="small">Tag 4 · So 29.11.</p>
+  <h1>Zwei Drehwinkel: K·φ = P</h1>
+  <p class="lead">Das ist der Normalfall in der Klausur. Mit den zwei Regeln für die Steifigkeitsmatrix schreibst du K direkt hin, ohne Gleichungen umzustellen.</p>
+  <ul class="toc">
+    <li><a href="#t4-1">1. Die zwei Regeln</a></li>
+    <li><a href="#t4-2">2. Lösen mit dem Casio</a></li>
+    <li><a href="#t4-3">3. WS 24/25 komplett</a></li>
+    <li><a href="#t4-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t4-1">1. Die zwei Regeln (Skript)</h2>
+  <div class="box merk"><b class="t">Regel 1 · Hauptdiagonale</b>K<sub>ii</sub> = <b>2 ·</b> Summe aller Steifigkeiten k und k′ der Stäbe, die im Knoten i biegesteif angeschlossen sind.</div>
+  <div class="box merk"><b class="t">Regel 2 · Nebendiagonale</b>K<sub>ij</sub> = <b>einfaches</b> k des Stabes, der i und j <b>an beiden Enden biegesteif</b> verbindet. Gibt es keinen, ist K<sub>ij</sub> = 0.</div>
+  <div class="box warn"><b class="t">Achtung aus dem Skript</b>„Steifigkeiten einseitig eingespannter Stäbe gehören nur auf die Hauptdiagonale.“ k′ hat auf der Nebendiagonale nichts zu suchen.</div>
+  <div class="eq">P<sub>i</sub> = (äußeres Knotenmoment) − Σ M̊<sub>ij</sub> &nbsp;&nbsp;(Kragmomente eingeschlossen)</div>
+
+  <h2 id="t4-2">2. Lösen mit dem Casio fx-991DE X</h2>
+  <p>Für 2×2 geht es am schnellsten von Hand:</p>
+  <div class="eq">φ<sub>1</sub> = (K<sub>22</sub>·P<sub>1</sub> − K<sub>12</sub>·P<sub>2</sub>) / det &nbsp;&nbsp; φ<sub>2</sub> = (K<sub>11</sub>·P<sub>2</sub> − K<sub>12</sub>·P<sub>1</sub>) / det &nbsp;&nbsp; det = K<sub>11</sub>K<sub>22</sub> − K<sub>12</sub>²</div>
+  <p>Für 3×3: <span class="mono">MENU → A (Gleichungen) → 1 (Lin. Gleich.-Syst.) → 3 Unbekannte</span>, Koeffizienten zeilenweise eintippen, „=“ gibt φ<sub>1</sub>, φ<sub>2</sub>, φ<sub>3</sub>.</p>
+
+  <h2 id="t4-3">3. WS 24/25 komplett</h2>
+  <svg viewBox="0 0 560 265" role="img" aria-label="System WS 2024/25"><g font-family="Source Sans 3" font-size="15"><rect x="40" y="64" width="320" height="22" fill="#c0392b" opacity=".13"/><line x1="40" y1="64" x2="360" y2="64" stroke="#c0392b" stroke-width="1.5"/><line x1="40.0" y1="64" x2="40.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="66.66666666666667" y1="64" x2="66.66666666666667" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="93.33333333333334" y1="64" x2="93.33333333333334" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="120.0" y1="64" x2="120.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="146.66666666666669" y1="64" x2="146.66666666666669" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="173.33333333333334" y1="64" x2="173.33333333333334" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="200.0" y1="64" x2="200.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="226.66666666666666" y1="64" x2="226.66666666666666" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="253.33333333333334" y1="64" x2="253.33333333333334" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="280.0" y1="64" x2="280.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="306.6666666666667" y1="64" x2="306.6666666666667" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="333.3333333333333" y1="64" x2="333.3333333333333" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="360.0" y1="64" x2="360.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="280" y="58" text-anchor="middle" fill="#c0392b">10 kN/m</text><line x1="200" y1="38" x2="200" y2="90" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/><text x="206" y="42" fill="#c0392b">30 kN</text><line x1="40" y1="90" x2="200" y2="90" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="200" y1="90" x2="360" y2="90" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="200" y1="90" x2="200" y2="210" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="360" y1="90" x2="360" y2="210" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="360" y1="90" x2="520" y2="210" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="40" y1="74" x2="40" y2="106" stroke="#1d2433" stroke-width="3"/><line x1="40" y1="76" x2="32" y2="82" stroke="#1d2433" stroke-width="1.3"/><line x1="40" y1="84" x2="32" y2="90" stroke="#1d2433" stroke-width="1.3"/><line x1="40" y1="92" x2="32" y2="98" stroke="#1d2433" stroke-width="1.3"/><line x1="40" y1="100" x2="32" y2="106" stroke="#1d2433" stroke-width="1.3"/><line x1="40" y1="108" x2="32" y2="114" stroke="#1d2433" stroke-width="1.3"/><path d="M200,210 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="184" y1="227" x2="216" y2="227" stroke="#1d2433" stroke-width="2"/><line x1="186" y1="227" x2="180" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="194" y1="227" x2="188" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="202" y1="227" x2="196" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="210" y1="227" x2="204" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="218" y1="227" x2="212" y2="234" stroke="#1d2433" stroke-width="1.2"/><path d="M360,210 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="344" y1="227" x2="376" y2="227" stroke="#1d2433" stroke-width="2"/><line x1="346" y1="227" x2="340" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="354" y1="227" x2="348" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="362" y1="227" x2="356" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="370" y1="227" x2="364" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="378" y1="227" x2="372" y2="234" stroke="#1d2433" stroke-width="1.2"/><line x1="504" y1="210" x2="536" y2="210" stroke="#1d2433" stroke-width="3"/><line x1="506" y1="210" x2="500" y2="218" stroke="#1d2433" stroke-width="1.3"/><line x1="514" y1="210" x2="508" y2="218" stroke="#1d2433" stroke-width="1.3"/><line x1="522" y1="210" x2="516" y2="218" stroke="#1d2433" stroke-width="1.3"/><line x1="530" y1="210" x2="524" y2="218" stroke="#1d2433" stroke-width="1.3"/><line x1="538" y1="210" x2="532" y2="218" stroke="#1d2433" stroke-width="1.3"/><circle cx="200" cy="90" r="5.5" fill="#fff" stroke="#1d2433" stroke-width="2"/><rect x="111" y="98" width="18" height="18" fill="#fff" stroke="#1d2433"/><text x="120" y="112" text-anchor="middle">X</text><text x="46" y="112" fill="#1d2433" text-anchor="start">1</text><text x="210" y="112" fill="#1d2433" text-anchor="start">2</text><text x="368" y="82" fill="#1d2433" text-anchor="start">3</text><text x="210" y="214" fill="#1d2433" text-anchor="start">4</text><text x="370" y="214" fill="#1d2433" text-anchor="start">5</text><text x="528" y="202" fill="#1d2433" text-anchor="start">6</text><g fill="#5d6475"><text x="120" y="252" text-anchor="middle">2 + 2 m</text><text x="280" y="252" text-anchor="middle">4 m</text><text x="440" y="252" text-anchor="middle">4 m</text><text x="368" y="150.0">3 m</text></g></g></svg>
+  <p class="cap">EI = 10 000 kNm². 2–4 ist ein Pendelstab (Gelenke oben und unten). Lösungsblatt: φ<sub>2</sub> = −1,246·10⁻⁴, φ<sub>3</sub> = 4,98·10⁻⁴.</p>
+  <table>
+    <tr><th>Stab</th><th class="n">k (·EI)</th><th>M̊ (VZK II)</th></tr>
+    <tr><td>1–2 (1 eingespannt)</td><td class="n">0,5</td><td>±13,33</td></tr>
+    <tr><td>2–3</td><td class="n">0,5</td><td>±13,33</td></tr>
+    <tr><td>2–4 Pendelstab</td><td class="n">0</td><td>—</td></tr>
+    <tr><td>3–5 unten gelenkig</td><td class="n">k′ = 0,5</td><td>0</td></tr>
+    <tr><td>3–6 eingespannt</td><td class="n">0,4</td><td>0</td></tr>
+  </table>
+  <div class="eq">K = EI·<span class="up">[</span> 2·(0,5 + 0,5) &nbsp; 0,5 ; &nbsp; 0,5 &nbsp; 2·(0,5 + 0,5 + 0,4) <span class="up">]</span> = EI·<span class="up">[</span> 2 &nbsp; 0,5 ; &nbsp; 0,5 &nbsp; 2,8 <span class="up">]</span></div>
+  <div class="eq">P = −<span class="up">[</span> M̊<sub>21</sub> + M̊<sub>23</sub> ; M̊<sub>32</sub> <span class="up">]</span> = −<span class="up">[</span> −13,33 + 13,33 ; −13,33 <span class="up">]</span> = <span class="up">[</span> 0 ; 13,33 <span class="up">]</span></div>
+  <div class="eq">det = 5,6 − 0,25 = 5,35 &nbsp;⟹&nbsp; EI·φ<sub>2</sub> = −0,5·13,33/5,35 = −1,246 &nbsp;&nbsp; EI·φ<sub>3</sub> = 2·13,33/5,35 = 4,984</div>
+  <p>Mit EI = 10 000: φ<sub>2</sub> = −1,246·10⁻⁴, φ<sub>3</sub> = 4,98·10⁻⁴ ✓.</p>
+  <table>
+    <tr><th>Stabendmoment</th><th class="n">VZK II [kNm]</th></tr>
+    <tr><td>M<sub>12</sub> = 0,5·φ<sub>2</sub> + 13,33</td><td class="n">12,71</td></tr>
+    <tr><td>M<sub>21</sub> = 0,5·2φ<sub>2</sub> − 13,33</td><td class="n">−14,58</td></tr>
+    <tr><td>M<sub>23</sub> = 0,5·(2φ<sub>2</sub> + φ<sub>3</sub>) + 13,33</td><td class="n">14,58</td></tr>
+    <tr><td>M<sub>32</sub> = 0,5·(2φ<sub>3</sub> + φ<sub>2</sub>) − 13,33</td><td class="n">−8,97</td></tr>
+    <tr><td>M<sub>35</sub>′ = 0,5·2φ<sub>3</sub></td><td class="n">4,98</td></tr>
+    <tr><td>M<sub>36</sub> = 0,4·2φ<sub>3</sub> · M<sub>63</sub> = 0,4·φ<sub>3</sub></td><td class="n">3,99 · 1,99</td></tr>
+  </table>
+  <p>Kontrollen: Knoten 2: −14,58 + 14,58 = 0 ✓ · Knoten 3: −8,97 + 4,98 + 3,99 = 0 ✓.</p>
+
+  <h3>Skript-Anwendungsbeispiel zum Vergleich</h3>
+  <p>Zweifeldriegel 4–5–6 (je 4 m, 2EI, 10 kN/m), Stiel 5–2 unten gelenkig (2,5 m, EI), Stiel 6–3 eingespannt (2,5 m, EI), Knoten 4 starr. Ergebnis: K = EI·[5,2  1,0; 1,0  3,6], P = [0; 13,33], EI·φ<sub>5</sub> = −0,75, EI·φ<sub>6</sub> = 3,91.</p>
+
+  <h2 id="t4-ue">Übungen Tag 4</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 4.1</span><span class="ti">SS 16</span></div>
+    <svg viewBox="0 0 470 295" role="img" aria-label="System SS 2016"><g font-family="Source Sans 3" font-size="15"><rect x="60" y="84" width="210" height="22" fill="#c0392b" opacity=".13"/><line x1="60" y1="84" x2="270" y2="84" stroke="#c0392b" stroke-width="1.5"/><line x1="60.0" y1="84" x2="60.0" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="86.25" y1="84" x2="86.25" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="112.5" y1="84" x2="112.5" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="138.75" y1="84" x2="138.75" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="165.0" y1="84" x2="165.0" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="191.25" y1="84" x2="191.25" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="217.5" y1="84" x2="217.5" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="243.75" y1="84" x2="243.75" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="270.0" y1="84" x2="270.0" y2="104" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="109.0" y="78" text-anchor="middle" fill="#c0392b">5 kN/m</text><line x1="165.0" y1="46" x2="165.0" y2="106" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/><text x="171.0" y="48" fill="#c0392b">10 kN</text><line x1="445.0" y1="40" x2="375.0" y2="40" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/><text x="435.0" y="32" fill="#c0392b">10 kN</text><line x1="60" y1="250" x2="60" y2="110" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="60" y1="110" x2="270" y2="110" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="270" y1="110" x2="375.0" y2="110" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="375.0" y1="110" x2="375.0" y2="40" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="270" y1="110" x2="375.0" y2="250" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="44" y1="250" x2="76" y2="250" stroke="#1d2433" stroke-width="3"/><line x1="46" y1="250" x2="40" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="54" y1="250" x2="48" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="62" y1="250" x2="56" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="70" y1="250" x2="64" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="78" y1="250" x2="72" y2="258" stroke="#1d2433" stroke-width="1.3"/><path d="M60,110 l-17,-11 v22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="39" y1="95" x2="39" y2="125" stroke="#1d2433" stroke-width="2"/><line x1="34" y1="95" x2="34" y2="125" stroke="#1d2433" stroke-width="2"/><path d="M375.0,250 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="359.0" y1="267" x2="391.0" y2="267" stroke="#1d2433" stroke-width="2"/><line x1="361.0" y1="267" x2="355.0" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="369.0" y1="267" x2="363.0" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="377.0" y1="267" x2="371.0" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="385.0" y1="267" x2="379.0" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="393.0" y1="267" x2="387.0" y2="274" stroke="#1d2433" stroke-width="1.2"/><text x="70" y="244" fill="#1d2433" text-anchor="start">1</text><text x="70" y="130" fill="#1d2433" text-anchor="start">2</text><text x="266" y="132" fill="#1d2433" text-anchor="start">3</text><text x="383.0" y="130" fill="#1d2433" text-anchor="start">4</text><text x="359.0" y="36" fill="#1d2433" text-anchor="start">5</text><text x="389.0" y="254" fill="#1d2433" text-anchor="start">6</text><g fill="#5d6475"><text x="165.0" y="276" text-anchor="middle">3 m (Last in der Mitte)</text><text x="322.5" y="276" text-anchor="middle">1,5 m</text><text x="415.0" y="180">2 m</text><text x="415.0" y="75.0">1 m</text></g></g></svg>
+    <p>EI = konst. Der Kragarm 3–4–5 gibt am Knoten 3 das Moment der 10-kN-Horizontallast (Hebel 1 m). M̊ des Kragarms in VZK II: −10. Gib K und φ in Vielfachen von EI an.</p>
+    <div class="ans"><label>K<sub>22</sub></label><input class="n" data-ans="3.333"><span class="fb"></span></div>
+    <div class="ans"><label>K<sub>33</sub></label><input class="n" data-ans="2.533"><span class="fb"></span></div>
+    <div class="ans"><label>EI·φ<sub>2</sub></label><input class="n" data-ans="-3.833"><span class="fb"></span></div>
+    <div class="ans"><label>EI·φ<sub>3</sub></label><input class="n" data-ans="7.917"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>36</sub>′ (VZK II) [kNm]</label><input class="n" data-ans="9.5"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>k<sub>12</sub> = 2EI/2 = 1 · k<sub>23</sub> = 2EI/3 = 0,667 · k<sub>36</sub>′ = 1,5EI/2,5 = 0,6. M̊<sub>23</sub> = 5·3²/12 + 10·3/8 = 3,75 + 3,75 = 7,5.</p>
+      <p>K = [2·(1 + 0,667)  0,667; 0,667  2·(0,667 + 0,6)] = [3,333  0,667; 0,667  2,533]. P = −[7,5; −7,5 − 10] = [−7,5; 17,5]. det = 8,0.</p>
+      <p>EI·φ<sub>2</sub> = (2,533·(−7,5) − 0,667·17,5)/8 = −3,833 · EI·φ<sub>3</sub> = (3,333·17,5 + 0,667·7,5)/8 = 7,917.</p>
+      <p>M<sub>12</sub> = −3,83, M<sub>21</sub> = −7,67, M<sub>23</sub> = 7,67, M<sub>32</sub> = 0,50, M<sub>36</sub>′ = 9,50, M<sub>34</sub> = −10. Lösungsblatt (VZK I): „M12 = 3,833; M21 = −7,666; M23 = −7,66; M32 = 0,5; M36 = −9,5“ ✓.</p>
+    </div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 4.2</span><span class="ti">WS 19/20</span></div>
+    <p>Mit den Werten aus Ü 2.2. Am Knoten 3: Schrägstäbe 3–6 und 3–7 (je √2 m, gelenkig), Stiel 3–1 (1,5 m, eingespannt), Riegel 3–4 (3 m). Am Knoten 4: Riegel 4–3, Stiel 4–2 (1,5 m, unten gelenkig), Riegel 4–5 (2 m, eingespannt). EI = 2000 kNm². Die 20 kN direkt über Knoten 4 gehen in den Stiel.</p>
+    <div class="ans"><label>K<sub>33</sub> [·EI]</label><input class="n" data-ans="8.243"><span class="fb"></span></div>
+    <div class="ans"><label>K<sub>44</sub> [·EI]</label><input class="n" data-ans="5.333"><span class="fb"></span></div>
+    <div class="ans"><label>EI·φ<sub>3</sub></label><input class="n" data-ans="-1.081"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>34</sub> (VZK II) [kNm]</label><input class="n" data-ans="7.468"><span class="fb"></span></div>
+    <div class="ans"><label>A<sub>v</sub> [kN]</label><input class="n" data-ans="35.93" data-tol="0.01"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösungsweg</summary><div>
+      <p>K<sub>33</sub> = 2·(1,061 + 1,061 + 1,333 + 0,667) = 8,243 · K<sub>44</sub> = 2·(0,667 + 1,0 + 1,0) = 5,333 · K<sub>34</sub> = 0,667.</p>
+      <p>P<sub>3</sub> = −8,889 · P<sub>4</sub> = −(−4,444 + 5) = −0,556. det = 43,52 → EI·φ<sub>3</sub> = −1,081, EI·φ<sub>4</sub> = 0,031.</p>
+      <p>M<sub>34</sub> = 0,667·(2·(−1,081) + 0,031) + 8,889 = 7,47 → VZK I −7,47 ✓ (Lösungsblatt: M34 = −7,467).</p>
+      <p>A<sub>v</sub> = Normalkraft im Pendelstiel 4–2 = Auflagerkraft des Riegels 3–4 an Knoten 4 + Auflagerkraft des Riegels 4–5 an Knoten 4 + 20 kN. In VZK I: Riegel 3–4 (M<sub>l</sub> = −7,47, M<sub>r</sub> = −5,12): 6,67 − (−5,12 + 7,47)/3 = 5,89 kN. Riegel 4–5 (M<sub>l</sub> = −5,06, M<sub>r</sub> = −4,97): 10 + (−4,97 + 5,06)/2 = 10,05 kN. <b>A<sub>v</sub> = 5,89 + 10,05 + 20 = 35,93 kN</b> (Lösungsblatt: 35,9) ✓.</p>
+    </div></details>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc4"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne SS 20 (φ<sub>2</sub>, φ<sub>3</sub>) und schick mir deine K-Matrix. Lösungsblatt: M<sub>23</sub> = −9,89, M<sub>32</sub> = −10,86 (VZK I).</div>
+</section>
+
+<!-- ===================== TAG 5 ===================== -->
+<section class="view" id="v-tag5">
+  <p class="small">Tag 5 · Mo 30.11.</p>
+  <h1>Sonderstäbe und schräge Lasten</h1>
+  <p class="lead">Kragarme, Pendelstäbe, Lager die nur in eine Richtung halten, Schrägstäbe mit Projektionslast. Daran entscheidet sich, ob du in Aufgabe 3 volle Punkte holst.</p>
+  <ul class="toc">
+    <li><a href="#t5-1">1. Lager richtig lesen</a></li>
+    <li><a href="#t5-2">2. Last auf schrägen Stäben</a></li>
+    <li><a href="#t5-3">3. WS 16/17 komplett</a></li>
+    <li><a href="#t5-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t5-1">1. Lager richtig lesen</h2>
+  <table>
+    <tr><th>Situation</th><th>Wirkung auf den Stab</th><th>Klausur</th></tr>
+    <tr><td>Stabende an Gelenklager</td><td>k′</td><td>fast alle</td></tr>
+    <tr><td>Stabende an Lager, das nur <b>quer zum Stab</b> hält</td><td>k′ (für Biegung wie gelenkig)</td><td>WS 16/17 oben, SS 26 Knoten 7, WS 17/18 Knoten 6</td></tr>
+    <tr><td>Stabende an Lager, das nur <b>in Stabrichtung</b> hält</td><td>quer frei → Kragarm, k = 0</td><td>SS 26 Lager A, WS 18/19 Knoten 5</td></tr>
+    <tr><td>Stab an beiden Enden gelenkig (Pendelstab, Seil, Zugband)</td><td>k = 0, nur Normalkraft</td><td>WS 24/25 2–4, SS 19 2–6, SS 20 1–4</td></tr>
+    <tr><td>Kragarm</td><td>k = 0, Kragmoment in P</td><td>SS 16, WS 16/17, SS 18, SS 26</td></tr>
+    <tr><td>Stab mit Last, aber gelenkig an beiden Enden</td><td>Einfeldträger, Lagerkräfte als Knotenlasten</td><td>WS 17/18 3–7, WS 23/24 5–5′</td></tr>
+  </table>
+  <div class="box warn"><b class="t">WS 18/19, Knoten 3 → 6</b>Der Stiel 3–6 hängt unten an einem Lager, das nur vertikal hält. Die 20 kN Horizontallast an Punkt 6 kann dieses Lager nicht aufnehmen. Der Stiel ist also ein <b>Kragarm</b> nach unten: M̊ = 20·2 = 40 kNm am Knoten 3. Lösungsblatt-Ergebnis M<sub>32</sub> = 23,31 passt nur so.</div>
+
+  <h2 id="t5-2">2. Last auf schrägen Stäben</h2>
+  <p>In den Klausuren wirkt die Last oft auf die <b>Projektion</b> des Schrägstabes (WS 16/17, SS 25, SS 19). Dann:</p>
+  <ol class="steps">
+    <li>Gesamtlast aus der Projektion: z. B. H = 5 kN/m · 2 m (Höhe) = 10 kN.</li>
+    <li>Auf die Stablänge verteilen: 10 kN / 2,5 m = 4 kN/m.</li>
+    <li>Zerlegen: q<sub>⊥</sub> = 4·cos α, q<sub>∥</sub> = 4·sin α. Nur q<sub>⊥</sub> erzeugt M̊.</li>
+  </ol>
+  <p><b>WS 16/17:</b> Schrägstab 1,5 m horizontal, 2 m vertikal, L = 2,5 m. Winkel zur Senkrechten: sin α = 0,6, cos α = 0,8. q<sub>⊥</sub> = 4·0,8 = <b>3,2 kN/m</b>, q<sub>∥</sub> = 4·0,6 = <b>2,4 kN/m</b>. Lösungsblatt: „q<sub>⊥</sub> = 3,2 kN/m, q<sub>∥</sub> = 2,4 kN/m“ ✓.</p>
+  <div class="box merk"><b class="t">Kurzform</b>Senkrechte Last q auf die Grundriss-Projektion: q<sub>⊥</sub> = q·cos²α (α = Neigung gegen die Horizontale). Bei SS 19 steht das als Handnotiz: q<sub>⊥</sub> = (5·3/5)·cos 53° = 1,8.</div>
+
+  <h2 id="t5-3">3. WS 16/17 komplett (= SS 25)</h2>
+  <svg viewBox="0 0 470 310" role="img" aria-label="System WS 2016/17"><g font-family="Source Sans 3" font-size="15"><rect x="84" y="30" width="22" height="120" fill="#c0392b" opacity=".13"/><line x1="84" y1="30.0" x2="106" y2="30.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="84" y1="54.0" x2="106" y2="54.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="84" y1="78.0" x2="106" y2="78.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="84" y1="102.0" x2="106" y2="102.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="84" y1="126.0" x2="106" y2="126.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="84" y1="150.0" x2="106" y2="150.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="76" y="90" text-anchor="end" fill="#c0392b">5 kN/m</text><rect x="388.0" y="150" width="24" height="120" fill="#c0392b" opacity=".13"/><line x1="412.0" y1="150.0" x2="390.0" y2="150.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="412.0" y1="180.0" x2="390.0" y2="180.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="412.0" y1="210.0" x2="390.0" y2="210.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="412.0" y1="240.0" x2="390.0" y2="240.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="412.0" y1="270.0" x2="390.0" y2="270.0" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="392.0" y="126" fill="#c0392b">5 kN/m</text><line x1="380.0" y1="100" x2="380.0" y2="150" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/><text x="330.0" y="104" fill="#c0392b">10 kN</text><line x1="50" y1="150" x2="110" y2="150" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="110" y1="150" x2="110" y2="30" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="110" y1="270" x2="110" y2="150" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="110" y1="150" x2="290" y2="150" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="290" y1="150" x2="380.0" y2="150" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="290" y1="150" x2="380.0" y2="270" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><path d="M50,150 l-17,-11 v22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="29" y1="135" x2="29" y2="165" stroke="#1d2433" stroke-width="2"/><line x1="24" y1="135" x2="24" y2="165" stroke="#1d2433" stroke-width="2"/><path d="M110,30 l-11,-17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="125" y1="0" x2="125" y2="30" stroke="#1d2433" stroke-width="2"/><line x1="130" y1="0" x2="130" y2="30" stroke="#1d2433" stroke-width="2"/><line x1="94" y1="270" x2="126" y2="270" stroke="#1d2433" stroke-width="3"/><line x1="96" y1="270" x2="90" y2="278" stroke="#1d2433" stroke-width="1.3"/><line x1="104" y1="270" x2="98" y2="278" stroke="#1d2433" stroke-width="1.3"/><line x1="112" y1="270" x2="106" y2="278" stroke="#1d2433" stroke-width="1.3"/><line x1="120" y1="270" x2="114" y2="278" stroke="#1d2433" stroke-width="1.3"/><line x1="128" y1="270" x2="122" y2="278" stroke="#1d2433" stroke-width="1.3"/><path d="M380.0,270 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="364.0" y1="287" x2="396.0" y2="287" stroke="#1d2433" stroke-width="2"/><line x1="366.0" y1="287" x2="360.0" y2="294" stroke="#1d2433" stroke-width="1.2"/><line x1="374.0" y1="287" x2="368.0" y2="294" stroke="#1d2433" stroke-width="1.2"/><line x1="382.0" y1="287" x2="376.0" y2="294" stroke="#1d2433" stroke-width="1.2"/><line x1="390.0" y1="287" x2="384.0" y2="294" stroke="#1d2433" stroke-width="1.2"/><line x1="398.0" y1="287" x2="392.0" y2="294" stroke="#1d2433" stroke-width="1.2"/><text x="44" y="174" fill="#1d2433" text-anchor="start">1</text><text x="118" y="170" fill="#1d2433" text-anchor="start">2</text><text x="136" y="40" fill="#1d2433" text-anchor="start">3</text><text x="120" y="264" fill="#1d2433" text-anchor="start">6</text><text x="286" y="140" fill="#1d2433" text-anchor="start">4</text><text x="362.0" y="170" fill="#1d2433" text-anchor="start">K</text><text x="358.0" y="278" fill="#1d2433" text-anchor="start">5</text><g fill="#5d6475"><text x="80.0" y="300" text-anchor="middle">1,0</text><text x="200.0" y="300" text-anchor="middle">1,5 + 1,5</text><text x="335.0" y="300" text-anchor="middle">1,5 m</text><text x="120" y="90">2 m</text><text x="120" y="210">2 m</text></g></g></svg>
+  <p class="cap">Lager 1 hält nur horizontal → 1–2 unbelasteter Kragarm (k = 0, M = 0). Lager 3 hält nur horizontal → Stiel 2–3 mit k′. 6 eingespannt, 5 gelenkig.</p>
+  <table>
+    <tr><th>Stab</th><th class="n">k (·EI)</th><th>M̊ (VZK II)</th></tr>
+    <tr><td>2–3 (q = 5, oben gelenkig)</td><td class="n">k′ = 0,75</td><td>+5·2²/8 = +2,5</td></tr>
+    <tr><td>2–6 eingespannt</td><td class="n">1,0</td><td>0</td></tr>
+    <tr><td>2–4</td><td class="n">0,667</td><td>0</td></tr>
+    <tr><td>4–K Kragarm</td><td class="n">0</td><td>+10·1,5 = +15</td></tr>
+    <tr><td>4–5 (q<sub>⊥</sub> = 3,2, unten gelenkig)</td><td class="n">k′ = 0,6</td><td>+3,2·2,5²/8 = +2,5</td></tr>
+  </table>
+  <div class="eq">K = EI·<span class="up">[</span> 4,833 &nbsp; 0,667 ; &nbsp; 0,667 &nbsp; 2,533 <span class="up">]</span> &nbsp;&nbsp; P = <span class="up">[</span> −2,5 ; −17,5 <span class="up">]</span> &nbsp;&nbsp; det = 11,8</div>
+  <div class="eq" style="font-size:22px">EI·φ<sub>2</sub> = 0,452 &nbsp;&nbsp; EI·φ<sub>4</sub> = −7,027</div>
+  <p>Stabendmomente: M<sub>26</sub> = 0,904, M<sub>62</sub> = 0,452, M<sub>23</sub>′ = 3,18, M<sub>24</sub> = −4,08, M<sub>42</sub> = −9,07, M<sub>45</sub>′ = −5,93, M<sub>4K</sub> = 15. Kontrolle Knoten 4: −9,07 − 5,93 + 15 = 0 ✓.</p>
+  <p>Lösungsblatt WS 16/17: „M21 = 0,9; M23′ = −3,18; M24 = 4,08; M42 = −9,09; M45′ = 5,93“, SS 25: „φ4 = 0,452, φ5 = −7,027“ ✓ (andere Knotennummern, VZK I).</p>
+
+  <h2 id="t5-ue">Übungen Tag 5</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.1</span><span class="ti">Lastzerlegung</span></div>
+    <p>Schrägstab mit 3 m horizontaler und 4 m vertikaler Projektion. Eine Horizontallast 6 kN/m wirkt auf die <b>vertikale</b> Projektion.</p>
+    <div class="ans"><label>Last pro m Stablänge [kN/m]</label><input class="n" data-ans="4.8"><span class="fb"></span></div>
+    <div class="ans"><label>q<sub>⊥</sub> [kN/m]</label><input class="n" data-ans="3.84"><span class="fb"></span></div>
+    <div class="ans"><label>q<sub>∥</sub> [kN/m]</label><input class="n" data-ans="2.88"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>H = 6·4 = 24 kN auf L = 5 m → 4,8 kN/m. Der Stab ist gegen die Senkrechte um sin α = 3/5 geneigt: q<sub>⊥</sub> = 4,8·0,8 = 3,84, q<sub>∥</sub> = 4,8·0,6 = 2,88.</p></div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 5.2</span><span class="ti">WS 16/17 selbst rechnen</span></div>
+    <p>Schließ oben die Lösung und rechne nach.</p>
+    <div class="ans"><label>K<sub>22</sub> [·EI]</label><input class="n" data-ans="4.833"><span class="fb"></span></div>
+    <div class="ans"><label>EI·φ<sub>2</sub></label><input class="n" data-ans="0.452"><span class="fb"></span></div>
+    <div class="ans"><label>EI·φ<sub>4</sub></label><input class="n" data-ans="-7.027"><span class="fb"></span></div>
+    <div class="ans"><label>M<sub>42</sub> (VZK II) [kNm]</label><input class="n" data-ans="-9.068"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc5"></div>
+  <div class="chat"><b>Heute im Chat:</b> Rechne WS 17/18 (zwei Drehwinkel φ<sub>2</sub>, φ<sub>3</sub>) und schick mir deine Stabtypen. Achtung: 3–7 ist ein belasteter Pendelstab. Lösungsblatt: M<sub>23</sub> = −15,36, M<sub>35</sub> = 9,88.</div>
+</section>
+
+<!-- ===================== TAG 6 ===================== -->
+<section class="view" id="v-tag6">
+  <p class="small">Tag 6 · Di 1.12.</p>
+  <h1>M, V, N und Verformungsfigur</h1>
+  <p class="lead">Nach den Stabendmomenten kommen fast immer die Zustandslinien und oft eine Verformung. Mit den Stabendmomenten ist jeder Stab ein Einfeldträger mit bekannten Endmomenten.</p>
+  <ul class="toc">
+    <li><a href="#t6-1">1. M-Linie</a></li>
+    <li><a href="#t6-2">2. Querkräfte</a></li>
+    <li><a href="#t6-3">3. Normalkräfte</a></li>
+    <li><a href="#t6-4">4. Verformungsfigur</a></li>
+    <li><a href="#t6-5">5. Durchbiegung</a></li>
+    <li><a href="#t6-ue">Übungen</a></li>
+  </ul>
+
+  <h2 id="t6-1">1. M-Linie</h2>
+  <p>Endmomente in VZK I umrechnen (Tag 2), verbinden, Lastanteil einhängen: Gleichlast Stich qL²/8, Einzellast PL/4 bzw. Pab/L.</p>
+  <h2 id="t6-2">2. Querkräfte</h2>
+  <p>Jeder Stab ist ein Einfeldträger mit Endmomenten M<sub>l</sub>, M<sub>r</sub> (VZK I) plus Last:</p>
+  <div class="eq">V<sub>l</sub> = V<sub>0,l</sub> + (M<sub>r</sub> − M<sub>l</sub>)/L &nbsp;&nbsp;&nbsp; V<sub>r</sub> = V<sub>0,r</sub> + (M<sub>r</sub> − M<sub>l</sub>)/L</div>
+  <p>V<sub>0</sub> ist die Querkraft des Einfeldträgers (z. B. +qL/2 links, −qL/2 rechts).</p>
+  <p><b>SS 16, Stab 2–3:</b> M<sub>l</sub> = −7,67, M<sub>r</sub> = +0,50, q = 5, P = 10 mittig. V<sub>l</sub> = (15 + 10)/2 + (0,50 + 7,67)/3 = 12,5 + 2,72 = <b>15,22 kN</b>. Lösungsblatt: „V(x) = 15,22 − 5x“ ✓. M(x) = −7,67 + 15,22x − 2,5x² für 0 ≤ x ≤ 1,5. Nullstelle bei x = 0,554 m, Maximum unter der Last: M(1,5) = 9,54 kNm ✓.</p>
+
+  <h2 id="t6-3">3. Normalkräfte</h2>
+  <p>Aus dem Kräftegleichgewicht an den Knoten: Die Querkräfte der einen Stäbe sind die Normalkräfte der anderen. Am rechtwinkligen Rahmenknoten: N<sub>Stiel</sub> = −(V<sub>Riegel</sub> links + rechts), N<sub>Riegel</sub> aus ΣH. Bei Schrägstäben: Kräfte am Knoten in Stabrichtung zerlegen.</p>
+  <div class="box warn"><b class="t">Seile und Zugbänder</b>Musterklausur 2016: „Seile können nur Zugkräfte aufnehmen“. Wenn deine Rechnung im Seil Druck ergibt, ist das Seil schlaff und fällt heraus. Dann neu rechnen ohne Seil.</div>
+
+  <h2 id="t6-4">4. Verformungsfigur</h2>
+  <ol class="steps">
+    <li>Einspannungen: Tangente bleibt in Stabrichtung. Gelenke: Knick erlaubt.</li>
+    <li>An jedem Knoten den Drehwinkel φ einzeichnen (Vorzeichen!). Alle biegesteif angeschlossenen Stäbe drehen sich gleich.</li>
+    <li>Biegelinie krümmt sich zur Zugseite der M-Linie. <b>Wendepunkt = Nullstelle der M-Linie.</b> Wendepunkte mit Querstrich markieren (wird in SS 16 und WS 16/17 verlangt).</li>
+    <li>Knoten bleiben am Ort (unverschieblich, EA = ∞).</li>
+  </ol>
+
+  <h2 id="t6-5">5. Durchbiegung in Feldmitte</h2>
+  <p>Mit den Drehwinkeln geht es ohne Arbeitssatz. Für einen Stab mit Gleichlast und Enddrehwinkeln φ<sub>l</sub>, φ<sub>r</sub> (VZK II):</p>
+  <div class="eq">w<sub>Mitte</sub> = qL⁴/(384EI) + (L/8)·(φ<sub>r</sub> − φ<sub>l</sub>) &nbsp;&nbsp;(w nach unten positiv)</div>
+  <p><b>WS 24/25, Punkt X</b> (Mitte von 1–2, L = 4 m, φ<sub>1</sub> = 0, φ<sub>2</sub> = −1,246·10⁻⁴): w = 10·4⁴/(384·10 000) + 0,5·(−1,246·10⁻⁴) = 0,667 mm − 0,062 mm = <b>0,605 mm</b>. Lösungsblatt: „w<sub>x</sub> = 0,605 mm“ ✓.</p>
+  <p class="small">Die erste Formel gilt für einen beidseitig eingespannten Stab, dessen Enden sich zusätzlich um φ<sub>l</sub>, φ<sub>r</sub> drehen. Alternativ: Reduktionssatz mit der M-Linie und einem virtuellen Einfeldträger (Koppeltafeln).</p>
+
+  <h2 id="t6-ue">Übungen Tag 6</h2>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 6.1</span><span class="ti">SS 16 Stab 2–3 (Teilaufgabe 3)</span></div>
+    <div class="ans"><label>V links [kN]</label><input class="n" data-ans="15.22"><span class="fb"></span></div>
+    <div class="ans"><label>Nullstelle M [m]</label><input class="n" data-ans="0.554" data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>max M [kNm]</label><input class="n" data-ans="9.54" data-tol="0.01"><span class="fb"></span></div>
+    <div class="ans"><label>V rechts [kN]</label><input class="n" data-ans="-2.28" data-tol="0.02"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>V<sub>l</sub> = 15,22. V springt unter der Last bei x = 1,5: links 15,22 − 7,5 = 7,72, rechts −2,28. Ab da V = −2,28 − 5·(x − 1,5), am Ende −9,78. M(1,5) = −7,67 + 22,83 − 5,63 = 9,54.</p></div></details>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 6.2</span><span class="ti">SS 26: Feldmoment B–C</span></div>
+    <p>M<sub>BC</sub> = 6,14, M<sub>CB</sub> = −9,58 (VZK II), L = 3 m, q = 10 kN/m.</p>
+    <div class="ans"><label>V<sub>B</sub> im Feld [kN]</label><input class="n" data-ans="13.85"><span class="fb"></span></div>
+    <div class="ans"><label>max M (VZK I) [kNm]</label><input class="n" data-ans="3.46" data-tol="0.02"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Lösung</summary><div><p>VZK I: M<sub>l</sub> = −6,14, M<sub>r</sub> = −9,58. V<sub>B</sub> = 15 + (−9,58 + 6,14)/3 = 13,85. Nullstelle von V bei x = 1,385 → M<sub>max</sub> = −6,14 + 13,85²/(2·10) = 3,46.</p></div></details>
+  </div>
+  <h3>Verständnisfragen</h3>
+  <div id="mc6"></div>
+  <div class="chat"><b>Heute im Chat:</b> Zeichne die Verformungsfigur von WS 24/25 mit Wendepunkten und schick mir ein Foto.</div>
+</section>
+
+<!-- ===================== TAG 7 ===================== -->
+<section class="view" id="v-tag7">
+  <p class="small">Tag 7 · Mi 2.12.</p>
+  <h1>Einflusslinien und Probeklausur</h1>
+  <p class="lead">Einflusslinien kamen in sechs Klausuren als Zusatzaufgabe: meist qualitativ, in SS 26 als Gleichung. Danach die Probeklausur.</p>
+  <ul class="toc">
+    <li><a href="#t7-1">1. EL eines Drehwinkels</a></li>
+    <li><a href="#t7-2">2. EL eines Moments</a></li>
+    <li><a href="#t7-3">3. SS 26 als Gleichung</a></li>
+    <li><a href="#t7-pk">Probeklausur</a></li>
+  </ul>
+
+  <h2 id="t7-1">1. EL eines Drehwinkels (SS 17, WS 21/22, SS 24, SS 26)</h2>
+  <div class="box merk"><b class="t">Satz von Maxwell</b>Die Einflusslinie für die Verdrehung φ<sub>k</sub> ist die <b>Biegelinie infolge eines Moments 1 am Knoten k</b>. Qualitativ: Moment am Knoten ansetzen, Knoten dreht sich, die angeschlossenen Stäbe biegen sich, Einspannungen halten die Tangente.</div>
+  <p>Im eigenen Feld des Knotens wechselt die Einflusslinie das Vorzeichen: Eine Last links vom Knoten dreht ihn anders herum als eine Last rechts davon. Kragarme geben gerade Linien (statisch bestimmt).</p>
+
+  <h2 id="t7-2">2. EL eines Moments (WS 17/18, SS 23)</h2>
+  <p><b>Müller-Breslau:</b> An der gesuchten Stelle ein Gelenk einbauen und einen Knick −1 erzwingen. Die Biegelinie ist die EL. Bei Einspannmomenten (WS 17/18 Knoten 1): Einspannung durch Gelenk ersetzen, Drehung 1 aufzwingen. Auf Kragarmen ist die EL gerade (SS 23: Kragarmordinate −2,885·0,1 = −0,29).</p>
+
+  <h2 id="t7-3">3. SS 26: EL der EI-fachen Verdrehung im Knoten C</h2>
+  <p>Eine Last 1 an der Stelle x liefert nur ein M̊ in P. Also ist EI·φ<sub>C</sub> = (K⁻¹·P)<sub>C</sub> = (0,667·M̊<sub>B</sub> − 4,833·M̊<sub>C</sub>)/11,8. Mit den M̊ einer Einzellast 1 bekommst du die Gleichung abschnittsweise:</p>
+  <div class="fig" style="position:relative;min-height:280px"><svg id="elsvg" style="position:absolute;inset:0;width:100%;height:100%"></svg></div>
+  <p class="cap">EI·φ<sub>C</sub> für eine wandernde Last 1 kN von A (s = 0) bis D (s = 5,5 m). Positiv = linksdrehend.</p>
+  <table>
+    <tr><th>Bereich</th><th>M̊ der Last 1</th><th>η = EI·φ<sub>C</sub></th></tr>
+    <tr><td>A–B (c ab B)</td><td>M̊<sub>B</sub> = −c</td><td>−c / 17,7</td></tr>
+    <tr><td>B–C (a ab B, b = 3 − a)</td><td>M̊<sub>BC</sub> = ab²/9, M̊<sub>CB</sub> = −a²b/9</td><td>a·b·(12 + 25a) / 637,2</td></tr>
+    <tr><td>C–D (d ab C)</td><td>M̊<sub>C</sub> = +d</td><td>−0,410·d</td></tr>
+  </table>
+  <p><b>Teilaufgabe 4:</b> Feldweise q = 10 kN/m: Feld A–B −0,28, Feld B–C +3,50, Feld C–D −4,61. Für das Maximum nur die positiven Felder belasten, für das Minimum nur die negativen: <b>max EI·φ<sub>C</sub> = 3,50</b>, <b>min EI·φ<sub>C</sub> = −4,89</b>.</p>
+  <div class="ex">
+    <div class="h"><span class="tag">Ü 7.1</span><span class="ti">EL-Ordinaten SS 26</span></div>
+    <div class="ans"><label>η in Feldmitte B–C (a = 1,5)</label><input class="n" data-ans="0.1748" data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>η am Kragarmende D</label><input class="n" data-ans="-0.614" data-tol="0.02"><span class="fb"></span></div>
+    <div class="ans"><label>min EI·φ<sub>C</sub> (feldweise q = 10)</label><input class="n" data-ans="-4.89" data-tol="0.01"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+  </div>
+
+  <h2 id="t7-pk">Probeklausur · 50 min</h2>
+  <div class="card">
+  <svg viewBox="0 0 560 295" role="img" aria-label="System Probeklausur"><g font-family="Source Sans 3" font-size="15"><rect x="100" y="64" width="240" height="22" fill="#c0392b" opacity=".13"/><line x1="100" y1="64" x2="340" y2="64" stroke="#c0392b" stroke-width="1.5"/><line x1="100.0" y1="64" x2="100.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="126.66666666666667" y1="64" x2="126.66666666666667" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="153.33333333333334" y1="64" x2="153.33333333333334" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="180.0" y1="64" x2="180.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="206.66666666666669" y1="64" x2="206.66666666666669" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="233.33333333333334" y1="64" x2="233.33333333333334" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="260.0" y1="64" x2="260.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="286.66666666666663" y1="64" x2="286.66666666666663" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="313.33333333333337" y1="64" x2="313.33333333333337" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><line x1="340.0" y1="64" x2="340.0" y2="84" stroke="#c0392b" stroke-width="1.3" marker-end="url(#ar)"/><text x="220.0" y="58" text-anchor="middle" fill="#c0392b">20 kN/m</text><line x1="420" y1="32" x2="420" y2="87" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/><text x="426" y="36" fill="#c0392b">30 kN</text><line x1="40.0" y1="32" x2="40.0" y2="87" stroke="#c0392b" stroke-width="3" marker-end="url(#ar)"/><text x="18.0" y="26" fill="#c0392b">10 kN</text><line x1="40.0" y1="90" x2="100" y2="90" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="100" y1="250" x2="100" y2="90" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="100" y1="90" x2="340" y2="90" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="340" y1="90" x2="500" y2="90" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="340" y1="90" x2="340" y2="250" stroke="#1d2433" stroke-width="5" stroke-linecap="round"/><line x1="84" y1="250" x2="116" y2="250" stroke="#1d2433" stroke-width="3"/><line x1="86" y1="250" x2="80" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="94" y1="250" x2="88" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="102" y1="250" x2="96" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="110" y1="250" x2="104" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="118" y1="250" x2="112" y2="258" stroke="#1d2433" stroke-width="1.3"/><line x1="500" y1="74" x2="500" y2="106" stroke="#1d2433" stroke-width="3"/><line x1="500" y1="76" x2="508" y2="82" stroke="#1d2433" stroke-width="1.3"/><line x1="500" y1="84" x2="508" y2="90" stroke="#1d2433" stroke-width="1.3"/><line x1="500" y1="92" x2="508" y2="98" stroke="#1d2433" stroke-width="1.3"/><line x1="500" y1="100" x2="508" y2="106" stroke="#1d2433" stroke-width="1.3"/><line x1="500" y1="108" x2="508" y2="114" stroke="#1d2433" stroke-width="1.3"/><path d="M340,250 l-11,17 h22 z" fill="#fff" stroke="#1d2433" stroke-width="2"/><line x1="324" y1="267" x2="356" y2="267" stroke="#1d2433" stroke-width="2"/><line x1="326" y1="267" x2="320" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="334" y1="267" x2="328" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="342" y1="267" x2="336" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="350" y1="267" x2="344" y2="274" stroke="#1d2433" stroke-width="1.2"/><line x1="358" y1="267" x2="352" y2="274" stroke="#1d2433" stroke-width="1.2"/><text x="36.0" y="112" fill="#1d2433" text-anchor="start">K</text><text x="108" y="110" fill="#1d2433" text-anchor="start">2</text><text x="110" y="244" fill="#1d2433" text-anchor="start">1</text><text x="348" y="110" fill="#1d2433" text-anchor="start">3</text><text x="486" y="112" fill="#1d2433" text-anchor="start">4</text><text x="354" y="256" fill="#1d2433" text-anchor="start">5</text><g fill="#5d6475"><text x="70.0" y="280" text-anchor="middle">1,5</text><text x="220" y="280" text-anchor="middle">6,0 m</text><text x="420" y="280" text-anchor="middle">2,0 + 2,0 m</text><text x="350" y="170">4,0 m</text></g></g></svg>
+  <p>Rahmen mit Kragarm. 1 und 4 eingespannt, 5 gelenkig. EI = konst., EA = GA<sub>v</sub> = ∞. Lasten: 20 kN/m auf 2–3, 30 kN in der Mitte von 3–4, 10 kN an der Kragarmspitze K.</p>
+  <ol>
+    <li>Bestimme den Grad der statischen Unbestimmtheit.</li>
+    <li>Begründe, warum das System unverschieblich ist.</li>
+    <li>Berechne die Stabendmomente nach dem Drehwinkelverfahren.</li>
+    <li>Stelle die M-Linie dar und gib das maximale Feldmoment in 2–3 an.</li>
+    <li>Skizziere die Verformungsfigur mit Wendepunkten.</li>
+  </ol>
+  </div>
+  <div class="ex">
+    <div class="h"><span class="tag">PK</span><span class="ti">Ergebnisse eintragen (VZK II)</span></div>
+    <div class="ans"><label>1) n</label><input class="n" data-ans="5" style="width:70px"><span class="fb"></span></div>
+    <div class="ans"><label>3) EI·φ<sub>2</sub></label><input class="n" data-ans="-31.60" data-tol="0.01"><span class="fb"></span></div>
+    <div class="ans"><label>3) EI·φ<sub>3</sub></label><input class="n" data-ans="22.98" data-tol="0.01"><span class="fb"></span></div>
+    <div class="ans"><label>3) M<sub>23</sub> [kNm]</label><input class="n" data-ans="46.60" data-tol="0.01"><span class="fb"></span></div>
+    <div class="ans"><label>3) M<sub>32</sub> [kNm]</label><input class="n" data-ans="-55.21" data-tol="0.01"><span class="fb"></span></div>
+    <div class="ans"><label>3) M<sub>35</sub>′ [kNm]</label><input class="n" data-ans="17.23" data-tol="0.01"><span class="fb"></span></div>
+    <div class="ans"><label>4) max Feldmoment 2–3 [kNm]</label><input class="n" data-ans="39.15" data-tol="0.01"><span class="fb"></span></div>
+    <button class="chk-btn">Prüfen</button>
+    <details><summary>Musterlösung</summary><div>
+      <p><b>1)</b> a = 3 + 3 + 2 = 8; Stäbe K–2, 1–2, 2–3, 3–4, 3–5 → s = 5; Knoten K, 1, 2, 3, 4, 5 → k = 6. n = 8 + 3·(5 − 6) = <b>5</b>.</p>
+      <p><b>2)</b> Der Riegel ist bei 4 eingespannt und damit horizontal gehalten. Mit EA = ∞ können sich auch die Knoten 2 und 3 nicht horizontal verschieben. Vertikal halten die Stiele (EA = ∞).</p>
+      <p><b>3)</b> k<sub>12</sub> = 2EI/4 = 0,5 · k<sub>23</sub> = 2EI/6 = 0,333 · k<sub>34</sub> = 2EI/4 = 0,5 · k<sub>35</sub>′ = 1,5EI/4 = 0,375 · Kragarm: M̊<sub>2K</sub> = −10·1,5 = −15.</p>
+      <p>M̊<sub>23</sub> = +20·6²/12 = 60, M̊<sub>32</sub> = −60, M̊<sub>34</sub> = +30·4/8 = 15, M̊<sub>43</sub> = −15.</p>
+      <p>K = [2·(0,5 + 0,333)  0,333; 0,333  2·(0,333 + 0,5 + 0,375)] = [1,667  0,333; 0,333  2,417]. P = −[−15 + 60; −60 + 15] = [−45; 45]. det = 3,917.</p>
+      <p>EI·φ<sub>2</sub> = (2,417·(−45) − 0,333·45)/3,917 = <b>−31,60</b> · EI·φ<sub>3</sub> = (1,667·45 + 0,333·45)/3,917 = <b>22,98</b>.</p>
+      <p>M<sub>12</sub> = −15,80 · M<sub>21</sub> = −31,60 · M<sub>2K</sub> = −15 · M<sub>23</sub> = 46,60 · M<sub>32</sub> = −55,21 · M<sub>34</sub> = 37,98 · M<sub>43</sub> = −3,51 · M<sub>35</sub>′ = 17,23. Kontrollen: Knoten 2: −31,60 − 15 + 46,60 = 0 ✓ · Knoten 3: −55,21 + 37,98 + 17,23 = 0 ✓.</p>
+      <p><b>4)</b> Riegel 2–3 in VZK I: M<sub>l</sub> = −46,60, M<sub>r</sub> = −55,21. V<sub>l</sub> = 60 − 1,43 = 58,57 → x = 2,93 m → M<sub>max</sub> = −46,60 + 58,57²/40 = <b>39,15 kNm</b>. Riegel 3–4: Stützmomente −37,98 und −3,51, unter der Last +9,26. Kragarm: −15 an Knoten 2.</p>
+      <p><b>5)</b> Knoten 2 dreht rechts herum (φ<sub>2</sub> &lt; 0), Knoten 3 links herum (φ<sub>3</sub> &gt; 0). Wendepunkte in 2–3 bei den Nullstellen der M-Linie (x = 0,95 m und 4,91 m von Knoten 2), in 3–4 zwei Wendepunkte, im Stiel 1–2 einer (M geht von +15,8 auf −31,6).</p>
+    </div></details>
+  </div>
+  <div class="chat"><b>Heute im Chat:</b> Schick mir Fotos deiner kompletten Probeklausur, ich korrigiere wie Prof. Lang (Punkte pro Teilaufgabe).</div>
+</section>
+
+<!-- ===================== KARTEN ===================== -->
+<section class="view" id="v-karten">
+  <h1>Karteikarten</h1>
+  <p class="lead">Tippe auf die Karte zum Umdrehen. Täglich einmal durch.</p>
+  <div class="fc-wrap"><div class="fc" id="fc"><div class="side front" id="fcF"></div><div class="side back" id="fcB"></div></div></div>
+  <div class="fc-nav"><button class="ghost" id="fcPrev" aria-label="vorherige Karte">←</button><span class="small" id="fcN"></span><button class="ghost" id="fcNext" aria-label="nächste Karte">→</button><button class="ghost" id="fcShuf">Mischen</button></div>
+</section>
+
+</main>
+
+<script>
+{
+/* ---------- Exam table ---------- */
+const EX=[
+ ['Muster SS 16','Rahmen mit Seil (nur Zug), Kragstiel mit 10 kN, HEB 220','k,v','M; V und N; Verformungsfigur','EDV-Ausdruck'],
+ ['SS 2016','Rahmen, Schrägstiel gelenkig, Kragarm mit H-Last','n,k,v','n; Stabendmomente; M(x), V(x) Stab 2–3; Wendepunkte','n = 3 · M12 = 3,83 · M21 = −7,67 · M23 = −7,66 · M32 = 0,5 · M36 = −9,5 ✓'],
+ ['WS 16/17','Stiel mit H-Lager oben, Schrägstab mit Projektionslast, Kragarm','n,k,v','n; Lastzerlegung; 2 Drehwinkel; EI·f Kragarm','n = 4 · q⊥ = 3,2 · q∥ = 2,4 · M21 = 0,9 · M24 = 4,08 · M42 = −9,09 · EI·f = 21,79 ✓'],
+ ['SS 2017','Schrägstab, Riegel, Stiel mit H-Lasten','n,k,v,e','n; 2 Drehwinkel; M, V, N; EL Verdrehung Knoten 3','n = 5 · M32′ = −3,42 · M34 = −2,10 · M47 = −4,79 · M74 = −7,60 ✓'],
+ ['WS 17/18','Riegel, Diagonale, belasteter Pendelstab','n,k,v,e','n; Stabendmomente; EL Einspannmoment Knoten 1','n = 8 · M21 = −9,62 · M23 = −15,36 · M32 = −9,88 · M35 = 9,88 ✓'],
+ ['SS 2018','Schrägstiele mit Querlast, Kragarm 10 kN','n,k,v','n; Stabendmomente; M, V, Verformung','n = 5 · M42 = −26,28 · M23 = −39,95 · M32 = −23,72 · M36 = −22,92'],
+ ['WS 18/19','Riegel mit Abzweigen, Kragstiel mit 20 kN','k,v','Biegemomente; V und N; Verformungsfigur','M12 = −15,52 · M21 = −13,97 · M32 = 23,31 · M34′ = −16,70 · M27′ = 0,77 ✓'],
+ ['SS 2019','Trapezrahmen mit Zugband, symmetrisch','n,k,s,v','n; Stabendmomente; M, V, N','n = 3 · M21′ = M23 = −2,32 · M32 = M34 = −3,82 · M43 = −0,58 ✓'],
+ ['WS 19/20','Riegel mit Schrägstreben, Stiel mit A<sub>v</sub>','n,k','n; Stabendmomente; M-Linie; A<sub>v</sub>','n = 9 · M31 = −2,88 · M34 = −7,47 · M45 = −5,06 · A<sub>v</sub> = 35,9 kN ✓'],
+ ['SS 2020','Dreiecksfachwerk, Gleichlast rechts','n,k,v','n; Stabendmomente; M, V; Verformung','n = 7 · M21′ = −4,69 · M23 = −9,89 · M32 = −10,86 · M36 = −6,21 ✓'],
+ ['WS 20/21','Rahmen mit Schrägstreben, q = 60','n,k,s,v','n; Stabendmomente; M, V, N','n = 8 · eigene Rechnung: EI·φ2 = −11,23 · M24 = 30,03 · M42 = −52,48 (VZK II)'],
+ ['SS 2021','Dreiecke, Gleichlast','n,u,s,v','n; begründen unverschieblich; M, V, N','n = 7 · Symmetrie + steife Stäbe 4–2, 2–5 · eigene Rechnung: M12 = 6,06 · M21 = −16,97 (VZK II)'],
+ ['WS 21/22','Dreiecke, antimetrische Last','n,s,v,e','n; M, V; EL Verdrehung Knoten 2','n = 11 · eigene Rechnung: EI·φ2 = 10,01 · |M| = 8,33 an allen Riegelenden'],
+ ['SS 2022','Dreiecke, H-Lasten symmetrisch','n,s,v','n; M und V','n = 11 · eigene Rechnung: M12 = 6,14 · M21 = 3,07 (VZK II)'],
+ ['WS 22/23','= System SS 2018','n,k,v','n; Stabendmomente; M, V, Verformung','n = 5 · EDV-Ausdruck'],
+ ['SS 2023','Trapezrahmen mit Kragarm','n,u,v,e','n; begründen; M, V, N; EL Feldmoment','n = 5 · „Diagonale rechts“ · EDV'],
+ ['SS 2024','Stockwerkrahmen mit Mittelstütze','n,v,e','n; M, V, N; EL Verdrehung Knoten 3','n = 8 · EDV'],
+ ['WS 23/24','Zweigeschossiger Rahmen, symmetrisch','n,u,s,k,v','n; begründen; Stabendmomente; M + Biegelinie','n = 7 · M13 = 29,77 · M31 = −59,54 · M34 = −104,19 · M43 = −159,15 ✓'],
+ ['WS 24/25','Riegel mit Pendelstiel und Schrägstiel','n,k,v,w','n; M, V; Durchbiegung Punkt X','n = 6 · φ2 = −1,246·10⁻⁴ · φ3 = 4,98·10⁻⁴ · w<sub>X</sub> = 0,605 mm ✓'],
+ ['SS 2025','= WS 16/17','n,k,v','wie WS 16/17','n = 4 · φ4 = 0,452 · φ5 = −7,027 ✓'],
+ ['WS 25/26','= WS 23/24 mit Gelenkfüßen','n,u,s,k,v','n; begründen; Stabendmomente; M + Biegelinie','n = 4 · M31′ = −49,93 · M34 = 99,86 · M43 = −161,31 ✓'],
+ ['SS 2026','Riegel mit Kragarmen, Stiel, Schrägstiel','k,v,e','M, V, N; EL EI·φ<sub>C</sub>; min/max feldweise','eigene Lösung (unten): EI·φ<sub>C</sub> = −1,39 · max 3,50 · min −4,89']
+];
+const PL={n:['p','n'],k:['k','DWV'],v:['v','V/N'],s:['s','Sym.'],e:['','EL'],u:['s','unverschiebl.'],w:['v','w']};
+document.getElementById('extab').innerHTML=EX.map(r=>'<tr><td data-l="Klausur"><b>'+r[0]+'</b></td><td data-l="System">'+r[1]+'</td><td data-l="Aufgaben">'+r[2].split(',').map(k=>'<span class="pill '+PL[k][0]+'">'+PL[k][1]+'</span>').join('')+'<br>'+r[3]+'</td><td data-l="Ergebnis">'+r[4]+'</td></tr>').join('');
+const BARS=[['Stabendmomente mit DWV',22],['Grad n bestimmen',19],['V- und/oder N-Linie',16],['Verformungsfigur / Biegelinie',10],['Symmetrie nutzen',7],['Einflusslinie',6],['Begründen: unverschieblich',4],['Lastzerlegung Schrägstab',3]];
+document.getElementById('bars').innerHTML=BARS.map(b=>'<div class="row"><span>'+b[0]+'</span><div class="bar" style="width:'+(b[1]/22*100)+'%"></div><span class="num">'+b[1]+'/22</span></div>').join('');
+
+/* ---------- Number checks ---------- */
+function parseNum(s){
+  s=String(s).trim().replace(/\s/g,'').replace(',', '.').replace('−','-');
+  if(s==='')return NaN;
+  if(/^[-+]?\d*\.?\d+\/[-+]?\d*\.?\d+$/.test(s)){const [a,b]=s.split('/');return parseFloat(a)/parseFloat(b);}
+  return Number(s);
+}
+function near(v,ans,tol){
+  if(isNaN(v))return false;
+  if(ans===0)return Math.abs(v)<1e-6;
+  return Math.abs(v-ans)<=Math.abs(ans)*tol+1e-9;
+}
+document.querySelectorAll('.chk-btn').forEach(b=>b.addEventListener('click',()=>{
+  b.closest('.ex').querySelectorAll('input.n').forEach(inp=>{
+    let v=parseNum(inp.value);const a=parseNum(inp.dataset.ans);
+    const tol=inp.dataset.tol?parseFloat(inp.dataset.tol):0.012;
+    if(inp.hasAttribute('data-anysign')&&!isNaN(v))v=Math.abs(v)*Math.sign(a||1);
+    const ok=near(v,a,tol);
+    inp.classList.toggle('ok',ok);inp.classList.toggle('bad',!ok);
+    const fb=inp.parentElement.querySelector('.fb');
+    if(fb){fb.textContent=ok?'✓':(isNaN(v)?'?':'✗');fb.className='fb '+(ok?'ok':'bad');}
+  });
+}));
+
+/* ---------- Multiple choice ---------- */
+const MC={
+ mc1:[
+  {q:'Welche Unbekannten hat das Drehwinkelverfahren im unverschieblichen System?',o:['Auflagerkräfte','Knotendrehwinkel φ','Stabdrehwinkel ψ und φ','Normalkräfte'],c:1,w:'Mit EA = ∞ und unverschieblichen Knoten bleiben nur die Knotendrehwinkel. ψ = 0.'},
+  {q:'Welche Gleichungen löst du?',o:['ΣH = 0 am ganzen System','Momentengleichgewicht an jedem Knoten mit unbekanntem φ','Verträglichkeit δ<sub>10</sub> + X·δ<sub>11</sub> = 0','Arbeitssatz'],c:1,w:'Je Drehwinkel eine Gleichung: Summe der Stabendmomente am Knoten = 0 (bzw. = äußeres Knotenmoment).'},
+  {q:'Symmetrisches System, symmetrische Last. Was gilt für den Knoten in der Symmetrieachse?',o:['φ = 0','M = 0','V = 0 in allen Stäben','nichts Besonderes'],c:0,w:'Ein Knoten auf der Achse kann sich bei symmetrischer Verformung nicht drehen.'},
+  {q:'Was ist kein Argument für „unverschieblich“?',o:['Symmetrie','Festes Lager am Riegel + EA = ∞','Steifes Dreieck aus Stäben mit EA = ∞','EI = konstant'],c:3,w:'Die Biegesteifigkeit hat mit der Verschieblichkeit nichts zu tun. Entscheidend sind Lager, EA = ∞ und Geometrie.'}
+ ],
+ mc2:[
+  {q:'Ein Stab ist am Gegenende gelenkig. Welche Steifigkeit?',o:['k = 2EI/L','k′ = 1,5EI/L','k = 4EI/L','k = 0'],c:1,w:'k′ = 0,75·k = 1,5EI/L.'},
+  {q:'Horizontaler Stab, Gleichlast nach unten, beidseitig eingespannt. M̊ am linken Ende (VZK II)?',o:['−qL²/12','+qL²/12','+qL²/8','0'],c:1,w:'Links +, rechts −. Das linke Ende wird von der Einspannung linksdrehend gehalten.'},
+  {q:'Kragarm links von Knoten B, 10 kN/m, 1 m lang. Was kommt in P als M̊<sub>BA</sub>?',o:['+5','−5','+10','0'],c:1,w:'Last links vom Knoten: −qc²/2 = −5 (SS 26).'},
+  {q:'VZK II → VZK I am Stabanfang:',o:['Vorzeichen bleibt','Vorzeichen wechselt','Betrag halbieren','hängt von der Last ab'],c:1,w:'Am Stabanfang wechselt das Vorzeichen, am Stabende bleibt es (Abschreitrichtung mit gestrichelter Faser rechts).'}
+ ],
+ mc3:[
+  {q:'Was steht in der Knotengleichung vor φ<sub>i</sub>?',o:['Σk','2·Σ(k + k′)','4·Σk','Σk′'],c:1,w:'Jeder Stab trägt k·2φ<sub>i</sub> bzw. k′·2φ<sub>i</sub> bei.'},
+  {q:'Bei WS 23/24 bekommt der Mittelstiel 2–4 welches Moment?',o:['groß, weil er in der Mitte steht','null, weil φ<sub>4</sub> = 0 und unten eingespannt','gleich M<sub>34</sub>','halb so groß wie M<sub>31</sub>'],c:1,w:'Beide Enden drehen sich nicht, und es liegt keine Last auf dem Stiel.'},
+  {q:'Die Summe der Stabendmomente am Knoten ist nicht null. Was ist los?',o:['Rechenfehler oder Werte in VZK I','Das ist normal','Das System ist verschieblich','EI ist falsch'],c:0,w:'In VZK II muss Σ = 0 sein (ohne äußeres Moment). In VZK I gilt das nicht.'}
+ ],
+ mc4:[
+  {q:'Wohin gehört k′ eines am Knoten 3 eingespannten, am anderen Ende gelenkigen Stabes?',o:['nur auf die Hauptdiagonale K<sub>33</sub>','auf Haupt- und Nebendiagonale','nur auf die Nebendiagonale','gar nicht'],c:0,w:'Skript: „Steifigkeiten einseitig eingespannter Stäbe gehören nur auf die Hauptdiagonale.“'},
+  {q:'K<sub>23</sub> = ?',o:['2·k<sub>23</sub>','k<sub>23</sub> des Verbindungsstabes','Summe aller k','0 immer'],c:1,w:'Nebendiagonale = einfache Steifigkeit des biegesteifen Verbindungsstabes.'},
+  {q:'Wie lautet P<sub>i</sub>?',o:['+Σ M̊','−Σ M̊ (+ äußeres Moment)','Σ k','M̊ des größten Stabes'],c:1,w:'K·φ + Σ M̊ = M<sub>außen</sub> → K·φ = M<sub>außen</sub> − Σ M̊.'}
+ ],
+ mc5:[
+  {q:'Ein Riegelende liegt auf einem Lager, das nur in Stabrichtung hält. Der Riegelabschnitt ist …',o:['k′','k','ein Kragarm (k = 0)','eingespannt'],c:2,w:'Quer zum Stab gibt es keinen Halt → statisch bestimmter Kragarm (SS 26, Lager A).'},
+  {q:'Ein Stiel wird oben nur horizontal gehalten. Für die Biegung ist das …',o:['eine Einspannung','ein gelenkiges Ende (k′)','ein freies Ende','ein Pendelstab'],c:1,w:'Das Lager hält quer zum Stab, verhindert aber keine Drehung → k′.'},
+  {q:'Was erzeugt bei einem Schrägstab ein Starreinspannmoment?',o:['nur q<sub>⊥</sub>','nur q<sub>∥</sub>','beide','die Projektion selbst'],c:0,w:'q<sub>∥</sub> erzeugt nur Normalkraft (EA = ∞).'}
+ ],
+ mc6:[
+  {q:'Wo liegt ein Wendepunkt der Biegelinie?',o:['am Knoten','bei der Nullstelle der M-Linie','beim Maximum von M','bei V = 0'],c:1,w:'Krümmung κ = M/EI wechselt dort das Vorzeichen.'},
+  {q:'Querkraft am linken Stabende:',o:['V<sub>0,l</sub> + (M<sub>r</sub> − M<sub>l</sub>)/L','V<sub>0,l</sub> − (M<sub>r</sub> + M<sub>l</sub>)/L','(M<sub>l</sub> + M<sub>r</sub>)/2','qL/2'],c:0,w:'Mit VZK I-Momenten. V<sub>0</sub> ist die Einfeldträger-Querkraft.'},
+  {q:'Ein Seil ergibt Druck. Was tun?',o:['Ergebnis so lassen','Seil fällt aus, ohne Seil neu rechnen','EA erhöhen','Vorzeichen umdrehen'],c:1,w:'Seile nehmen nur Zug auf (Musterklausur 2016).'}
+ ]
+};
+Object.entries(MC).forEach(([id,qs])=>{
+  const host=document.getElementById(id);
+  qs.forEach(q=>{
+    const d=document.createElement('div');d.className='mc';
+    d.innerHTML='<div class="q">'+q.q+'</div>'+q.o.map((o,i)=>'<button data-i="'+i+'">'+o+'</button>').join('')+'<div class="why">'+q.w+'</div>';
+    d.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const i=+b.dataset.i;b.classList.add(i===q.c?'ok':'bad');
+      if(i!==q.c)d.querySelectorAll('button')[q.c].classList.add('ok');
+      d.classList.add('done');
+    }));
+    host.appendChild(d);
+  });
+});
+
+/* ---------- Influence line chart SS 26 ---------- */
+function eta(s){
+  if(s<=1)return -(1-s)/17.7;
+  if(s<=4){const a=s-1;return a*(3-a)*(12+25*a)/637.2;}
+  return -0.409605*(s-4);
+}
+const el=document.getElementById('elsvg');
+function drawEL(){
+  const W=el.clientWidth||600,Ht=el.clientHeight||280,m={l:50,r:16,t:18,b:40};
+  const vmin=-0.7,vmax=0.3;
+  const x=s=>m.l+s/5.5*(W-m.l-m.r), y=v=>m.t+(vmax-v)/(vmax-vmin)*(Ht-m.t-m.b);
+  let g='';
+  [-0.6,-0.4,-0.2,0,0.2].forEach(v=>{g+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+(v===0?'#1d2433':'#e2ded4')+'"/><text x="'+(m.l-8)+'" y="'+(y(v)+5)+'" text-anchor="end" font-size="13" fill="#5d6475">'+String(v).replace('.',',')+'</text>';});
+  [[0,'A'],[1,'B'],[4,'C'],[5.5,'D']].forEach(([s,t])=>{g+='<line x1="'+x(s)+'" x2="'+x(s)+'" y1="'+(Ht-m.b)+'" y2="'+(Ht-m.b+6)+'" stroke="#1d2433"/><text x="'+x(s)+'" y="'+(Ht-m.b+22)+'" text-anchor="middle" font-size="13" fill="#1d2433">'+t+'</text>';});
+  let pts=[];for(let i=0;i<=220;i++){const s=5.5*i/220;pts.push(x(s)+','+y(eta(s)));}
+  g+='<polyline points="'+pts.join(' ')+'" fill="none" stroke="#c0392b" stroke-width="3"/>';
+  g+='<polygon points="'+x(1)+','+y(0)+' '+pts.filter((p,i)=>{const s=5.5*i/220;return s>=1&&s<=4;}).join(' ')+' '+x(4)+','+y(0)+'" fill="#2e8b57" opacity=".15"/>';
+  if(W>420){g+='<text x="'+x(2.2)+'" y="'+(y(0.19)-8)+'" font-size="13" fill="#2e8b57">max 0,181</text><text x="'+(x(5.5)-6)+'" y="'+(y(-0.614)+18)+'" text-anchor="end" font-size="13" fill="#c0392b">−0,614</text>';}
+  el.innerHTML=g;
+}
+const elObs=new ResizeObserver(drawEL);elObs.observe(el);
+
+/* ---------- Flashcards ---------- */
+let cards=[
+ ['Stabendmoment, beidseitig biegesteif','M<sub>ij</sub> = k<sub>ij</sub>(2φ<sub>i</sub> + φ<sub>j</sub>) + M̊<sub>ij</sub>, k = 2EI/L'],
+ ['Stabendmoment, Gegenende gelenkig','M<sub>ij</sub>′ = k′·2φ<sub>i</sub> + M̊<sub>ij</sub>′, k′ = 1,5EI/L = 0,75k'],
+ ['M̊′ aus M̊','M̊<sub>ij</sub>′ = M̊<sub>ij</sub> − M̊<sub>ji</sub>/2'],
+ ['M̊ Gleichlast (VZK II)','links +qL²/12, rechts −qL²/12 · einseitig gelenkig: ±qL²/8'],
+ ['M̊ Einzellast mittig','±PL/8 · einseitig gelenkig: ±3PL/16'],
+ ['M̊ Einzellast bei a, b','+Pab²/L² · −Pa²b/L²'],
+ ['Kragarm im Lastvektor','Last rechts vom Knoten: +P·c · links: −P·c'],
+ ['Hauptdiagonale K<sub>ii</sub>','2 · Σ (k + k′) aller am Knoten biegesteif angeschlossenen Stäbe'],
+ ['Nebendiagonale K<sub>ij</sub>','einfaches k des beidseitig biegesteifen Verbindungsstabes (nie k′)'],
+ ['Lastvektor P<sub>i</sub>','äußeres Knotenmoment − Σ M̊ am Knoten'],
+ ['VZK II → VZK I','Stabanfang: Vorzeichen wechseln · Stabende: bleibt'],
+ ['Warum unverschieblich?','Symmetrie (u = 0 in der Achse) · Lager am Riegel + EA = ∞ · steife Dreiecke/Diagonale'],
+ ['Grad der Unbestimmtheit','n = a + 3(s − k) − r'],
+ ['Lager hält nur in Stabrichtung','Stab ist quer frei → Kragarm, k = 0'],
+ ['Durchbiegung Feldmitte mit φ','w = qL⁴/(384EI) + L/8·(φ<sub>r</sub> − φ<sub>l</sub>)'],
+ ['EL eines Drehwinkels','Biegelinie infolge Moment 1 am Knoten (Maxwell)']
+];
+let ci=0;const fc=document.getElementById('fc');
+function showCard(){fc.classList.remove('flip');document.getElementById('fcF').innerHTML=cards[ci][0];document.getElementById('fcB').innerHTML=cards[ci][1];document.getElementById('fcN').textContent=(ci+1)+' / '+cards.length;}
+fc.addEventListener('click',()=>fc.classList.toggle('flip'));
+document.getElementById('fcNext').onclick=()=>{ci=(ci+1)%cards.length;showCard();};
+document.getElementById('fcPrev').onclick=()=>{ci=(ci-1+cards.length)%cards.length;showCard();};
+document.getElementById('fcShuf').onclick=()=>{for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}ci=0;showCard();};
+showCard();
+
+/* ---------- Plan ---------- */
+const DAYS=[
+ ['26.11.','Do','Tag 1 · Grundlagen','Idee, Freiheitsgrade, unverschieblich begründen, n','tag1'],
+ ['27.11.','Fr','Tag 2 · Steifigkeiten &amp; Vorzeichen','k, k′, 0 · Starreinspannmomente · VZK II/I','tag2'],
+ ['28.11.','Sa','Tag 3 · Ein Drehwinkel','Knotengleichung, WS 23/24, WS 25/26, SS 21','tag3'],
+ ['29.11.','So','Tag 4 · Zwei Drehwinkel','K·φ = P, WS 24/25, SS 16, WS 19/20','tag4'],
+ ['30.11.','Mo','Tag 5 · Sonderstäbe','Lager lesen, Kragarm, Pendelstab, Lastzerlegung, WS 16/17','tag5'],
+ ['1.12.','Di','Tag 6 · M, V, N &amp; Verformung','Zustandslinien, Wendepunkte, Durchbiegung','tag6'],
+ ['2.12.','Mi','Tag 7 · Einflusslinien &amp; Probeklausur','Maxwell, SS 26 als Gleichung, Probeklausur 50 min','tag7'],
+ ['3.–7.12.','','Training','Jeden Tag eine Aufgabe 3 auf Zeit (50 min), Karteikarten','klausuren']
+];
+let prog={};try{prog=JSON.parse(localStorage.getItem('dwv-prog')||'{}');}catch(e){}
+function renderDays(){
+  const h=document.getElementById('days');h.innerHTML='';
+  DAYS.forEach((d,i)=>{
+    const e=document.createElement('div');e.className='day'+(prog[i]?' done':'');
+    e.innerHTML='<div class="dt">'+(d[1]?'<b>'+d[1]+'</b>':'')+d[0]+'</div><div><div class="tt">'+d[2]+'</div><div class="ds">'+d[3]+'</div></div><div style="display:flex;gap:8px;align-items:center"><a class="go" href="#'+d[4]+'">Öffnen</a><input type="checkbox" class="chk" '+(prog[i]?'checked':'')+' aria-label="erledigt"></div>';
+    e.querySelector('input').addEventListener('change',ev=>{prog[i]=ev.target.checked;try{localStorage.setItem('dwv-prog',JSON.stringify(prog));}catch(_){}renderDays();renderCount();});
+    h.appendChild(e);
+  });
+}
+function renderCount(){
+  const days=Math.max(0,Math.ceil((new Date('2026-12-08T08:00:00')-new Date())/864e5));
+  const done=Object.values(prog).filter(Boolean).length;
+  document.getElementById('count').innerHTML='<div><b>'+days+'</b><span>Tage bis zur Klausur</span></div><div style="background:#2e8b57"><b>'+done+' / 8</b><span>Etappen erledigt</span></div>';
+}
+renderDays();renderCount();
+
+/* ---------- Routing ---------- */
+function route(){
+  let h=(location.hash||'#start').slice(1),view=h,anchor=null;
+  const m=h.match(/^t(\d)-/);if(m){view='tag'+m[1];anchor=h;}
+  if(h==='ss26'){view='klausuren';anchor='ss26';}
+  if(!document.getElementById('v-'+view))view='start';
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+view));
+  document.querySelectorAll('#tabs a').forEach(a=>{const on=a.getAttribute('href')==='#'+view;a.classList.toggle('on',on);if(on)a.scrollIntoView({block:'nearest',inline:'nearest'});});
+  if(view==='tag7')drawEL();
+  if(anchor){const e=document.getElementById(anchor);if(e)setTimeout(()=>e.scrollIntoView({behavior:'smooth'}),30);}
+  else window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);route();
+}
+</script>
+<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}));}</script>
+</body>
+</html>

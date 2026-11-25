@@ -1,5 +1,5 @@
 // Offline-Cache für die AWGV-App. Bei jeder inhaltlichen Änderung VERSION erhöhen.
-const VERSION = 'awgv-v26';
+const VERSION = 'awgv-v27';
 const CORE = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png'];
 
@@ -15,7 +15,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   // Seiten: erst Netz (damit Updates ankommen), sonst Cache
-  if (url.pathname.includes('/traegerrost/')) return; // eigene App mit eigenem Service Worker
+  if (url.pathname.includes('/traegerrost/') || url.pathname.includes('/dwv/')) return; // eigene Apps mit eigenem Service Worker
   if (req.mode === 'navigate') {
     e.respondWith(fetch(req).then(r => { const c = r.clone(); caches.open(VERSION).then(x => x.put('./index.html', c)); return r; })
       .catch(() => caches.match('./index.html')));
